@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :boards
   root "pages#home"
   devise_for :user
   get "pricing" => "pages#pricing"
