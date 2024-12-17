@@ -3,7 +3,7 @@ class BoardsController < ApplicationController
 
   # GET /boards or /boards.json
   def index
-    @boards = Board.all
+    @boards = current_user.boards
   end
 
   # GET /boards/1 or /boards/1.json
@@ -22,9 +22,14 @@ class BoardsController < ApplicationController
   # POST /boards or /boards.json
   def create
     @board = Board.new(board_params)
+    @member = Member.new(board: @board, user: current_user, role: Role.find_by(name: :owner))
 
     respond_to do |format|
       if @board.save
+        unless @member.save
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @member.errors, status: :unprocessable_entity }
+        end
         format.html { redirect_to @board, notice: "Board was successfully created." }
         format.json { render :show, status: :created, location: @board }
       else
@@ -49,6 +54,11 @@ class BoardsController < ApplicationController
 
   # DELETE /boards/1 or /boards/1.json
   def destroy
+    unless @member.role.can_delete
+      return
+    end
+
+    @board.members.destroy_all
     @board.destroy!
 
     respond_to do |format|
@@ -61,6 +71,7 @@ class BoardsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_board
       @board = Board.find(params.expect(:id))
+      @member = Member.find_by(board: @board, user: current_user)
     end
 
     # Only allow a list of trusted parameters through.
