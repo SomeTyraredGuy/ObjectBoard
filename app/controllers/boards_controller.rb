@@ -70,8 +70,8 @@ class BoardsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_board
-      @board = Board.find(params.expect(:id))
-      @member = Member.find_by(board: @board, user: current_user)
+      @board = Board.find(params.expect(:id)) or not_found
+      @member = Member.find_by(board: @board, user: current_user) or not_found
     end
 
     # Only allow a list of trusted parameters through.
