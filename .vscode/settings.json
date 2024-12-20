@@ -19,6 +19,15 @@
         {
             "folderPath": "ObjectBoard/db/",
             "color": "foldercolorizer.color_00cccc"
+        },
+        {
+            "folderPath": "ObjectBoard/app/javascript/",
+            "color": "foldercolorizer.color_00ccff"
         }
+    ],
+    "cSpell.words": [
+        "hotwired",
+        "importmap",
+        "stylesheet"
     ]
 }
