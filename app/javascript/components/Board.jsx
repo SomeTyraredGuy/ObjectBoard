@@ -1,8 +1,14 @@
 import React from 'react'
+import SideBar from './Sidebar'
+import UserCard from './Users/UsersCard'
 
-function Board() {
+function Board({db}) {
+  console.log(db)
   return (
-    <h1>Board</h1>
+    <>
+        <UserCard members={db.members}/>
+        <h1>Board</h1>
+    </>
   )
 }
 

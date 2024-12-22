@@ -1,0 +1,573 @@
+{
+  "inputs": {
+    "node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js": {
+      "bytes": 190634,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/@rails/actioncable/src/adapters.js": {
+      "bytes": 154,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/@rails/actioncable/src/logger.js": {
+      "bytes": 478,
+      "imports": [
+        {
+          "path": "node_modules/@rails/actioncable/src/adapters.js",
+          "kind": "import-statement",
+          "original": "./adapters"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/@rails/actioncable/src/connection_monitor.js": {
+      "bytes": 3612,
+      "imports": [
+        {
+          "path": "node_modules/@rails/actioncable/src/logger.js",
+          "kind": "import-statement",
+          "original": "./logger"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/@rails/actioncable/src/internal.js": {
+      "bytes": 490,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/@rails/actioncable/src/connection.js": {
+      "bytes": 5131,
+      "imports": [
+        {
+          "path": "node_modules/@rails/actioncable/src/adapters.js",
+          "kind": "import-statement",
+          "original": "./adapters"
+        },
+        {
+          "path": "node_modules/@rails/actioncable/src/connection_monitor.js",
+          "kind": "import-statement",
+          "original": "./connection_monitor"
+        },
+        {
+          "path": "node_modules/@rails/actioncable/src/internal.js",
+          "kind": "import-statement",
+          "original": "./internal"
+        },
+        {
+          "path": "node_modules/@rails/actioncable/src/logger.js",
+          "kind": "import-statement",
+          "original": "./logger"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/@rails/actioncable/src/subscription.js": {
+      "bytes": 2825,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/@rails/actioncable/src/subscription_guarantor.js": {
+      "bytes": 1499,
+      "imports": [
+        {
+          "path": "node_modules/@rails/actioncable/src/logger.js",
+          "kind": "import-statement",
+          "original": "./logger"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/@rails/actioncable/src/subscriptions.js": {
+      "bytes": 3063,
+      "imports": [
+        {
+          "path": "node_modules/@rails/actioncable/src/subscription.js",
+          "kind": "import-statement",
+          "original": "./subscription"
+        },
+        {
+          "path": "node_modules/@rails/actioncable/src/subscription_guarantor.js",
+          "kind": "import-statement",
+          "original": "./subscription_guarantor"
+        },
+        {
+          "path": "node_modules/@rails/actioncable/src/logger.js",
+          "kind": "import-statement",
+          "original": "./logger"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/@rails/actioncable/src/consumer.js": {
+      "bytes": 2176,
+      "imports": [
+        {
+          "path": "node_modules/@rails/actioncable/src/connection.js",
+          "kind": "import-statement",
+          "original": "./connection"
+        },
+        {
+          "path": "node_modules/@rails/actioncable/src/subscriptions.js",
+          "kind": "import-statement",
+          "original": "./subscriptions"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/@rails/actioncable/src/index.js": {
+      "bytes": 869,
+      "imports": [
+        {
+          "path": "node_modules/@rails/actioncable/src/connection.js",
+          "kind": "import-statement",
+          "original": "./connection"
+        },
+        {
+          "path": "node_modules/@rails/actioncable/src/connection_monitor.js",
+          "kind": "import-statement",
+          "original": "./connection_monitor"
+        },
+        {
+          "path": "node_modules/@rails/actioncable/src/consumer.js",
+          "kind": "import-statement",
+          "original": "./consumer"
+        },
+        {
+          "path": "node_modules/@rails/actioncable/src/internal.js",
+          "kind": "import-statement",
+          "original": "./internal"
+        },
+        {
+          "path": "node_modules/@rails/actioncable/src/subscription.js",
+          "kind": "import-statement",
+          "original": "./subscription"
+        },
+        {
+          "path": "node_modules/@rails/actioncable/src/subscriptions.js",
+          "kind": "import-statement",
+          "original": "./subscriptions"
+        },
+        {
+          "path": "node_modules/@rails/actioncable/src/subscription_guarantor.js",
+          "kind": "import-statement",
+          "original": "./subscription_guarantor"
+        },
+        {
+          "path": "node_modules/@rails/actioncable/src/adapters.js",
+          "kind": "import-statement",
+          "original": "./adapters"
+        },
+        {
+          "path": "node_modules/@rails/actioncable/src/logger.js",
+          "kind": "import-statement",
+          "original": "./logger"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/@hotwired/turbo-rails/app/javascript/turbo/cable.js": {
+      "bytes": 526,
+      "imports": [
+        {
+          "path": "node_modules/@rails/actioncable/src/index.js",
+          "kind": "dynamic-import",
+          "original": "@rails/actioncable/src"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/@hotwired/turbo-rails/app/javascript/turbo/snakeize.js": {
+      "bytes": 1651,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/@hotwired/turbo-rails/app/javascript/turbo/cable_stream_source_element.js": {
+      "bytes": 1524,
+      "imports": [
+        {
+          "path": "node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js",
+          "kind": "import-statement",
+          "original": "@hotwired/turbo"
+        },
+        {
+          "path": "node_modules/@hotwired/turbo-rails/app/javascript/turbo/cable.js",
+          "kind": "import-statement",
+          "original": "./cable"
+        },
+        {
+          "path": "node_modules/@hotwired/turbo-rails/app/javascript/turbo/snakeize.js",
+          "kind": "import-statement",
+          "original": "./snakeize"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/@hotwired/turbo-rails/app/javascript/turbo/fetch_requests.js": {
+      "bytes": 1976,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/@hotwired/turbo-rails/app/javascript/turbo/index.js": {
+      "bytes": 312,
+      "imports": [
+        {
+          "path": "node_modules/@hotwired/turbo-rails/app/javascript/turbo/cable_stream_source_element.js",
+          "kind": "import-statement",
+          "original": "./cable_stream_source_element"
+        },
+        {
+          "path": "node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js",
+          "kind": "import-statement",
+          "original": "@hotwired/turbo"
+        },
+        {
+          "path": "node_modules/@hotwired/turbo-rails/app/javascript/turbo/cable.js",
+          "kind": "import-statement",
+          "original": "./cable"
+        },
+        {
+          "path": "node_modules/@hotwired/turbo-rails/app/javascript/turbo/fetch_requests.js",
+          "kind": "import-statement",
+          "original": "./fetch_requests"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/@hotwired/stimulus/dist/stimulus.js": {
+      "bytes": 88680,
+      "imports": [],
+      "format": "esm"
+    },
+    "app/javascript/controllers/application.js": {
+      "bytes": 218,
+      "imports": [
+        {
+          "path": "node_modules/@hotwired/stimulus/dist/stimulus.js",
+          "kind": "import-statement",
+          "original": "@hotwired/stimulus"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/react/cjs/react.development.js": {
+      "bytes": 55923,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/react/index.js": {
+      "bytes": 186,
+      "imports": [
+        {
+          "path": "node_modules/react/cjs/react.development.js",
+          "kind": "require-call",
+          "original": "./cjs/react.development.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/scheduler/cjs/scheduler.development.js": {
+      "bytes": 12299,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/scheduler/index.js": {
+      "bytes": 194,
+      "imports": [
+        {
+          "path": "node_modules/scheduler/cjs/scheduler.development.js",
+          "kind": "require-call",
+          "original": "./cjs/scheduler.development.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/react-dom/cjs/react-dom.development.js": {
+      "bytes": 17673,
+      "imports": [
+        {
+          "path": "node_modules/react/index.js",
+          "kind": "require-call",
+          "original": "react"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/react-dom/index.js": {
+      "bytes": 1359,
+      "imports": [
+        {
+          "path": "node_modules/react-dom/cjs/react-dom.development.js",
+          "kind": "require-call",
+          "original": "./cjs/react-dom.development.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/react-dom/cjs/react-dom-client.development.js": {
+      "bytes": 939276,
+      "imports": [
+        {
+          "path": "node_modules/scheduler/index.js",
+          "kind": "require-call",
+          "original": "scheduler"
+        },
+        {
+          "path": "node_modules/react/index.js",
+          "kind": "require-call",
+          "original": "react"
+        },
+        {
+          "path": "node_modules/react-dom/index.js",
+          "kind": "require-call",
+          "original": "react-dom"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/react-dom/client.js": {
+      "bytes": 1373,
+      "imports": [
+        {
+          "path": "node_modules/react-dom/cjs/react-dom-client.development.js",
+          "kind": "require-call",
+          "original": "./cjs/react-dom-client.development.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    "app/javascript/components/Sidebar.jsx": {
+      "bytes": 473,
+      "imports": [
+        {
+          "path": "node_modules/react/index.js",
+          "kind": "import-statement",
+          "original": "react"
+        }
+      ],
+      "format": "esm"
+    },
+    "app/javascript/components/UserCard.jsx": {
+      "bytes": 173,
+      "imports": [
+        {
+          "path": "node_modules/react/index.js",
+          "kind": "import-statement",
+          "original": "react"
+        }
+      ],
+      "format": "esm"
+    },
+    "app/javascript/components/Board.jsx": {
+      "bytes": 208,
+      "imports": [
+        {
+          "path": "node_modules/react/index.js",
+          "kind": "import-statement",
+          "original": "react"
+        },
+        {
+          "path": "app/javascript/components/Sidebar.jsx",
+          "kind": "import-statement",
+          "original": "./Sidebar"
+        },
+        {
+          "path": "app/javascript/components/UserCard.jsx",
+          "kind": "import-statement",
+          "original": "./UserCard"
+        }
+      ],
+      "format": "esm"
+    },
+    "app/javascript/controllers/boards_react_controller.js": {
+      "bytes": 424,
+      "imports": [
+        {
+          "path": "node_modules/@hotwired/stimulus/dist/stimulus.js",
+          "kind": "import-statement",
+          "original": "@hotwired/stimulus"
+        },
+        {
+          "path": "node_modules/react/index.js",
+          "kind": "import-statement",
+          "original": "react"
+        },
+        {
+          "path": "node_modules/react-dom/client.js",
+          "kind": "import-statement",
+          "original": "react-dom/client"
+        },
+        {
+          "path": "app/javascript/components/Board.jsx",
+          "kind": "import-statement",
+          "original": "../components/Board"
+        }
+      ],
+      "format": "esm"
+    },
+    "app/javascript/controllers/hello_controller.js": {
+      "bytes": 157,
+      "imports": [
+        {
+          "path": "node_modules/@hotwired/stimulus/dist/stimulus.js",
+          "kind": "import-statement",
+          "original": "@hotwired/stimulus"
+        }
+      ],
+      "format": "esm"
+    },
+    "app/javascript/controllers/index.js": {
+      "bytes": 458,
+      "imports": [
+        {
+          "path": "app/javascript/controllers/application.js",
+          "kind": "import-statement",
+          "original": "./application"
+        },
+        {
+          "path": "app/javascript/controllers/boards_react_controller.js",
+          "kind": "import-statement",
+          "original": "./boards_react_controller"
+        },
+        {
+          "path": "app/javascript/controllers/hello_controller.js",
+          "kind": "import-statement",
+          "original": "./hello_controller"
+        }
+      ],
+      "format": "esm"
+    },
+    "app/javascript/application.js": {
+      "bytes": 159,
+      "imports": [
+        {
+          "path": "node_modules/@hotwired/turbo-rails/app/javascript/turbo/index.js",
+          "kind": "import-statement",
+          "original": "@hotwired/turbo-rails"
+        },
+        {
+          "path": "app/javascript/controllers/index.js",
+          "kind": "import-statement",
+          "original": "./controllers"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "app/assets/builds/application.js.map": {
+      "imports": [],
+      "exports": [],
+      "inputs": {},
+      "bytes": 1992444
+    },
+    "app/assets/builds/application.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "app/javascript/application.js",
+      "inputs": {
+        "node_modules/@rails/actioncable/src/adapters.js": {
+          "bytesInOutput": 282
+        },
+        "node_modules/@rails/actioncable/src/logger.js": {
+          "bytesInOutput": 336
+        },
+        "node_modules/@rails/actioncable/src/connection_monitor.js": {
+          "bytesInOutput": 4039
+        },
+        "node_modules/@rails/actioncable/src/internal.js": {
+          "bytesInOutput": 689
+        },
+        "node_modules/@rails/actioncable/src/connection.js": {
+          "bytesInOutput": 5833
+        },
+        "node_modules/@rails/actioncable/src/subscription.js": {
+          "bytesInOutput": 980
+        },
+        "node_modules/@rails/actioncable/src/subscription_guarantor.js": {
+          "bytesInOutput": 1736
+        },
+        "node_modules/@rails/actioncable/src/subscriptions.js": {
+          "bytesInOutput": 2911
+        },
+        "node_modules/@rails/actioncable/src/consumer.js": {
+          "bytesInOutput": 1243
+        },
+        "node_modules/@rails/actioncable/src/index.js": {
+          "bytesInOutput": 1134
+        },
+        "node_modules/react/cjs/react.development.js": {
+          "bytesInOutput": 52744
+        },
+        "node_modules/react/index.js": {
+          "bytesInOutput": 227
+        },
+        "node_modules/scheduler/cjs/scheduler.development.js": {
+          "bytesInOutput": 11640
+        },
+        "node_modules/scheduler/index.js": {
+          "bytesInOutput": 239
+        },
+        "node_modules/react-dom/cjs/react-dom.development.js": {
+          "bytesInOutput": 15618
+        },
+        "node_modules/react-dom/index.js": {
+          "bytesInOutput": 257
+        },
+        "node_modules/react-dom/cjs/react-dom-client.development.js": {
+          "bytesInOutput": 880242
+        },
+        "node_modules/react-dom/client.js": {
+          "bytesInOutput": 262
+        },
+        "node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js": {
+          "bytesInOutput": 167561
+        },
+        "node_modules/@hotwired/turbo-rails/app/javascript/turbo/cable.js": {
+          "bytesInOutput": 506
+        },
+        "node_modules/@hotwired/turbo-rails/app/javascript/turbo/snakeize.js": {
+          "bytesInOutput": 433
+        },
+        "node_modules/@hotwired/turbo-rails/app/javascript/turbo/cable_stream_source_element.js": {
+          "bytesInOutput": 1380
+        },
+        "node_modules/@hotwired/turbo-rails/app/javascript/turbo/fetch_requests.js": {
+          "bytesInOutput": 1533
+        },
+        "node_modules/@hotwired/turbo-rails/app/javascript/turbo/index.js": {
+          "bytesInOutput": 118
+        },
+        "node_modules/@hotwired/stimulus/dist/stimulus.js": {
+          "bytesInOutput": 79352
+        },
+        "app/javascript/controllers/application.js": {
+          "bytesInOutput": 97
+        },
+        "app/javascript/controllers/boards_react_controller.js": {
+          "bytesInOutput": 417
+        },
+        "app/javascript/components/Board.jsx": {
+          "bytesInOutput": 345
+        },
+        "app/javascript/components/Sidebar.jsx": {
+          "bytesInOutput": 45
+        },
+        "app/javascript/components/UserCard.jsx": {
+          "bytesInOutput": 235
+        },
+        "app/javascript/controllers/hello_controller.js": {
+          "bytesInOutput": 126
+        },
+        "app/javascript/controllers/index.js": {
+          "bytesInOutput": 128
+        },
+        "app/javascript/application.js": {
+          "bytesInOutput": 0
+        }
+      },
+      "bytes": 1237463
+    }
+  }
+}
