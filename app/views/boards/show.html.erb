@@ -1,29 +1,24 @@
 <%= content_tag(:body, "", id:"root", data:{
   controller:"boards-react",
   db:{
+    board: {
+      id: @board.id,
+      name: @board.name,
+      description: @board.description
+    },
     members: {
       current: {
         role: @member.role.name,
         email: @member.user.email,
         avatar: "https://i.pinimg.com/736x/a7/23/42/a72342f9852d27544d62573990fa023d.jpg"
       },
-      others:[
-        {
-          avatar: "https://i.pinimg.com/736x/67/7e/12/677e128d592dd3e46bf95a54f6604de5.jpg",
-          role: "none",
-          email: "who?"
-        },
+      others: @board.members.where.not(user_id: @member.user.id).map do |member|
         {
           avatar: "https://i.pinimg.com/736x/ea/ea/20/eaea201c6df44ca820980c4a831adfb1.jpg",
-          role: "lol",
-          email: "am?"
-        },
-        {
-          avatar: "https://i.pinimg.com/736x/6e/14/d0/6e14d065267ddf92406fbd8a54c056b1.jpg",
-          role: "qwe",
-          email: "I?"
-        },
-      ]
+          role: member.role.name,
+          email: member.user.email
+        }
+      end
     }
 
   }

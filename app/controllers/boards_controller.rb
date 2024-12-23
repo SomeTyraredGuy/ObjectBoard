@@ -1,5 +1,5 @@
 class BoardsController < ApplicationController
-  before_action :set_board, only: %i[ show edit update destroy ]
+  before_action :set_board, only: %i[ show edit update destroy test ]
 
   # GET /boards or /boards.json
   def index
@@ -66,6 +66,14 @@ class BoardsController < ApplicationController
       format.html { redirect_to boards_path, status: :see_other, notice: "Board was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def test
+    unless @member.role.can_delete
+      raise ActionController::RoutingError.new("Not Found")
+    end
+
+    render json: @member.user
   end
 
   private

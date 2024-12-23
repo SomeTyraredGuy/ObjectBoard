@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root "pages#home"
   devise_for :user
   get "pricing" => "pages#pricing"
+  get "test/:id" => "boards#test"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

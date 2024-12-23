@@ -20,7 +20,7 @@ Role.create(id: 6, name: :editor, can_edit: true, can_change_roles: false, can_a
 Role.create(id: 7, name: :viewer, can_edit: false, can_change_roles: false, can_assign_admin: false, can_delete: false)
 
 password = 'qweqwe'
-emails = [ '1@1', '2@2' ]
+emails = [ '1@1', '2@2', '3@3', '4@4', '5@5', '6@6', '7@7', '8@8', '9@9', '10@10' ]
 emails.each do |email|
   user = User.new
   user.email = email
@@ -28,3 +28,12 @@ emails.each do |email|
   user.password_confirmation = password
   user.save!
 end
+
+Board.create(name: 'test', description: 'test')
+Member.create(user_id: 1, board_id: 1, role_id: 1)
+Member.create(user_id: 2, board_id: 1, role_id: 2)
+Member.create(user_id: 3, board_id: 1, role_id: 3)
+Member.create(user_id: 4, board_id: 1, role_id: 4)
+Member.create(user_id: 5, board_id: 1, role_id: 5)
+Member.create(user_id: 6, board_id: 1, role_id: 6)
+Member.create(user_id: 7, board_id: 1, role_id: 7)
