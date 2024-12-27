@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
-import classes from '../board.module.css'
+import classes from '../Board/board.module.css'
+import UserSettings from './UserSettings'
 
 const options = [
     { name: 'Profile', href: '' },
@@ -9,12 +10,18 @@ const options = [
 ]
 
 function CurrentUser({currentUser}) {
+  const [showMenu, setShowMenu] = useState(false)
+  function toggleMenu() {
+    setShowMenu(!showMenu)
+  }
+  
   return (
     <div>
-        <button className={`p-2 d-flex flex-row border-0 align-items-center ${classes.buttonHover}`} style={{width: "200px"}}>
+        <button onClick={toggleMenu} className={`p-2 d-flex flex-row border-0 align-items-center ${classes.buttonHover}`} style={{width: "200px"}}>
             <img className='rounded-circle' src={`${currentUser.avatar}`} alt='Current user avatar' style={{width: '42px', height: '42px'}}/>
-            <span className={`text-start mx-2 ${classes.ellipsis}`}><strong>{currentUser.email}</strong><br/>Role: {currentUser.role}</span>
+            <span className={`text-start mx-2 ${classes.ellipsis}`}><strong>{currentUser.email}</strong><br/>Role: {currentUser.role.name}</span>
         </button>
+        {showMenu && <UserSettings toggleMenu={toggleMenu}/>}
   </div>
   )
 }

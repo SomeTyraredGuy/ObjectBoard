@@ -1,21 +1,24 @@
 import React from 'react'
-import classes from '../board.module.css'
+import classes from '../Board/board.module.css'
 import CurrentUser from './CurrentUserButton'
 import OtherUsersButton from './OtherUsersButton'
 
-function UsersCard({members}) {
+function UsersCard({currentUser, isLoading, boardId}) {
   return (
-    <table className={`position-fixed top-0 end-0 m-3 p-0 rounded border border-dark-subtle border-2 d-flex container ${classes.background}`} style={{width: "280px", height: "70px"}}>
+    <table className={`position-fixed top-0 end-0 m-3 p-0 rounded border border-dark-subtle border-2 d-flex container ${classes.background} ${isLoading && "placeholder-wave"}`} style={{width: "280px", height: "70px"}}>
+      {isLoading ? 
+      <tbody className='placeholder col-12 bg-secondary'></tbody>
+      :
       <tbody className='w-100'>
         <tr className='align-items-center d-flex justify-content-end'>
           <th className='border-end flex-grow-1'>
-            <CurrentUser currentUser={members.current}/>
+            <CurrentUser currentUser={currentUser}/>
           </th>
           <th className='flex-grow-1'>
-            <OtherUsersButton otherUsers={members.others}/>
+            <OtherUsersButton boardId={boardId}/>
           </th>
         </tr>
-      </tbody>
+      </tbody>}
     </table>
   )
 }

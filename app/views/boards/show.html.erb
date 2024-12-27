@@ -6,20 +6,6 @@
       name: @board.name,
       description: @board.description
     },
-    members: {
-      current: {
-        role: @member.role.name,
-        email: @member.user.email,
-        avatar: "https://i.pinimg.com/736x/a7/23/42/a72342f9852d27544d62573990fa023d.jpg"
-      },
-      others: @board.members.where.not(user_id: @member.user.id).map do |member|
-        {
-          avatar: "https://i.pinimg.com/736x/ea/ea/20/eaea201c6df44ca820980c4a831adfb1.jpg",
-          role: member.role.name,
-          email: member.user.email
-        }
-      end
-    }
-
+    currentMemberId: @member.id
   }
 })%>

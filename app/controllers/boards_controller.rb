@@ -1,5 +1,5 @@
 class BoardsController < ApplicationController
-  before_action :set_board, only: %i[ show edit update destroy test ]
+  before_action :set_board, expect: %i[ index new create]
 
   # GET /boards or /boards.json
   def index
@@ -68,17 +68,25 @@ class BoardsController < ApplicationController
     end
   end
 
-  def test
-    unless @member.role.can_delete
-      raise ActionController::RoutingError.new("Not Found")
+  def user
+    member_user = member_user_by_id(params[:id_member].to_i)
+    render json: format_user(member_user[0], member_user[1])
+  end
+
+  def other_users
+    other_users = []
+
+    @board.members.where.not(user_id: current_user.id).each do |member|
+      other_users.push(format_user(member, member.user))
     end
 
-    render json: @member.user
+    render json: other_users
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_board
+      # ALSO checks if user is member of the board
       @board = Board.find(params.expect(:id)) or not_found
       @member = Member.find_by(board: @board, user: current_user) or not_found
     end
@@ -86,5 +94,27 @@ class BoardsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def board_params
       params.expect(board: [ :name, :description ])
+    end
+
+    def format_user(memberDB, userDB)
+      {
+        member_id: memberDB.id,
+        user_id: userDB.id,
+        email: userDB.email,
+        avatar: "https://i.pinimg.com/736x/a7/23/42/a72342f9852d27544d62573990fa023d.jpg",
+        role: memberDB.role
+      }
+    end
+
+    def member_user_by_id(member_id)
+      if @member != nil && @member.id == member_id
+        memberDB = @member
+        userDB = @member.user
+      else
+        memberDB = Member.find_by_id(member_id)
+        userDB = User.find_by_id(memberDB.user_id)
+      end
+
+      return memberDB, userDB
     end
 end

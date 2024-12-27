@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
-  resources :boards
   root "pages#home"
   devise_for :user
   get "pricing" => "pages#pricing"
-  get "test/:id" => "boards#test"
+
+  resources :boards
+  get "boards/user/:id/:id_member" => "boards#user"
+  get "boards/other_users/:id" => "boards#other_users"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
