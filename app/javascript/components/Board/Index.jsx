@@ -1,26 +1,33 @@
 import React from 'react'
 import SideBar from './Sidebar'
 import UserCard from '../Users/UsersCard'
-import { BASE_URL } from '../../Data/constants.js'
+import { BASE_BOARD_URL } from '../../Data/constants.js'
 import { useQuery } from '@tanstack/react-query'
+import {Notification, useNotification} from '../General/Notification/Notification'
 
 function Index({db}) {
-  
-
   const {
     data: currentUser,
-    isLoading
+    isLoading,
+    error,
+    isError
   } = useQuery({
     queryKey: ['user', db.currentMemberId],
     queryFn: async () => {
-        const response = await fetch(`${BASE_URL}boards/user/${db.board.id}/${db.currentMemberId}`)
+        const response = await fetch(`${BASE_BOARD_URL}${db.board.id}/member/current`)
         return (await response.json())
     },
   })
+
+  if(isError){
+    return (
+      <Notification name={"Error!"} message={error} type={"error"}/>
+    )
+  }
   
   return (
     <>
-      <UserCard currentUser={currentUser} isLoading={isLoading} boardId={db.board.id}/>
+      <UserCard currentUser={currentUser} isLoading={isLoading}/>
       <h1>Board</h1>
     </>
   )

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_17_205420) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_29_133547) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -37,9 +37,9 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_17_205420) do
     t.boolean "can_edit"
     t.boolean "can_change_roles"
     t.boolean "can_assign_admin"
-    t.boolean "can_delete"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "can_ignore_rules"
   end
 
   create_table "users", force: :cascade do |t|

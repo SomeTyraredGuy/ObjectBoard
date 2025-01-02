@@ -1,7 +1,7 @@
 class Role < ApplicationRecord
   before_validation :set_defaults
 
-  enum :name, [ :owner, :admin, :editor, :viewer ]
+  enum :name, [ :Owner, :Admin, :Editor, :Viewer ]
   has_many :members
 
 
@@ -11,6 +11,6 @@ class Role < ApplicationRecord
     self.can_edit = false if self.can_edit.blank?
     self.can_change_roles = false if self.can_change_roles.blank?
     self.can_assign_admin = false if self.can_assign_admin.blank?
-    self.can_delete = false if self.can_delete.blank?
+    self.can_ignore_rules = false if self.can_ignore_rules.blank?
   end
 end

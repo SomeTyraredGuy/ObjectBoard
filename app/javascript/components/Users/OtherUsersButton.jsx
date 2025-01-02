@@ -1,37 +1,43 @@
 import React from 'react'
 import classes from '../Board/board.module.css'
-import { useState } from 'react'
 import PlusCircle from '../svg/PlusCircle'
 import { useQuery } from '@tanstack/react-query'
-import { BASE_URL } from '../../Data/constants.js'
+import { BASE_BOARD_URL } from '../../Data/constants.js'
+import { Notification, useNotification } from '../General/Notification/Notification'
+import UserListItem from './UserListItem'
+import UserSettings from './UserSettings'
+import { useState } from 'react'
+import AddUserForm from './AddUserForm.jsx'
 
+function OtherUsersButton({currentUser}) {
+    const [chosenUser, setChosenUser] = useState(null)
+    const [showAddUserMenu, setShowAddUserMenu] = useState(false)
+    
+    function toggleUserMenu(user = null) {
+        if(chosenUser === null && user !== null) setChosenUser(user)
+        else setChosenUser(null)
+    }
 
-function OtherUsersButton({boardId}) {
-    const [dropdownState, setDropdownState] = useState(false)
+    function toggleAddUserMenu() {
+        setShowAddUserMenu(!showAddUserMenu)
+    }
 
     const {
         data: otherUsers,
-        isLoading
+        isError,
+        error,
+        refetch
       } = useQuery({
         queryKey: ['other_users'],
         queryFn: async () => {
-            const response = await fetch(`${BASE_URL}boards/other_users/${boardId}`)
+            const response = await fetch(`${BASE_BOARD_URL}${currentUser.board_id}/member/others`)
             return (await response.json())
-        },
+        }
     })
-    
-    function toggleDropdown() {
-        setDropdownState(!dropdownState)
-    }
-
-    function newMember() {
-        console.log("new member") 
-        console.log(otherUsers)  
-    }
 
     function buttonFunction() {
         if(noOtherUsers()){
-            return newMember
+            return toggleAddUserMenu
         }
     }
 
@@ -39,12 +45,17 @@ function OtherUsersButton({boardId}) {
         return otherUsers === undefined || otherUsers.length === 0
     }
 
+    function buttonHover() {
+        if ( !(!currentUser.role.can_change_roles && noOtherUsers()) ) return classes.buttonHover
+        else return ""
+    }
+
   return (
     <div className="dropdown" >
         <button type="button" id="dropdownMenuButton1" data-bs-toggle={`${!noOtherUsers() && "dropdown"}`} aria-expanded="false"
-        className={`min-w-100 border-0 d-flex ${classes.buttonHover} ${noOtherUsers() && "justify-content-center align-items-center"}`} 
+        className={`min-w-100 border-0 d-flex ${buttonHover()} ${noOtherUsers() && "justify-content-center align-items-center"}`} 
         style={{width: "66px", height:"64px"}} 
-        onClick={buttonFunction()}
+        onClick={buttonFunction()} disabled={!currentUser.role.can_change_roles && noOtherUsers()}
         >
             {noOtherUsers() ? 
                 <PlusCircle/> 
@@ -53,23 +64,22 @@ function OtherUsersButton({boardId}) {
                 <img className={`rounded-circle ${classes.avatarCard}`} key={i} src={`${user.avatar}`} alt='Current user avatar'/>
             ))}
         </button>
+
         <ul className={`dropdown-menu p-0 ${classes.scroll}`} style={{width: "272px", maxHeight: "80vh"}} aria-labelledby="dropdownMenuButton1">
             {otherUsers !== undefined && otherUsers.map( (user, i) =>     
-                <li className={`d-flex flex-row justify-content-between align-items-center text-center border-bottom`} key={i}>
-                    <img src={user.avatar} alt="Avatar" className="rounded-circle m-2" style={{width: '42px', height: '42px', minWidth: '42px'}}/>
-                    <span className={`${classes.ellipsis}`} >{user.email}</span>
-                    <a className="dropdown-item w-25" href="">
-                        <span className='text-center'>Role:<br/>{user.role.name}</span>
-                    </a>
-                </li>
+                <UserListItem user={user} toggleMenu={toggleUserMenu} key={i} disabledButton={!currentUser.role.can_change_roles}/>
             )}
             <li>
-                <a className="dropdown-item p-2 d-flex flex-row justify-content-between align-items-center" href="">
+                {currentUser.role.can_change_roles && <a className="dropdown-item p-2 d-flex flex-row justify-content-between align-items-center" onClick={() => setShowAddUserMenu(!showAddUserMenu)}>
                     <PlusCircle/>
                     <span className='text-center flex-grow-1'>Add new member</span>
-                </a>
+                </a>}
             </li>            
         </ul>
+
+        {useNotification(isError) && <Notification name={"Error fetching other users!"} message={error} type={"error"}/>}
+        {chosenUser !== null && <UserSettings currentUser={currentUser} user={chosenUser} closeFn={toggleUserMenu} refetchFn={refetch}/>}
+        {showAddUserMenu && <AddUserForm closeFn={toggleAddUserMenu} currentUser={currentUser} refetchFn={refetch}/>}
     </div>
   )
 }

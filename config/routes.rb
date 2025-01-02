@@ -3,9 +3,17 @@ Rails.application.routes.draw do
   devise_for :user
   get "pricing" => "pages#pricing"
 
-  resources :boards
-  get "boards/user/:id/:id_member" => "boards#user"
-  get "boards/other_users/:id" => "boards#other_users"
+  resources :boards do
+    member do
+      scope constraints: { action: :show } do
+        get "member/current" => "members#current"
+        get "member/others" => "members#others"
+        patch "member/update_role/:member_id" => "members#update_role"
+        post "member/add_to_board" => "members#add_to_board"
+      end
+    end
+  end
+
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

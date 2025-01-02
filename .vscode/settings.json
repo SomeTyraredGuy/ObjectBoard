@@ -23,6 +23,10 @@
         {
             "folderPath": "ObjectBoard/app/javascript/",
             "color": "foldercolorizer.color_00ccff"
+        },
+        {
+            "folderPath": "ObjectBoard/config/",
+            "color": "foldercolorizer.color_dddddd"
         }
     ],
     "cSpell.words": [

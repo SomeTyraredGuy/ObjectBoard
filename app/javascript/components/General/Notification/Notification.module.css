@@ -1,0 +1,91 @@
+.tooltip {
+    cursor: pointer;
+    position: fixed;
+    top: 0;
+    left: 50vw;
+    transform: translateX(-100px); 
+    background-color: #d1d1d1c2;
+    color: #1a1a1a;
+    padding: 0.8em 2em;
+    font-size: 1.2em;
+    border-radius: 1em;
+    z-index: 101;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    min-width: 300px;
+    max-width: 50vw;
+    background-color: #28282810;
+    color: #1a1a1a;
+    text-align: center;
+    word-wrap: break-word;
+    border-radius: 5px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    top: 115%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  .tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    border-width: 8px;
+    border-style: solid;
+    border-color: #28282810 transparent transparent transparent;
+    transform: translateX(-50%);
+    transform: rotate(180deg);
+  }
+  
+
+  .error {
+    background-color: #dd2c2ca1;
+  }
+
+  .error .tooltiptext {
+    background-color: #dd2c2c6c;
+    color: #f1f1f1;
+  }
+
+  .error .tooltiptext::after {
+    border-color: #dd2c2cce transparent transparent transparent;
+  }
+
+  .warning {
+    background-color: #ebb72aa1;
+    color: #1a1a1a;
+  }
+
+  .warning .tooltiptext {
+    background-color: #ebb72c6c;
+    color: #1a1a1a;
+  }
+
+  .warning .tooltiptext::after {
+    border-color: #ebb72c6c transparent transparent transparent;
+  }
+
+  .success {
+    background-color: #78df34a1;
+    color: #1a1a1a;
+  }
+
+  .success .tooltiptext {
+    background-color: #78df346c;
+    color: #1a1a1a;
+  }
+
+  .success .tooltiptext::after {
+    border-color: #78df346c transparent transparent transparent;
+  }

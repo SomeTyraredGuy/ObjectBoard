@@ -1,5 +1,5 @@
 class BoardsController < ApplicationController
-  before_action :set_board, expect: %i[ index new create]
+  include BoardRelated
 
   # GET /boards or /boards.json
   def index
@@ -23,7 +23,7 @@ class BoardsController < ApplicationController
   # POST /boards or /boards.json
   def create
     @board = Board.new(board_params)
-    @member = Member.new(board: @board, user: current_user, role: Role.find_by(name: :owner))
+    @member = Member.new(board: @board, user: current_user, role: Role.find_by(name: :Owner))
 
     respond_to do |format|
       if @board.save
@@ -68,53 +68,8 @@ class BoardsController < ApplicationController
     end
   end
 
-  def user
-    member_user = member_user_by_id(params[:id_member].to_i)
-    render json: format_user(member_user[0], member_user[1])
-  end
-
-  def other_users
-    other_users = []
-
-    @board.members.where.not(user_id: current_user.id).each do |member|
-      other_users.push(format_user(member, member.user))
-    end
-
-    render json: other_users
-  end
-
   private
-
-    def set_board
-      # ALSO checks if user is member of the board
-      @board = Board.find(params.expect(:id)) or not_found
-      @member = Member.find_by(board: @board, user: current_user) or not_found
-    end
-
-    # Only allow a list of trusted parameters through.
     def board_params
       params.expect(board: [ :name, :description ])
-    end
-
-    def format_user(memberDB, userDB)
-      {
-        member_id: memberDB.id,
-        user_id: userDB.id,
-        email: userDB.email,
-        avatar: "https://i.pinimg.com/736x/a7/23/42/a72342f9852d27544d62573990fa023d.jpg",
-        role: memberDB.role
-      }
-    end
-
-    def member_user_by_id(member_id)
-      if @member != nil && @member.id == member_id
-        memberDB = @member
-        userDB = @member.user
-      else
-        memberDB = Member.find_by_id(member_id)
-        userDB = User.find_by_id(memberDB.user_id)
-      end
-
-      return memberDB, userDB
     end
 end
