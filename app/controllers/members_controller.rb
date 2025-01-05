@@ -46,7 +46,7 @@ class MembersController < ApplicationController
       board_id: memberDB.board_id,
       member_id: memberDB.id,
       user_id: userDB.id,
-      name: userDB.email,
+      name: userDB.name,
       avatar: "https://i.pinimg.com/736x/a7/23/42/a72342f9852d27544d62573990fa023d.jpg",
       role: {
         name: memberDB.role.name,
@@ -63,7 +63,7 @@ class MembersController < ApplicationController
       {
         member_id: memberDB.id,
         user_id: userDB.id,
-        name: userDB.email,
+        name: userDB.name,
         avatar: "https://i.pinimg.com/736x/a7/23/42/a72342f9852d27544d62573990fa023d.jpg",
         role: {
           name: memberDB.role.name,
@@ -77,7 +77,7 @@ class MembersController < ApplicationController
       {
         member_id: memberDB.id,
         user_id: userDB.id,
-        name: userDB.email,
+        name: userDB.name,
         avatar: "https://i.pinimg.com/736x/a7/23/42/a72342f9852d27544d62573990fa023d.jpg",
         role: {
           name: memberDB.role.name
