@@ -69,12 +69,15 @@ function OtherUsersButton({currentUser}) {
             {otherUsers !== undefined && otherUsers.map( (user, i) =>     
                 <UserListItem user={user} toggleMenu={toggleUserMenu} key={i} disabledButton={!currentUser.role.can_change_roles}/>
             )}
-            <li>
-                {currentUser.role.can_change_roles && <a className="dropdown-item p-2 d-flex flex-row justify-content-between align-items-center" onClick={() => setShowAddUserMenu(!showAddUserMenu)}>
-                    <PlusCircle/>
-                    <span className='text-center flex-grow-1'>Add new member</span>
-                </a>}
-            </li>            
+
+            {currentUser.role.can_change_roles && 
+                <li>
+                    <a className="dropdown-item p-2 d-flex flex-row justify-content-between align-items-center" onClick={() => setShowAddUserMenu(!showAddUserMenu)}>
+                        <PlusCircle/>
+                        <span className='text-center flex-grow-1'>Add new member</span>
+                    </a>
+                </li>
+            }
         </ul>
 
         {useNotification(isError) && <Notification name={"Error fetching other users!"} message={error} type={"error"}/>}

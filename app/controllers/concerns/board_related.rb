@@ -12,8 +12,9 @@ module BoardRelated
   private
 
   def set_board
-    # ALSO checks if user is member of the board
     @board = Board.find(params.expect(:id)) or not_found
-    @member = Member.find_by(board: @board, user: current_user) or not_found
+
+    @member = Member.find_by(board: @board, user: current_user)
+    authorize @member, :access?, policy_class: BoardPolicy
   end
 end

@@ -20,7 +20,7 @@ class Member < ApplicationRecord
       return
     end
 
-    @old_role_name = Role.find(read_attribute(:role_id)).name
+    @old_role_name = Role.find(read_attribute(:role_id)).name unless read_attribute(:role_id).nil?
     write_attribute(:role_id, new_role.id)
   end
 end

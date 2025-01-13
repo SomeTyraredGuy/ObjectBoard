@@ -8,6 +8,10 @@
   <% @boards.each do |board| %>
     <%= render board %>
     <p>
+      <% if policy(board).edit? %>
+        <%= link_to "Edit this board", edit_board_path(board) %>
+      <% end %>
+      
       <%= link_to "Show this board", board %>
     </p>
   <% end %>

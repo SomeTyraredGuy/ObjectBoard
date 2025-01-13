@@ -19,24 +19,27 @@ class MembersController < ApplicationController
     member_to_update = Member.find(params.expect(:member_id)) or not_found
     new_role = params.expect(value: [ :name, :can_edit, :can_change_roles, :can_assign_admin, :can_ignore_rules ])
 
-    forbidden("You don't have permission to change roles") unless @member.role.can_change_roles
-    forbidden("You don't have permission to assign or change admin") if (new_role[:name] == "Admin" || member_to_update.role.name == "Admin") && !@member.role.can_assign_admin
+    record = {
+      current_member: @member,
+      member_to_update: member_to_update,
+      new_role: new_role
+    }
+    authorize record, policy_class: MemberPolicy
 
-    new_role = Role.find_by(name: new_role[:name], can_edit: new_role[:can_edit], can_change_roles: new_role[:can_change_roles], can_assign_admin: new_role[:can_assign_admin], can_ignore_rules: new_role[:can_ignore_rules])
-    not_acceptable("Role configuration is not valid") if new_role.nil?
+    new_role = Role.find_by(new_role) or not_found
 
-    unless member_to_update.update(role: new_role)
-      unprocessable_entity(member_to_update.errors.first.message)
-    end
+    unprocessable_entity(member_to_update.errors.first.message) unless member_to_update.update(role: new_role)
   end
 
   def add_to_board
+    authorize @member
+
     new_member_name = params.expect(:value)
     user = User.find_by(email: new_member_name)
     default_role = Role.find_by(name: :Viewer)
 
     new_member = Member.new(user: user, board: @board, role: default_role)
-    render json: new_member.errors, status: :unprocessable_entity unless new_member.save
+    unprocessable_entity(new_member.errors.first.message) unless new_member.save
   end
 
   private

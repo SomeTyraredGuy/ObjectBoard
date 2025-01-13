@@ -17,6 +17,7 @@ export default function MemberUseMutation({path, board_id, refetchFn, defaultVal
             method: method,
             headers: {
               'Content-Type': 'application/json',
+              'Accept': 'application/json',
               'X-CSRF-Token': getCSRFToken(),
             },
             body: JSON.stringify({value})
@@ -24,6 +25,7 @@ export default function MemberUseMutation({path, board_id, refetchFn, defaultVal
     
           if (!response.ok) {
             const errorData = await response.json();
+            console.log(errorData)
             
             if (errorData.user) throw new Error(errorData.user[0]);
             if (errorData.board) throw new Error(errorData.board[0]);

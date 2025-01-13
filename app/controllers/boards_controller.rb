@@ -3,7 +3,7 @@ class BoardsController < ApplicationController
 
   # GET /boards or /boards.json
   def index
-    @boards = current_user.boards
+    @boards = policy_scope(Board)
   end
 
   # GET /boards/1 or /boards/1.json
