@@ -1,9 +1,9 @@
 class MemberPolicy < ApplicationPolicy
   def update_role?
-    false unless record[:current_member].role.can_change_roles
+    return false unless @context[:current_member].role.can_change_roles
 
-    if record[:new_role][:name] == "Admin" || record[:member_to_update].role.name == "Admin"
-      false unless record[:current_member].role.can_assign_admin
+    if @context[:new_role][:name] == "Admin" || record.role.name == "Admin"
+      return false unless @context[:current_member].role.can_assign_admin
     end
 
     true

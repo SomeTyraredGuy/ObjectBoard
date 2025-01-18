@@ -1,9 +1,31 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  user: one
+b1Owner:
+  user: Owner
   board: one
+  role: Owner
 
-two:
-  user: two
-  board: two
+b1AdminMinimal:
+  user: AdminMinimal
+  board: one
+  role: AdminMinimal
+
+b1Admin2:
+  user: Admin2
+  board: one
+  role: Admin2
+
+b1AdminFull:
+  user: AdminFull
+  board: one
+  role: AdminFull
+
+b1Editor:
+  user: Editor
+  board: one
+  role: Editor
+
+b1Viewer:
+  user: Viewer
+  board: one
+  role: Viewer

@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       scope constraints: { action: :show } do
         get "member/current" => "members#current"
         get "member/others" => "members#others"
-        patch "member/update_role/:member_id" => "members#update_role"
+        patch "member/update_role/:member_id" => "members#update_role", as: "member_update_role"
         post "member/add_to_board" => "members#add_to_board"
       end
     end

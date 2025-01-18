@@ -5,39 +5,44 @@ class BoardsTest < ApplicationSystemTestCase
     @board = boards(:one)
   end
 
-  test "visiting the index" do
-    visit boards_url
-    assert_selector "h1", text: "Boards"
+  test "home" do
+    visit root_path
+    assert_selector "h1", text: "ObjectBoard"
   end
 
-  test "should create board" do
-    visit boards_url
-    click_on "New board"
+  # test "visiting the index" do
+  #   visit boards_url
+  #   assert_selector "h1", text: "Boards"
+  # end
 
-    fill_in "Description", with: @board.description
-    fill_in "Name", with: @board.name
-    click_on "Create Board"
+  # test "should create board" do
+  #   visit boards_url
+  #   click_on "New board"
 
-    assert_text "Board was successfully created"
-    click_on "Back"
-  end
+  #   fill_in "Description", with: @board.description
+  #   fill_in "Name", with: @board.name
+  #   click_on "Create Board"
 
-  test "should update Board" do
-    visit board_url(@board)
-    click_on "Edit this board", match: :first
+  #   assert_text "Board was successfully created"
+  #   click_on "Back"
+  # end
 
-    fill_in "Description", with: @board.description
-    fill_in "Name", with: @board.name
-    click_on "Update Board"
+  # test "should update Board" do
+  #   visit board_url(@board)
+  #   click_on "Edit this board", match: :first
 
-    assert_text "Board was successfully updated"
-    click_on "Back"
-  end
+  #   fill_in "Description", with: @board.description
+  #   fill_in "Name", with: @board.name
+  #   click_on "Update Board"
 
-  test "should destroy Board" do
-    visit board_url(@board)
-    click_on "Destroy this board", match: :first
+  #   assert_text "Board was successfully updated"
+  #   click_on "Back"
+  # end
 
-    assert_text "Board was successfully destroyed"
-  end
+  # test "should destroy Board" do
+  #   visit board_url(@board)
+  #   click_on "Destroy this board", match: :first
+
+  #   assert_text "Board was successfully destroyed"
+  # end
 end

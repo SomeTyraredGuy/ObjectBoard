@@ -1,11 +1,13 @@
 class BoardPolicy < ApplicationPolicy
   def access?
-    record.present? # record is member
+    member = Member.find_by(board: record, user: user)
+    !member.nil?
   end
 
   def edit?
     member = Member.find_by(board: record, user: user)
-    member.role.name == :Owner
+    return false if member.nil?
+    member.role.name == "Owner"
   end
 
   def update?

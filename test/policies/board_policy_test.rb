@@ -1,18 +1,36 @@
-require 'test_helper'
+require "test_helper"
 
 class BoardPolicyTest < ActiveSupport::TestCase
-  def test_scope
+  setup do
+    @board = boards(:one)
+    @user = users(:Owner)
   end
 
-  def test_show
+  test "scope" do
+    assert_includes Pundit.policy_scope!(@user, Board), @board
+    assert_not_includes Pundit.policy_scope!(@user, Board), boards(:two)
   end
 
-  def test_create
+  test "access?" do
+    assert Pundit.policy!(@user, @board).access?
+    assert_not Pundit.policy!(@user, boards(:two)).access?
   end
 
-  def test_update
+  test "edit?" do
+    assert Pundit.policy!(@user, @board).edit?
+
+    assert_not Pundit.policy!(users(:AdminFull), @board).edit?
   end
 
-  def test_destroy
+  test "update?" do
+    assert Pundit.policy!(@user, @board).update?
+
+    assert_not Pundit.policy!(users(:AdminFull), @board).update?
+  end
+
+  test "destroy?" do
+    assert Pundit.policy!(@user, @board).destroy?
+
+    assert_not Pundit.policy!(users(:AdminFull), @board).destroy?
   end
 end

@@ -18,6 +18,7 @@ class BoardsController < ApplicationController
 
   # GET /boards/1/edit
   def edit
+    authorize @board
   end
 
   # POST /boards or /boards.json
@@ -42,6 +43,7 @@ class BoardsController < ApplicationController
 
   # PATCH/PUT /boards/1 or /boards/1.json
   def update
+    authorize @board
     respond_to do |format|
       if @board.update(board_params)
         format.html { redirect_to @board, notice: "Board was successfully updated." }
@@ -55,9 +57,7 @@ class BoardsController < ApplicationController
 
   # DELETE /boards/1 or /boards/1.json
   def destroy
-    unless @member.role.can_delete
-      return
-    end
+    authorize @board
 
     @board.members.destroy_all
     @board.destroy!

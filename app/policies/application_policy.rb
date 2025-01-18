@@ -1,11 +1,19 @@
 # frozen_string_literal: true
 
 class ApplicationPolicy
-  attr_reader :user, :record
+  include ApplicationHelper
+  attr_reader :user, :context, :record
 
   def initialize(user, record)
     @user = user
-    @record = record
+
+    if record.is_a?(PolicyContext)
+      @record = record.record
+      @context = record.context
+    else
+      @record = record
+      @context = nil
+    end
   end
 
   def index?

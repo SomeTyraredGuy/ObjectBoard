@@ -15,6 +15,6 @@ module BoardRelated
     @board = Board.find(params.expect(:id)) or not_found
 
     @member = Member.find_by(board: @board, user: current_user)
-    authorize @member, :access?, policy_class: BoardPolicy
+    authorize @board, :access?
   end
 end

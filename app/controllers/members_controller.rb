@@ -19,11 +19,12 @@ class MembersController < ApplicationController
     member_to_update = Member.find(params.expect(:member_id)) or not_found
     new_role = params.expect(value: [ :name, :can_edit, :can_change_roles, :can_assign_admin, :can_ignore_rules ])
 
-    record = {
-      current_member: @member,
-      member_to_update: member_to_update,
-      new_role: new_role
-    }
+    record = ApplicationPolicy::PolicyContext.new(member_to_update,
+      context = {
+        current_member: @member,
+        new_role: new_role.as_json
+      }
+    )
     authorize record, policy_class: MemberPolicy
 
     new_role = Role.find_by(new_role) or not_found
