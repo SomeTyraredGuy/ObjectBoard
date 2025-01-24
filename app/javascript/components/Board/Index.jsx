@@ -1,9 +1,9 @@
 import React from 'react'
-import SideBar from './Sidebar'
 import UserCard from '../Users/UsersCard'
 import { BASE_BOARD_URL } from '../../Data/constants.js'
 import { useQuery } from '@tanstack/react-query'
 import {Notification, useNotification} from '../General/Notification/Notification'
+import ToolBar from './ToolBar/ToolBar'
 
 function Index({db}) {
   const {
@@ -19,7 +19,7 @@ function Index({db}) {
     },
   })
 
-  if(isError){
+  if( useNotification(isError) ){
     return (
       <Notification name={"Error!"} message={error} type={"error"}/>
     )
@@ -27,6 +27,7 @@ function Index({db}) {
   
   return (
     <>
+      <ToolBar/>
       <UserCard currentUser={currentUser} isLoading={isLoading}/>
       <h1>Board</h1>
     </>

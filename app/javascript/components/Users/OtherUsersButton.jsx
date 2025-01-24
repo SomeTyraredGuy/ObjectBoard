@@ -1,6 +1,6 @@
 import React from 'react'
 import classes from '../Board/board.module.css'
-import PlusCircle from '../svg/PlusCircle'
+import PlusCircleSVG from '../svg/PlusCircleSVG.jsx'
 import { useQuery } from '@tanstack/react-query'
 import { BASE_BOARD_URL } from '../../Data/constants.js'
 import { Notification, useNotification } from '../General/Notification/Notification'
@@ -58,7 +58,7 @@ function OtherUsersButton({currentUser}) {
         onClick={buttonFunction()} disabled={!currentUser.role.can_change_roles && noOtherUsers()}
         >
             {noOtherUsers() ? 
-                <PlusCircle/> 
+                <PlusCircleSVG/> 
             : 
                 otherUsers.slice(0,3).map((user, i) => (
                 <img className={`rounded-circle ${classes.avatarCard}`} key={i} src={`${user.avatar}`} alt='Current user avatar'/>
@@ -73,7 +73,7 @@ function OtherUsersButton({currentUser}) {
             {currentUser.role.can_change_roles && 
                 <li>
                     <a className="dropdown-item p-2 d-flex flex-row justify-content-between align-items-center" onClick={() => setShowAddUserMenu(!showAddUserMenu)}>
-                        <PlusCircle/>
+                        <PlusCircleSVG/>
                         <span className='text-center flex-grow-1'>Add new member</span>
                     </a>
                 </li>

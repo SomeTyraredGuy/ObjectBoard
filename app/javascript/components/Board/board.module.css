@@ -97,3 +97,37 @@
   .maxwidthSmall {
     max-width: 400px;
   }
+
+  .hintWrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .hintWrapper .rightHint {
+    visibility: hidden;
+    width: 120px;
+    background-color: #282828b0;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 110%;
+  }
+  
+  .hintWrapper .rightHint::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #282828b0 transparent transparent;
+  }
+  .hintWrapper:hover  .rightHint {
+    visibility: visible;
+  }
