@@ -1,7 +1,7 @@
 import React from 'react'
 import classes from './toolBar.module.css'
 import {SelectSVG, UndoSVG, RedoSVG} from '../../svg/ToolsSVG'
-import ToolButton from './ToolButton'
+import IconButton from '../../General/IconButton'
 
 function ToolBar({canvasState, setCanvasState, undo, redo, canUndo, canRedo}) {
   const switchButtons = [
@@ -52,13 +52,13 @@ function ToolBar({canvasState, setCanvasState, undo, redo, canUndo, canRedo}) {
 
         <div className={`${classes.section} border border-dark-subtle border-2`}>
             {switchButtons.map((button, i) => (
-              <ToolButton key={i} {...button}/>
+              <IconButton key={i} {...button}/>
             ))}
         </div>
 
         <div className={`${classes.section} border border-dark-subtle border-2`}>
             {actionButtons.map((button, i) => (
-              <ToolButton key={i} {...button}/>
+              <IconButton key={i} {...button}/>
             ))}
         </div>
 

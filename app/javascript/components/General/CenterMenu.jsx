@@ -1,5 +1,5 @@
 import React from 'react'
-import classes from '../Board/board.module.css'
+import classes from './general.module.css'
 
 function CenterMenu({children, className, buttons, closeFn}) {
   const backgroundClick = (event) => {

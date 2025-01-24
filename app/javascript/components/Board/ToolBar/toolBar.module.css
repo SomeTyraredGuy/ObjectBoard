@@ -1,8 +1,6 @@
 .wrapper {
-    position: fixed;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    align-self: start;
+    margin: auto 0;
 }
 
 .section{

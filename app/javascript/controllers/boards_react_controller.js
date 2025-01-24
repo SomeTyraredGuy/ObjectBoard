@@ -1,7 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import React from "react"
 import { createRoot } from "react-dom/client";
-import Index from "../components/Board/Index"
 import QueryWrap from "../components/Board/QueryWrap"
 
 // Connects to data-controller="boards-react"

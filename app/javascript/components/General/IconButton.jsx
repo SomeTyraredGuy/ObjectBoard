@@ -1,10 +1,11 @@
 import React from 'react'
-import classes from '../board.module.css'
+import classes from './general.module.css'
 
-function ToolButton({icon: Icon, onClick, label, isDisabled}) {
+function IconButton({icon: Icon, onClick, label, isDisabled, href}) {
   return (
     <div className={classes.hintWrapper}>
         <button 
+            href={href}
             onClick={onClick}
             disabled={isDisabled}
             className={`btn btn-outline-primary p-2`}
@@ -18,4 +19,4 @@ function ToolButton({icon: Icon, onClick, label, isDisabled}) {
   )
 }
 
-export default ToolButton
+export default IconButton

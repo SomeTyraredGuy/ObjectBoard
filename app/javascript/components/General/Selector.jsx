@@ -1,5 +1,4 @@
 import React from 'react'
-import { useState } from 'react'
 
 function Selector({options, currentOption, setOption, className = "", disabled = false}) {
   return (
