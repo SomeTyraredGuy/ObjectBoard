@@ -3,8 +3,10 @@
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.12",
     "@tanstack/react-query": "^5.62.11",
+    "konva": "^9.3.18",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-konva": "^19.0.2"
   },
   "devDependencies": {
     "esbuild": "^0.24.1"

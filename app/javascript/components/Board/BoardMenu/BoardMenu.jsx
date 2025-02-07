@@ -3,10 +3,9 @@ import classes from '../board.module.css'
 import IconButton from '../../General/IconButton'
 import { UndoSVG } from '../../svg/ToolsSVG'
 
-function BoardMenu({board}) {
+function BoardMenu({board, isLoading}) {
   return (
-    <div>
-    <table className={`m-2 rounded border border-dark-subtle border-2 d-flex containers ${classes.background} ${false && "placeholder-wave"}`} style={{width: "280px"}}>
+    <table className={`m-2 position-fixed top-0 border border-dark-subtle border-2 ${classes.background} ${isLoading && "placeholder-wave"}`} style={{width: "280px"}}>
       {false ?
       <tbody className='placeholder col-12 bg-secondary'></tbody>
       :
@@ -23,7 +22,6 @@ function BoardMenu({board}) {
         </tr>
       </tbody>}
     </table>
-    </div>
   )
 }
 
