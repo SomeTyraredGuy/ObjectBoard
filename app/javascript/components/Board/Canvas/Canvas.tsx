@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Layer, Stage } from 'react-konva'
+import { Text, Layer, Stage, Line, Ellipse } from 'react-konva'
 import UseStageScaleAndPosition from '../hooks/UseStageScaleAndPosition'
 import { KonvaEventObject } from 'konva/lib/Node'
 import Objects from './Objects'

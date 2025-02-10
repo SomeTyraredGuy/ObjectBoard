@@ -7,21 +7,43 @@ function Objects({canvasObjects}) {
   function renderObject(object: CanvasObject) {
     const commonProps = {
       key: object.id,
-      x: object.x,
-      y: object.y,
       draggable: true,
       fill: 'red',
     }
 
     switch (object.type) {
       case CanvasObjectType.Rectangle:
-        return <Rect {...commonProps} width={object.width} height={object.height} />
+        return <Rect 
+          {...commonProps} 
+          x={object.x}
+          y={object.y}
+          width={object.width} 
+          height={object.height} 
+        />
+
       case CanvasObjectType.Ellipse:
-        return <Ellipse {...commonProps} radiusX={object.radiusX} radiusY={object.radiusY} />
+        return <Ellipse 
+          {...commonProps} 
+          x={object.x}
+          y={object.y}
+          radiusX={object.radiusX} 
+          radiusY={object.radiusY} 
+        />
+
       case CanvasObjectType.Text:
-        return <Text {...commonProps} text={object.text} />
+        return <Text
+          {...commonProps} 
+          x={object.x}
+          y={object.y}
+          text={object.text} 
+        />
+
       case CanvasObjectType.Line:
-        return <Line  {...commonProps} points={object.points} stroke={object.stroke} />
+        return <Line  
+          {...commonProps} 
+          points={object.points} 
+          stroke={object.stroke} 
+        />
     }
   }
 

@@ -6,8 +6,6 @@ function setNewObjectProperties(objectType: CanvasObjectType, x: number, y: numb
     const CommonObjectProps = {
         id: (canvasObjects.length+1).toString(),
         selected: true,
-        x: x,
-        y: y,
     }
 
      switch (objectType) {
@@ -15,6 +13,8 @@ function setNewObjectProperties(objectType: CanvasObjectType, x: number, y: numb
             return {
                 ...CommonObjectProps,
                 type: objectType,
+                x: x,
+                y: y,
                 width: 100,
                 height: 100,
             }
@@ -22,12 +22,16 @@ function setNewObjectProperties(objectType: CanvasObjectType, x: number, y: numb
             return {
                 ...CommonObjectProps,
                 type: objectType,
+                x: x,
+                y: y,
                 radiusX: 100,
                 radiusY: 100,
             }
         case CanvasObjectType.Text:
             return {
                 ...CommonObjectProps,
+                x: x,
+                y: y,
                 type: objectType,
                 text: 'Text',
             }
@@ -35,7 +39,7 @@ function setNewObjectProperties(objectType: CanvasObjectType, x: number, y: numb
             return {
                 ...CommonObjectProps,
                 type: objectType,
-                points: [0, 0, 200, 200],
+                points: [x, y, 200, 200],
                 stroke: 'red',
             }
     }

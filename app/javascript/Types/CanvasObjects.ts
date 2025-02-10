@@ -21,25 +21,25 @@ export interface Size {
     height: number,
 }
 
-export interface CommonCanvasObject extends Point {
+export interface CommonCanvasObject {
     id: string,
     selected?  : boolean,
     type: CanvasObjectType,
 }
 
-export interface Rectangle extends CommonCanvasObject, Size {
+export interface Rectangle extends CommonCanvasObject, Size, Point {
     type: CanvasObjectType.Rectangle,
     width: number,
     height: number,
 }
 
-export interface Ellipse extends CommonCanvasObject {
+export interface Ellipse extends CommonCanvasObject, Point {
     type: CanvasObjectType.Ellipse,
     radiusX: number,
     radiusY: number,
 }
 
-export interface Text extends CommonCanvasObject {
+export interface Text extends CommonCanvasObject, Point {
     type: CanvasObjectType.Text,
     text: string,
 }
