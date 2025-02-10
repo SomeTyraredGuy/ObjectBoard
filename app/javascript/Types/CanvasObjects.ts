@@ -1,6 +1,6 @@
 export enum CanvasObjectType {
     Rectangle = "Rectangle",
-    Circle = "Circle",
+    Ellipse = "Ellipse",
     Text = "Text",
     Line = "Line",
 }
@@ -21,19 +21,20 @@ export interface Size {
     height: number,
 }
 
-export interface CommonCanvasObject {
+export interface CommonCanvasObject extends Point {
     id: string,
     selected?  : boolean,
     type: CanvasObjectType,
-    point: Point,
 }
 
 export interface Rectangle extends CommonCanvasObject, Size {
     type: CanvasObjectType.Rectangle,
+    width: number,
+    height: number,
 }
 
-export interface Circle extends CommonCanvasObject {
-    type: CanvasObjectType.Circle,
+export interface Ellipse extends CommonCanvasObject {
+    type: CanvasObjectType.Ellipse,
     radiusX: number,
     radiusY: number,
 }
@@ -45,7 +46,8 @@ export interface Text extends CommonCanvasObject {
 
 export interface Line extends CommonCanvasObject {
     type: CanvasObjectType.Line,
-    points: Array<Point>,
+    points: Array<number>,
+    stroke: string,
 }
 
-export type CanvasObject = Rectangle | Circle | Text | Line
+export type CanvasObject = Rectangle | Ellipse | Text | Line

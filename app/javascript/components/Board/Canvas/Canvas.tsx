@@ -1,10 +1,17 @@
 import React from 'react'
-import { Circle, Layer, Rect, Stage } from 'react-konva'
-import { CanvasMode } from '../../../Types/Canvas'
+import { Text, Layer, Stage } from 'react-konva'
 import UseStageScaleAndPosition from '../hooks/UseStageScaleAndPosition'
 import { KonvaEventObject } from 'konva/lib/Node'
+import Objects from './Objects'
+import UseCanvasObjects from '../hooks/UseCanvasObjects'
 
 function Canvas({canvasState, setCanvasState}) {
+
+  const { 
+    canvasObjects, 
+    setCanvasObjects, 
+    onClickCanvas 
+  } = UseCanvasObjects({canvasState, setCanvasState})
 
   const { 
     onWheel, 
@@ -13,10 +20,11 @@ function Canvas({canvasState, setCanvasState}) {
     onMouseUp, 
     stagePosition, 
     stageScale, 
-    isDragging } = UseStageScaleAndPosition()
+    isDragging 
+  } = UseStageScaleAndPosition()
 
   return (
-    <Stage 
+    <Stage
     className='bg-white'
     style={{cursor: isDragging ? "grab" : "default"}}
     width={window.innerWidth} height={window.innerHeight}
@@ -25,12 +33,14 @@ function Canvas({canvasState, setCanvasState}) {
     onMouseMove={onMouseMove}
     onMouseDown={onMouseDown}
     onMouseUp={onMouseUp}
+    onClick={onClickCanvas}
     onContextMenu={(e: KonvaEventObject<MouseEvent>) => e.evt.preventDefault()}
     {...stagePosition}
     >
         <Layer>
-            <Rect x={100} y={100} width={200} height={200} fill='blue' draggable={canvasState.mode === CanvasMode.None}/>
-            <Circle x={200} y={200} radius={50} fill='red'/>
+          <Objects 
+            canvasObjects={canvasObjects} 
+          />
         </Layer>
     </Stage>
   )

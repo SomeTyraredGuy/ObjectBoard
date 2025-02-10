@@ -34,10 +34,10 @@ export type CanvasState =
 
 
 export enum CanvasMode {
-    None,
-    Selected,
-    SelectionNet,
-    Inserting,
-    Pressing,
-    Resizing,
+    None = 'None',
+    Selected = 'Selected',
+    SelectionNet = 'SelectionNet',
+    Inserting = 'Inserting',
+    Pressing = 'Pressing',
+    Resizing = 'Resizing',
 }

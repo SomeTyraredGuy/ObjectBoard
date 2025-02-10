@@ -10,7 +10,7 @@ export default function UseStageScaleAndPosition() {
     const [stagePosition, setStagePosition] = useState({x: 0, y: 0})
     const [stageScale, setStageScale] = useState(1)
 
-    const onWheel = (e: KonvaEventObject<MouseEvent>) => {
+    const onWheel = (e: KonvaEventObject<WheelEvent>) => {
         e.evt.preventDefault()
         const stage = e.target.getStage()
         if (!stage) return

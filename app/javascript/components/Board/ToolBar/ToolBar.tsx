@@ -41,11 +41,11 @@ function ToolBar({canvasState, setCanvasState, undo, redo, canUndo, canRedo} : T
     },
     {
       icon: CircleSVG,
-      onClick: () => {setCanvasState({mode: CanvasMode.Inserting, objectType: CanvasObjectType.Circle})},
-      label: "Circle",
+      onClick: () => {setCanvasState({mode: CanvasMode.Inserting, objectType: CanvasObjectType.Ellipse})},
+      label: "Ellipse",
       isDisabled: false,
       isActive: canvasState.mode === CanvasMode.Inserting &&
-                canvasState.objectType === CanvasObjectType.Circle
+                canvasState.objectType === CanvasObjectType.Ellipse
     },
     {
       icon: ArrowSVG,
