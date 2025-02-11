@@ -8,12 +8,6 @@ import UseCanvasObjects from '../hooks/UseCanvasObjects'
 function Canvas({canvasState, setCanvasState}) {
 
   const { 
-    canvasObjects, 
-    setCanvasObjects, 
-    onClickCanvas 
-  } = UseCanvasObjects({canvasState, setCanvasState})
-
-  const { 
     onWheel, 
     onMouseMove, 
     onMouseDown, 
@@ -23,6 +17,13 @@ function Canvas({canvasState, setCanvasState}) {
     isDragging 
   } = UseStageScaleAndPosition()
 
+  const { 
+    canvasObjects, 
+    setCanvasObjects, 
+    onMouseDownCanvas, 
+    onMouseUpCanvas,
+  } = UseCanvasObjects({canvasState, setCanvasState, stageScale})
+
   return (
     <Stage
     className='bg-white'
@@ -31,9 +32,8 @@ function Canvas({canvasState, setCanvasState}) {
     scale={{x: stageScale, y: stageScale}}
     onWheel={onWheel}
     onMouseMove={onMouseMove}
-    onMouseDown={onMouseDown}
-    onMouseUp={onMouseUp}
-    onClick={onClickCanvas}
+    onMouseDown={(e) => {onMouseDown(e); onMouseDownCanvas(e)}}
+    onMouseUp={( e) => {onMouseUp(e); onMouseUpCanvas(e)}}
     onContextMenu={(e: KonvaEventObject<MouseEvent>) => e.evt.preventDefault()}
     {...stagePosition}
     >
