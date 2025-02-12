@@ -25,6 +25,7 @@ export interface CommonCanvasObject {
     id: string,
     selected?  : boolean,
     type: CanvasObjectType,
+    locked : boolean,
 }
 
 export interface Rectangle extends CommonCanvasObject, Size, Point {

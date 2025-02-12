@@ -1,7 +1,7 @@
 import { KonvaEventObject } from 'konva/lib/Node'
 import { useState } from 'react'
 
-const SCALE_BOUNDS = {min: 0.1, max: 4}
+const SCALE_BOUNDS = {min: 0.1, max: 20}
 const SCALE_BY = 1.1
 
 const getLimitedScale = (scale: number, min: number, max: number) => Math.max(min, Math.min(scale, max))

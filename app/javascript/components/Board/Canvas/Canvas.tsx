@@ -4,14 +4,15 @@ import UseStageScaleAndPosition from '../hooks/UseStageScaleAndPosition'
 import { KonvaEventObject } from 'konva/lib/Node'
 import Objects from './Objects'
 import UseCanvasObjects from '../hooks/UseCanvasObjects'
+import SelectionLayer from './SelectionLayer'
 
 function Canvas({canvasState, setCanvasState}) {
 
   const { 
     onWheel, 
-    onMouseMove, 
-    onMouseDown, 
-    onMouseUp, 
+    onMouseMove: onMouseMoveUseScale,
+    onMouseDown: onMouseDownUseScale, 
+    onMouseUp: onMouseUpUseScale,
     stagePosition, 
     stageScale, 
     isDragging 
@@ -19,29 +20,37 @@ function Canvas({canvasState, setCanvasState}) {
 
   const { 
     canvasObjects, 
-    setCanvasObjects, 
-    onMouseDownCanvas, 
-    onMouseUpCanvas,
+    onMouseDown: onMouseDownUseObjects, 
+    onMouseMove: onMouseMoveUseObjects,
+    onMouseUp: onMouseUpUseObjects,
+    selectionNet
   } = UseCanvasObjects({canvasState, setCanvasState, stageScale})
 
   return (
     <Stage
-    className='bg-white'
-    style={{cursor: isDragging ? "grab" : "default"}}
-    width={window.innerWidth} height={window.innerHeight}
-    scale={{x: stageScale, y: stageScale}}
-    onWheel={onWheel}
-    onMouseMove={onMouseMove}
-    onMouseDown={(e) => {onMouseDown(e); onMouseDownCanvas(e)}}
-    onMouseUp={( e) => {onMouseUp(e); onMouseUpCanvas(e)}}
-    onContextMenu={(e: KonvaEventObject<MouseEvent>) => e.evt.preventDefault()}
-    {...stagePosition}
+      className='bg-white'
+      style={{cursor: isDragging ? "grab" : "default"}}
+      width={window.innerWidth} height={window.innerHeight}
+      scale={{x: stageScale, y: stageScale}}
+      onWheel={onWheel}
+      onMouseMove={(e) => {onMouseMoveUseScale(e); onMouseMoveUseObjects(e)}}
+      onMouseDown={(e) => {onMouseDownUseScale(e); onMouseDownUseObjects(e)}}
+      onMouseUp={(e) => {onMouseUpUseScale(e); onMouseUpUseObjects(e)}}
+      onContextMenu={(e: KonvaEventObject<MouseEvent>) => e.evt.preventDefault()}
+      {...stagePosition}
     >
-        <Layer>
-          <Objects 
-            canvasObjects={canvasObjects} 
-          />
-        </Layer>
+      <Layer>
+        <Objects 
+          canvasObjects={canvasObjects} 
+        />
+      </Layer>
+
+      <SelectionLayer 
+        visible={selectionNet.isVisible}
+        point={selectionNet.point}
+        size={selectionNet.size}
+        scale={stageScale}
+      />
     </Stage>
   )
 }

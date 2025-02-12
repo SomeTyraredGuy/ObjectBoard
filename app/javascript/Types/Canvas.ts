@@ -13,7 +13,7 @@ export type CanvasState =
     }
     | {
         mode: CanvasMode.Selected
-        object: CanvasObject,
+        objects: Array<CanvasObject>,
     }
     | {
         mode: CanvasMode.SelectionNet,
