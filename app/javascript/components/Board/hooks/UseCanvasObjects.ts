@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { CanvasObject, CanvasObjectType, Point, Size } from '../../../Types/CanvasObjects'
 import { KonvaEventObject } from 'konva/lib/Node'
 import { getCursorOnCanvas } from '../Canvas/getters'
-import UseSelectionNet from './UseSelectionNet'
+import { CanvasMode } from '../../../Types/Canvas'
 
 function isTooSmallDrag(startingPoint: Point, currentPoint: Point, xRight: boolean, yBottom: boolean): boolean{
     if(!xRight && startingPoint.x - currentPoint.x > 5) return false
@@ -87,12 +87,6 @@ function setNewObjectProperties(objectType: CanvasObjectType, startingPoint: Poi
 
 export default function UseCanvasObjects({canvasState, setCanvasState, stageScale}) {
     const [canvasObjects, setCanvasObjects] = useState<CanvasObject[]>([])
-    const { 
-        selectionNet, 
-        setPoint: setSelectionNetPoint, 
-        setSize: setSelectionNetSize,  
-        hide: hideSelectionNet,
-    } = UseSelectionNet()
 
     const startingPoint = useRef<Point>({x: 0, y: 0})
     const mouseDown = useRef(false)
@@ -105,7 +99,14 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
         const cursorPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
         if (!cursorPoint) return
         startingPoint.current = cursorPoint
-        setSelectionNetPoint(cursorPoint)
+
+        if( canvasState.mode === CanvasMode.None || canvasState.mode === CanvasMode.Selected ) {
+            setCanvasState({
+                mode: CanvasMode.SelectionNet,
+                origin: cursorPoint,
+            })
+        }
+        
 
         mouseDown.current = true
     }
@@ -114,14 +115,17 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
         if (!mouseDown.current) return
         e.evt.preventDefault()
         
-        const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
-        if (!currentPoint){
-            return
+        if (canvasState.mode === CanvasMode.SelectionNet) {
+
+            const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
+            if (!currentPoint) return
+
+            setCanvasState({
+                ...canvasState,
+                current: currentPoint,
+            })
+
         }
-        setSelectionNetSize({
-            width: currentPoint.x - startingPoint.current.x,
-            height: currentPoint.y - startingPoint.current.y,
-        })
     }
 
     function onMouseUp(e: KonvaEventObject<MouseEvent>) {
@@ -129,8 +133,6 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
             return;
         }
         e.evt.preventDefault()
-
-        hideSelectionNet()
 
         const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
         if (!currentPoint){
@@ -151,9 +153,14 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
                     )
                 ])
                 break
+            case CanvasMode.SelectionNet:
+                setCanvasState({
+                    mode: CanvasMode.None,
+                })
+                break
         }
         mouseDown.current = false
     }
 
-    return { canvasObjects, onMouseDown, onMouseMove, onMouseUp, selectionNet }
+    return { canvasObjects, onMouseDown, onMouseMove, onMouseUp }
 }

@@ -3,21 +3,20 @@ import { Layer, Rect } from 'react-konva'
 import { Point, Size } from '../../../Types/CanvasObjects'
 
 type Props = {
-    visible: boolean,
-    point: Point,
-    size: Size,
-    scale: number,
+    origin: Point,
+    current: Point,
+    scale: number
 }
 
-function SelectionLayer({visible, point, size, scale} : Props) {
+function SelectionLayer({origin, current, scale} : Props) {
+    console.log(origin)
   return (
     <Layer>
         <Rect
-            visible={visible}
-            x={point.x}
-            y={point.y}
-            width={size.width}
-            height={size.height}
+            x={origin.x}
+            y={origin.y}
+            width={current.x - origin.x}
+            height={current.y - origin.y}
             fill='transparent'
             stroke='black'
             opacity={0.7}

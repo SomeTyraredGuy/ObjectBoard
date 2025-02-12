@@ -5,6 +5,7 @@ import { KonvaEventObject } from 'konva/lib/Node'
 import Objects from './Objects'
 import UseCanvasObjects from '../hooks/UseCanvasObjects'
 import SelectionLayer from './SelectionLayer'
+import { CanvasMode } from '../../../Types/Canvas'
 
 function Canvas({canvasState, setCanvasState}) {
 
@@ -23,7 +24,6 @@ function Canvas({canvasState, setCanvasState}) {
     onMouseDown: onMouseDownUseObjects, 
     onMouseMove: onMouseMoveUseObjects,
     onMouseUp: onMouseUpUseObjects,
-    selectionNet
   } = UseCanvasObjects({canvasState, setCanvasState, stageScale})
 
   return (
@@ -45,12 +45,13 @@ function Canvas({canvasState, setCanvasState}) {
         />
       </Layer>
 
-      <SelectionLayer 
-        visible={selectionNet.isVisible}
-        point={selectionNet.point}
-        size={selectionNet.size}
-        scale={stageScale}
-      />
+      { canvasState.mode === CanvasMode.SelectionNet && canvasState.current &&
+        <SelectionLayer 
+          origin={canvasState.origin}
+          current={canvasState.current}
+          scale={stageScale}
+        />
+      }
     </Stage>
   )
 }

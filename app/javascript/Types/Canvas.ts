@@ -25,10 +25,6 @@ export type CanvasState =
         objectType: CanvasObjectType,
     }
     | {
-        mode: CanvasMode.Pressing,
-        origin: Point,
-    }
-    | {
         mode: CanvasMode.Resizing,
     }
 
