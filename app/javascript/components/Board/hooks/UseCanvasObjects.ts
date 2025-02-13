@@ -4,7 +4,10 @@ import { KonvaEventObject } from 'konva/lib/Node'
 import { getCursorOnCanvas } from '../Canvas/getters'
 import { CanvasMode } from '../../../Types/Canvas'
 
-function isTooSmallDrag(startingPoint: Point, currentPoint: Point, xRight: boolean, yBottom: boolean): boolean{
+function isTooSmallDrag(startingPoint: Point, currentPoint: Point): boolean{
+    const xRight = currentPoint.x > startingPoint.x
+    const yBottom = currentPoint.y < startingPoint.y
+
     if(!xRight && startingPoint.x - currentPoint.x > 5) return false
     if(xRight && currentPoint.x - startingPoint.x > 5) return false
     if(yBottom && currentPoint.y - startingPoint.y > 5) return false
@@ -13,56 +16,35 @@ function isTooSmallDrag(startingPoint: Point, currentPoint: Point, xRight: boole
     return true
 }
 
-function setNewObjectProperties(objectType: CanvasObjectType, startingPoint: Point, currentPoint: Point, canvasObjects: CanvasObject[]): CanvasObject {
+function createNewObject(objectType: CanvasObjectType, id: string, currentPoint: Point): CanvasObject {
     const CommonObjectProps = {
-        id: (canvasObjects.length+1).toString(),
+        id: id,
         selected: true,
         locked: false,
     }
 
-    const xRight = currentPoint.x > startingPoint.x
-    const yBottom = currentPoint.y < startingPoint.y
-    const isTooSmall = isTooSmallDrag(startingPoint, currentPoint, xRight, yBottom)
     switch (objectType) {
         case CanvasObjectType.Rectangle:
             let width: number, height: number
-            if( isTooSmall ) {
-                width = 100
-                height = 100
-            } else {
-                width = xRight ? startingPoint.x - currentPoint.x : currentPoint.x - startingPoint.x
-                height = yBottom ? startingPoint.y - currentPoint.y : currentPoint.y - startingPoint.y
-            }
+            width = 0
+            height = 0
 
             return {
                 ...CommonObjectProps,
                 type: objectType,
-                x: xRight ? currentPoint.x : startingPoint.x,
-                y: yBottom ? currentPoint.y : startingPoint.y,
+                x: 0,
+                y: 0,
                 width: width,
                 height: height,
             }
         case CanvasObjectType.Ellipse:
-            const center: Point = {
-                x: (currentPoint.x + startingPoint.x) / 2,
-                y: (currentPoint.y + startingPoint.y) / 2
-            }
-            let radiusX: number, radiusY: number
-            if( isTooSmall ) {
-                radiusX = 50
-                radiusY = 50
-            } else {
-                radiusX = xRight ? currentPoint.x - center.x : center.x - currentPoint.x
-                radiusY = yBottom ? currentPoint.y - center.y : center.y - currentPoint.y
-            }
-
             return {
                 ...CommonObjectProps,
                 type: objectType,
-                x: center.x,
-                y: center.y,
-                radiusX: radiusX,
-                radiusY: radiusY
+                x: 0,
+                y: 0,
+                radiusX: 0,
+                radiusY: 0
             }
         case CanvasObjectType.Text:
             return {
@@ -73,13 +55,10 @@ function setNewObjectProperties(objectType: CanvasObjectType, startingPoint: Poi
                 text: 'Text',
             }
         case CanvasObjectType.Line:
-            const lineTo : Point = isTooSmall ? 
-                {x: currentPoint.x + 100, y: currentPoint.y} : {x: startingPoint.x, y: startingPoint.y}
-
             return {
                 ...CommonObjectProps,
                 type: objectType,
-                points: [currentPoint.x, currentPoint.y, lineTo.x, lineTo.y],
+                points: [0, 0, 0, 0],
                 stroke: 'red',
          }
     }
@@ -87,6 +66,62 @@ function setNewObjectProperties(objectType: CanvasObjectType, startingPoint: Poi
 
 export default function UseCanvasObjects({canvasState, setCanvasState, stageScale}) {
     const [canvasObjects, setCanvasObjects] = useState<CanvasObject[]>([])
+    const [temporaryObject, setTemporaryObject] = useState<CanvasObject | null>(null)
+
+    function updateTemporaryObject(startingPoint: Point, currentPoint: Point){
+        if(!temporaryObject) return
+        const xRight = currentPoint.x > startingPoint.x
+        const yBottom = currentPoint.y < startingPoint.y
+    
+        switch (temporaryObject.type) {
+            case CanvasObjectType.Rectangle:
+                const width = xRight ? startingPoint.x - currentPoint.x : currentPoint.x - startingPoint.x
+                const height = yBottom ? startingPoint.y - currentPoint.y : currentPoint.y - startingPoint.y
+    
+                setTemporaryObject({
+                    ...temporaryObject,
+                    x: xRight ? currentPoint.x : startingPoint.x,
+                    y: yBottom ? currentPoint.y : startingPoint.y,
+                    width: width,
+                    height: height,
+                })
+                break
+    
+            case CanvasObjectType.Ellipse:
+                const center: Point = {
+                    x: (currentPoint.x + startingPoint.x) / 2,
+                    y: (currentPoint.y + startingPoint.y) / 2
+                }
+                const radiusX = xRight ? currentPoint.x - center.x : center.x - currentPoint.x
+                const radiusY = yBottom ? currentPoint.y - center.y : center.y - currentPoint.y
+    
+                setTemporaryObject({
+                    ...temporaryObject,
+                    x: center.x,
+                    y: center.y,
+                    radiusX: radiusX,
+                    radiusY: radiusY
+                })
+                break
+                
+            case CanvasObjectType.Text:
+                setTemporaryObject({
+                    ...temporaryObject,
+                    x: currentPoint.x,
+                    y: currentPoint.y,
+                })
+                break
+    
+            case CanvasObjectType.Line:
+                const lineTo : Point = {x: startingPoint.x, y: startingPoint.y}
+    
+                setTemporaryObject({
+                    ...temporaryObject,
+                    points: [currentPoint.x, currentPoint.y, lineTo.x, lineTo.y]
+                })
+                break
+        }
+    }
 
     const startingPoint = useRef<Point>({x: 0, y: 0})
     const mouseDown = useRef(false)
@@ -100,13 +135,18 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
         if (!cursorPoint) return
         startingPoint.current = cursorPoint
 
-        if( canvasState.mode === CanvasMode.None || canvasState.mode === CanvasMode.Selected ) {
-            setCanvasState({
-                mode: CanvasMode.SelectionNet,
-                origin: cursorPoint,
-            })
+        switch (canvasState.mode) {
+            case CanvasMode.None:
+                setCanvasState({
+                    mode: CanvasMode.SelectionNet,
+                    origin: cursorPoint,
+                })
+                break
+
+            case CanvasMode.Inserting:
+                setTemporaryObject( createNewObject(canvasState.objectType, (canvasObjects.length+1).toString(), cursorPoint) )
+                break
         }
-        
 
         mouseDown.current = true
     }
@@ -114,17 +154,28 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
     function onMouseMove(e: KonvaEventObject<MouseEvent>) {
         if (!mouseDown.current) return
         e.evt.preventDefault()
+
+        const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
+                if (!currentPoint) return
         
-        if (canvasState.mode === CanvasMode.SelectionNet) {
+        switch (canvasState.mode) {
+            case CanvasMode.SelectionNet:
 
-            const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
-            if (!currentPoint) return
+                setCanvasState({
+                    ...canvasState,
+                    current: currentPoint,
+                })
+                break
+        
+            case CanvasMode.Inserting:
+                updateTemporaryObject(
+                    startingPoint.current, 
+                    currentPoint,
+                )
+                break
 
-            setCanvasState({
-                ...canvasState,
-                current: currentPoint,
-            })
-
+            default:
+                break
         }
     }
 
@@ -134,23 +185,19 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
         }
         e.evt.preventDefault()
 
-        const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
-        if (!currentPoint){
-            return
-        }
-
         switch (canvasState.mode) {
             case 'Inserting':
-                if(!startingPoint) return
+                const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
+                if (!currentPoint) break
+        
+                if(!startingPoint.current || 
+                    !temporaryObject ||
+                    (temporaryObject.type !== CanvasObjectType.Text && isTooSmallDrag(startingPoint.current, currentPoint))
+                ) break
 
                 setCanvasObjects([ 
-                    ...canvasObjects, 
-                    setNewObjectProperties(
-                        canvasState.objectType, 
-                        startingPoint.current, 
-                        currentPoint,
-                        canvasObjects
-                    )
+                    ...canvasObjects,
+                    temporaryObject,
                 ])
                 break
             case CanvasMode.SelectionNet:
@@ -159,8 +206,10 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
                 })
                 break
         }
+
+        setTemporaryObject(null)
         mouseDown.current = false
     }
 
-    return { canvasObjects, onMouseDown, onMouseMove, onMouseUp }
+    return { canvasObjects, temporaryObject, onMouseDown, onMouseMove, onMouseUp }
 }

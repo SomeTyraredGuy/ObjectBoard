@@ -2,7 +2,7 @@ import React from 'react'
 import { CanvasObject, CanvasObjectType } from '../../../Types/CanvasObjects'
 import { Ellipse, Rect, Text, Line } from 'react-konva'
 
-function Objects({canvasObjects}) {
+function Objects({canvasObjects, temporaryObject}) {
 
   function renderObject(object: CanvasObject) {
     const commonProps = {
@@ -52,6 +52,8 @@ function Objects({canvasObjects}) {
       {canvasObjects.map((object) => {
         return renderObject(object)
       })}
+
+      { temporaryObject && renderObject(temporaryObject) }
     </>
   )
 }

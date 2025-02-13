@@ -21,6 +21,7 @@ function Canvas({canvasState, setCanvasState}) {
 
   const { 
     canvasObjects, 
+    temporaryObject,
     onMouseDown: onMouseDownUseObjects, 
     onMouseMove: onMouseMoveUseObjects,
     onMouseUp: onMouseUpUseObjects,
@@ -42,6 +43,7 @@ function Canvas({canvasState, setCanvasState}) {
       <Layer>
         <Objects 
           canvasObjects={canvasObjects} 
+          temporaryObject={temporaryObject}
         />
       </Layer>
 
