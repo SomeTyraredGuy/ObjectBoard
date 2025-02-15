@@ -47,10 +47,9 @@ function Canvas({canvasState, setCanvasState}) {
         />
       </Layer>
 
-      { canvasState.mode === CanvasMode.SelectionNet && canvasState.current &&
+      { (canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.Selected) &&
         <SelectionLayer 
-          origin={canvasState.origin}
-          current={canvasState.current}
+          canvasState={canvasState}
           scale={stageScale}
         />
       }

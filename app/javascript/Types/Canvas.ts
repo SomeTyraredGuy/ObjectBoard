@@ -13,12 +13,12 @@ export type CanvasState =
     }
     | {
         mode: CanvasMode.Selected
-        objects: Array<CanvasObject>,
+        objects: CanvasObject[],
     }
     | {
         mode: CanvasMode.SelectionNet,
         origin: Point,
-        current?: Point,
+        current: Point,
     }
     | {
         mode: CanvasMode.Inserting,

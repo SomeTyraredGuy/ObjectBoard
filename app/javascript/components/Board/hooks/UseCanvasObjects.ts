@@ -1,12 +1,11 @@
 import { useRef, useState } from 'react'
-import { CanvasObject, CanvasObjectType, Point, Size } from '../../../Types/CanvasObjects'
+import { CanvasObject, CanvasObjectType, Point } from '../../../Types/CanvasObjects'
 import { KonvaEventObject } from 'konva/lib/Node'
-import { getCursorOnCanvas } from '../Canvas/getters'
-import { CanvasMode } from '../../../Types/Canvas'
+import { getCursorOnCanvas, getOverlappingObjects, getDirection } from '../Canvas/getters'
+import { CanvasMode, CanvasState } from '../../../Types/Canvas'
 
 function isTooSmallDrag(startingPoint: Point, currentPoint: Point): boolean{
-    const xRight = currentPoint.x > startingPoint.x
-    const yBottom = currentPoint.y < startingPoint.y
+    const { xRight, yBottom } = getDirection(startingPoint, currentPoint)
 
     if(!xRight && startingPoint.x - currentPoint.x > 5) return false
     if(xRight && currentPoint.x - startingPoint.x > 5) return false
@@ -64,23 +63,28 @@ function createNewObject(objectType: CanvasObjectType, id: string, currentPoint:
     }
 }
 
-export default function UseCanvasObjects({canvasState, setCanvasState, stageScale}) {
+type Props = {
+    canvasState: CanvasState,
+    setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
+    stageScale: number
+}
+
+export default function UseCanvasObjects({canvasState, setCanvasState, stageScale}: Props) {
     const [canvasObjects, setCanvasObjects] = useState<CanvasObject[]>([])
     const [temporaryObject, setTemporaryObject] = useState<CanvasObject | null>(null)
 
     function updateTemporaryObject(startingPoint: Point, currentPoint: Point){
         if(!temporaryObject) return
-        const xRight = currentPoint.x > startingPoint.x
-        const yBottom = currentPoint.y < startingPoint.y
+        const { xRight, yBottom } = getDirection(startingPoint, currentPoint)
     
         switch (temporaryObject.type) {
             case CanvasObjectType.Rectangle:
-                const width = xRight ? startingPoint.x - currentPoint.x : currentPoint.x - startingPoint.x
+                const width = xRight ? currentPoint.x - startingPoint.x : startingPoint.x - currentPoint.x
                 const height = yBottom ? startingPoint.y - currentPoint.y : currentPoint.y - startingPoint.y
     
                 setTemporaryObject({
                     ...temporaryObject,
-                    x: xRight ? currentPoint.x : startingPoint.x,
+                    x: xRight ? startingPoint.x : currentPoint.x,
                     y: yBottom ? currentPoint.y : startingPoint.y,
                     width: width,
                     height: height,
@@ -93,7 +97,7 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
                     y: (currentPoint.y + startingPoint.y) / 2
                 }
                 const radiusX = xRight ? currentPoint.x - center.x : center.x - currentPoint.x
-                const radiusY = yBottom ? currentPoint.y - center.y : center.y - currentPoint.y
+                const radiusY = yBottom ? center.y - currentPoint.y : currentPoint.y - center.y
     
                 setTemporaryObject({
                     ...temporaryObject,
@@ -140,6 +144,7 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
                 setCanvasState({
                     mode: CanvasMode.SelectionNet,
                     origin: cursorPoint,
+                    current: cursorPoint,
                 })
                 break
 
@@ -188,9 +193,8 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
         switch (canvasState.mode) {
             case 'Inserting':
                 const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
-                if (!currentPoint) break
-        
-                if(!startingPoint.current || 
+                if( !currentPoint || 
+                    !startingPoint.current || 
                     !temporaryObject ||
                     (temporaryObject.type !== CanvasObjectType.Text && isTooSmallDrag(startingPoint.current, currentPoint))
                 ) break
@@ -199,10 +203,26 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
                     ...canvasObjects,
                     temporaryObject,
                 ])
-                break
-            case CanvasMode.SelectionNet:
+
                 setCanvasState({
-                    mode: CanvasMode.None,
+                    mode: CanvasMode.Selected,
+                    objects: [temporaryObject],
+                })
+                break
+                
+            case CanvasMode.SelectionNet:
+                const overlappingObjects = getOverlappingObjects(canvasObjects, canvasState.origin, canvasState.current)
+
+                if (overlappingObjects.length === 0) {
+                    setCanvasState({
+                        mode: CanvasMode.None,
+                    })
+                    break
+                }
+
+                setCanvasState({
+                    mode: CanvasMode.Selected,
+                    objects: overlappingObjects,
                 })
                 break
         }

@@ -21,6 +21,8 @@ export interface Size {
     height: number,
 }
 
+export interface XYWH extends Point, Size {}
+
 export interface CommonCanvasObject {
     id: string,
     selected?  : boolean,
@@ -30,8 +32,6 @@ export interface CommonCanvasObject {
 
 export interface Rectangle extends CommonCanvasObject, Size, Point {
     type: CanvasObjectType.Rectangle,
-    width: number,
-    height: number,
 }
 
 export interface Ellipse extends CommonCanvasObject, Point {
@@ -47,7 +47,7 @@ export interface Text extends CommonCanvasObject, Point {
 
 export interface Line extends CommonCanvasObject {
     type: CanvasObjectType.Line,
-    points: Array<number>,
+    points: number[],
     stroke: string,
 }
 

@@ -33,6 +33,7 @@
         "hotwired",
         "importmap",
         "Konva",
-        "stylesheet"
+        "stylesheet",
+        "XYWH"
     ]
 }

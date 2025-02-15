@@ -7,7 +7,6 @@ function Objects({canvasObjects, temporaryObject}) {
   function renderObject(object: CanvasObject) {
     const commonProps = {
       key: object.id,
-      draggable: true,
       fill: 'red',
     }
 
