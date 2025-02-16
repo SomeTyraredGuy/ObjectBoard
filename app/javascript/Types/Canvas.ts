@@ -1,4 +1,4 @@
-import { CanvasObject, CanvasObjectType, Point, Size } from "./CanvasObjects"
+import { CanvasObject, CanvasObjectType, Point } from "./CanvasObjects"
 
 export enum Side {
     Top = 1,
@@ -14,6 +14,7 @@ export type CanvasState =
     | {
         mode: CanvasMode.Selected
         objects: CanvasObject[],
+        movedBy?: Point, 
     }
     | {
         mode: CanvasMode.SelectionNet,

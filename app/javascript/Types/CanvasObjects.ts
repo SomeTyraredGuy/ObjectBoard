@@ -24,8 +24,7 @@ export interface Size {
 export interface XYWH extends Point, Size {}
 
 export interface CommonCanvasObject {
-    id: string,
-    selected?  : boolean,
+    id?: string,
     type: CanvasObjectType,
     locked : boolean,
 }

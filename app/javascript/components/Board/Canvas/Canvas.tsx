@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Layer, Stage, Line, Ellipse } from 'react-konva'
+import { Layer, Stage} from 'react-konva'
 import UseStageScaleAndPosition from '../hooks/UseStageScaleAndPosition'
 import { KonvaEventObject } from 'konva/lib/Node'
 import Objects from './Objects'
@@ -44,6 +44,8 @@ function Canvas({canvasState, setCanvasState}) {
         <Objects 
           canvasObjects={canvasObjects} 
           temporaryObject={temporaryObject}
+          setCanvasState={setCanvasState}
+          canvasState={canvasState}
         />
       </Layer>
 

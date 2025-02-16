@@ -1,19 +1,8 @@
 import { useRef, useState } from 'react'
 import { CanvasObject, CanvasObjectType, Point } from '../../../Types/CanvasObjects'
 import { KonvaEventObject } from 'konva/lib/Node'
-import { getCursorOnCanvas, getOverlappingObjects, getDirection } from '../Canvas/getters'
+import { getCursorOnCanvas, getOverlappingObjects, getDirection, isTooSmallDrag } from '../Canvas/getters'
 import { CanvasMode, CanvasState } from '../../../Types/Canvas'
-
-function isTooSmallDrag(startingPoint: Point, currentPoint: Point): boolean{
-    const { xRight, yBottom } = getDirection(startingPoint, currentPoint)
-
-    if(!xRight && startingPoint.x - currentPoint.x > 5) return false
-    if(xRight && currentPoint.x - startingPoint.x > 5) return false
-    if(yBottom && currentPoint.y - startingPoint.y > 5) return false
-    if(!yBottom && startingPoint.y - currentPoint.y > 5 ) return false
-
-    return true
-}
 
 function createNewObject(objectType: CanvasObjectType, id: string, currentPoint: Point): CanvasObject {
     const CommonObjectProps = {
@@ -141,6 +130,8 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
 
         switch (canvasState.mode) {
             case CanvasMode.None:
+                if (e.target.getType() !== 'Stage') break
+
                 setCanvasState({
                     mode: CanvasMode.SelectionNet,
                     origin: cursorPoint,
@@ -151,6 +142,16 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
             case CanvasMode.Inserting:
                 setTemporaryObject( createNewObject(canvasState.objectType, (canvasObjects.length+1).toString(), cursorPoint) )
                 break
+
+            case CanvasMode.Selected:
+                if (e.target.getType() !== 'Stage') break
+
+                setCanvasState({
+                    mode: CanvasMode.SelectionNet,
+                    origin: cursorPoint,
+                    current: cursorPoint,
+                })
+                break
         }
 
         mouseDown.current = true
@@ -159,12 +160,12 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
     function onMouseMove(e: KonvaEventObject<MouseEvent>) {
         if (!mouseDown.current) return
         e.evt.preventDefault()
-
-        const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
-                if (!currentPoint) return
         
+        let currentPoint: Point | null
         switch (canvasState.mode) {
             case CanvasMode.SelectionNet:
+                currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
+                if (!currentPoint) return
 
                 setCanvasState({
                     ...canvasState,
@@ -173,10 +174,40 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
                 break
         
             case CanvasMode.Inserting:
+                currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
+                if (!currentPoint) return
+
                 updateTemporaryObject(
                     startingPoint.current, 
                     currentPoint,
                 )
+                break
+
+            case CanvasMode.Selected:
+                currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
+                if (!currentPoint) break
+                const movedBy = {
+                    x: currentPoint.x - startingPoint.current.x,
+                    y: currentPoint.y - startingPoint.current.y,
+                }
+
+                canvasState.objects.forEach(object => {
+                    if (object.type === CanvasObjectType.Line){
+                        object.points = object.points.map((point, i) => {
+                            if (i % 2 === 0) return point + movedBy.x
+                            return point + movedBy.y
+                        })
+                    } else{
+                        object.x += movedBy.x
+                        object.y += movedBy.y
+                    }
+                })
+                setCanvasState({
+                    ...canvasState,
+                    movedBy: movedBy,
+                })
+
+                startingPoint.current = currentPoint
                 break
 
             default:

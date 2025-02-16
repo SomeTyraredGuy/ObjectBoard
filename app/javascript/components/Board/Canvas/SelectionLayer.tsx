@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Layer, Rect } from 'react-konva'
 import { CanvasMode, CanvasState } from '../../../Types/Canvas'
 import { CanvasObject, CanvasObjectType, XYWH } from '../../../Types/CanvasObjects'
@@ -15,6 +15,8 @@ function getXYWHfromArray(objects: CanvasObject[]): XYWH | null {
   let maxY = Number.MIN_VALUE
 
   objects.forEach(object => {
+    if (!object) return
+
     switch (object.type) {
       case CanvasObjectType.Rectangle:
         minX = Math.min(minX, object.x)
@@ -65,11 +67,22 @@ function getXYWHfromArray(objects: CanvasObject[]): XYWH | null {
     };
 }
 
-function getXYWH(canvasState: CanvasState): XYWH | null {
+function getXYWH(canvasState: CanvasState, currentXYWH: XYWH | null): XYWH | null {
 
   switch (canvasState.mode) {
     case CanvasMode.Selected:
       if (canvasState.objects.length === 0) return null
+
+      if (canvasState.movedBy && currentXYWH) {
+        const newXYWH = {
+          x: currentXYWH.x + canvasState.movedBy.x,
+          y: currentXYWH.y + canvasState.movedBy.y,
+          width: currentXYWH.width,
+          height: currentXYWH.height,
+        }
+        canvasState.movedBy = undefined
+        return newXYWH
+      }
       
       return getXYWHfromArray(canvasState.objects)
     
@@ -92,16 +105,17 @@ type Props = {
 }
 
 function SelectionLayer({canvasState, scale} : Props) {  
-  const XYWH = getXYWH(canvasState)
-  if (!XYWH) return null
+  const XYWH = useRef<XYWH | null>(null)
+  XYWH.current = getXYWH(canvasState, XYWH.current)
+  if (!XYWH.current) return null
 
   return (
     <Layer>
         <Rect
-            x={XYWH.x}
-            y={XYWH.y}
-            width={XYWH.width}
-            height={XYWH.height}
+            x={XYWH.current.x}
+            y={XYWH.current.y}
+            width={XYWH.current.width}
+            height={XYWH.current.height}
             fill='transparent'
             stroke='white'
             opacity={OPACITY}
@@ -109,10 +123,10 @@ function SelectionLayer({canvasState, scale} : Props) {
             strokeWidth={1 / scale}
         />  
         <Rect
-            x={XYWH.x}
-            y={XYWH.y}
-            width={XYWH.width}
-            height={XYWH.height}
+            x={XYWH.current.x}
+            y={XYWH.current.y}
+            width={XYWH.current.width}
+            height={XYWH.current.height}
             fill='transparent'
             stroke='black'
             opacity={OPACITY}
