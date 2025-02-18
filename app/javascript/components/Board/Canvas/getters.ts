@@ -126,7 +126,7 @@ function getOverlappingObjects(objects: CanvasObject[], point1: Point, point2: P
         }
     })
 
-    if ( isTooSmallDrag(point1, point2) ) return [ overlappingObjects[ overlappingObjects.length - 1 ] ]
+    if ( overlappingObjects.length > 0 && isTooSmallDrag(point1, point2) ) return [ overlappingObjects[ overlappingObjects.length - 1 ] ]
 
     return overlappingObjects
 }

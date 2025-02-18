@@ -7,7 +7,6 @@ import { CanvasMode, CanvasState } from '../../../Types/Canvas'
 function createNewObject(objectType: CanvasObjectType, id: string, currentPoint: Point): CanvasObject {
     const CommonObjectProps = {
         id: id,
-        selected: true,
         locked: false,
     }
 

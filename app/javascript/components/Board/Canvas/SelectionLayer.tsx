@@ -11,8 +11,8 @@ function getXYWHfromArray(objects: CanvasObject[]): XYWH | null {
   
   let minX = Number.MAX_VALUE
   let minY = Number.MAX_VALUE
-  let maxX = Number.MIN_VALUE
-  let maxY = Number.MIN_VALUE
+  let maxX = -Number.MAX_VALUE
+  let maxY = -Number.MAX_VALUE
 
   objects.forEach(object => {
     if (!object) return
