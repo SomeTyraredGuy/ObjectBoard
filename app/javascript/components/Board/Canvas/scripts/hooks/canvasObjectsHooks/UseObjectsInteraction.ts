@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { CanvasObjectType, Point } from '../../../../../../Types/CanvasObjects'
 import { KonvaEventObject } from 'konva/lib/Node'
-import { getCursorOnCanvas, getOverlappingObjects, isTooSmallDrag } from '../../../getters'
+import { getCursorOnCanvas, getOverlappingObjects, isTooSmallDrag } from '../../getters'
 import { CanvasMode, CanvasState } from '../../../../../../Types/Canvas'
 import UseObjects from './UseObjects'
 import UseTemporaryObject from './UseTemporaryObject'
@@ -130,7 +130,7 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
         e.evt.preventDefault()
 
         switch (canvasState.mode) {
-            case 'Inserting':
+            case CanvasMode.Inserting:
                 const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
                 if( !currentPoint || 
                     !startingPoint.current || 

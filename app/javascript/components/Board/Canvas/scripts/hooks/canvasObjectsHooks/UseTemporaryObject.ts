@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { CanvasObject, CanvasObjectType, Point } from "../../../../../../Types/CanvasObjects"
-import { getDirection } from "../../../getters"
+import { getDirection } from "../../getters"
 
 function createNewObject(objectType: CanvasObjectType, currentPoint: Point): CanvasObject {
     const CommonObjectProps = {

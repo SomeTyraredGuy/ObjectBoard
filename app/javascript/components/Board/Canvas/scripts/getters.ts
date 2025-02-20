@@ -1,5 +1,5 @@
 import { Stage } from "konva/lib/Stage";
-import { CanvasObject, CanvasObjectType, Point } from "../../../Types/CanvasObjects";
+import { CanvasObject, CanvasObjectType, Point } from "../../../../Types/CanvasObjects";
 
 function getCursorOnCanvas(stage: Stage | null, scale: number): Point | null {
     if (!stage) return null
@@ -112,8 +112,9 @@ function getOverlappingObjects(objects: CanvasObject[], point1: Point, point2: P
                         )
                     ) {
                         overlappingObjects.push(object)
-                        return
-                     }
+                    }
+
+                    return
                 }
                 break;
 
