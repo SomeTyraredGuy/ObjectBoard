@@ -1,0 +1,171 @@
+import { useRef } from 'react'
+import { CanvasObjectType, Point } from '../../../../../../Types/CanvasObjects'
+import { KonvaEventObject } from 'konva/lib/Node'
+import { getCursorOnCanvas, getOverlappingObjects, isTooSmallDrag } from '../../../getters'
+import { CanvasMode, CanvasState } from '../../../../../../Types/Canvas'
+import UseObjects from './UseObjects'
+import UseTemporaryObject from './UseTemporaryObject'
+
+
+
+type Props = {
+    canvasState: CanvasState,
+    setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
+    stageScale: number
+}
+
+export default function UseCanvasObjects({canvasState, setCanvasState, stageScale}: Props) {
+    const { 
+        canvasObjects,
+        addNewObject, 
+        moveSelectedObjects 
+    } = UseObjects({canvasState, setCanvasState, stageScale})
+    const {
+        temporaryObject,
+        createTemporaryObject,
+        updateTemporaryObject,
+        deleteTemporaryObject,
+    } = UseTemporaryObject()
+
+    const startingPoint = useRef<Point>({x: 0, y: 0})
+    const mouseDown = useRef(false)
+
+    function onMouseDown(e: KonvaEventObject<MouseEvent>) {
+        if (e.evt.button !== 0) {
+            return;
+        }
+
+        const cursorPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
+        if (!cursorPoint) return
+        startingPoint.current = cursorPoint
+
+        switch (canvasState.mode) {
+            case CanvasMode.None:
+                if (e.target.getType() !== 'Stage') break
+
+                setCanvasState({
+                    mode: CanvasMode.SelectionNet,
+                    origin: cursorPoint,
+                    current: cursorPoint,
+                })
+                break
+
+            case CanvasMode.Inserting:
+                createTemporaryObject(canvasState.objectType, cursorPoint)
+                break
+
+            case CanvasMode.Selected:
+                if (e.target.getType() !== 'Stage') break
+
+                setCanvasState({
+                    mode: CanvasMode.SelectionNet,
+                    origin: cursorPoint,
+                    current: cursorPoint,
+                })
+                break
+        }
+
+        mouseDown.current = true
+    }
+
+    function onMouseMove(e: KonvaEventObject<MouseEvent>) {
+        if (!mouseDown.current) return
+        e.evt.preventDefault()
+        
+        let currentPoint: Point | null
+        switch (canvasState.mode) {
+            case CanvasMode.SelectionNet:
+                currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
+                if (!currentPoint) return
+
+                setCanvasState({
+                    ...canvasState,
+                    current: currentPoint,
+                })
+                break
+        
+            case CanvasMode.Inserting:
+                currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
+                if (!currentPoint) return
+
+                updateTemporaryObject(
+                    startingPoint.current, 
+                    currentPoint,
+                )
+                break
+
+            case CanvasMode.Selected:
+                currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
+                if (!currentPoint) break
+                const movedBy = {
+                    x: currentPoint.x - startingPoint.current.x,
+                    y: currentPoint.y - startingPoint.current.y,
+                }
+
+                // canvasState.objects.forEach(object => {
+                //     if (object.type === CanvasObjectType.Line){
+                //         object.points = object.points.map((point, i) => {
+                //             if (i % 2 === 0) return point + movedBy.x
+                //             return point + movedBy.y
+                //         })
+                //     } else{
+                //         object.x += movedBy.x
+                //         object.y += movedBy.y
+                //     }
+                // })
+                moveSelectedObjects(movedBy)
+
+                startingPoint.current = currentPoint
+                break
+
+            default:
+                break
+        }
+    }
+
+    function onMouseUp(e: KonvaEventObject<MouseEvent>) {
+        if (e.evt.button !== 0) {
+            return;
+        }
+        e.evt.preventDefault()
+
+        switch (canvasState.mode) {
+            case 'Inserting':
+                const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
+                if( !currentPoint || 
+                    !startingPoint.current || 
+                    !temporaryObject ||
+                    (temporaryObject.type !== CanvasObjectType.Text && isTooSmallDrag(startingPoint.current, currentPoint))
+                ) break
+
+                addNewObject(temporaryObject)
+
+                setCanvasState({
+                    mode: CanvasMode.Selected,
+                    objects: [temporaryObject],
+                })
+                break
+                
+            case CanvasMode.SelectionNet:
+                const overlappingObjects = getOverlappingObjects(canvasObjects, canvasState.origin, canvasState.current)
+
+                if (overlappingObjects.length === 0) {
+                    setCanvasState({
+                        mode: CanvasMode.None,
+                    })
+                    break
+                }
+
+                setCanvasState({
+                    mode: CanvasMode.Selected,
+                    objects: overlappingObjects,
+                })
+                break
+        }
+
+        deleteTemporaryObject()
+        mouseDown.current = false
+    }
+
+    return { canvasObjects, temporaryObject, onMouseDown, onMouseMove, onMouseUp }
+}

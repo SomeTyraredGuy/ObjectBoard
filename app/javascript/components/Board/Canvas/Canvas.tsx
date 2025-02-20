@@ -1,9 +1,9 @@
 import React from 'react'
 import { Layer, Stage} from 'react-konva'
-import UseStageScaleAndPosition from '../hooks/UseStageScaleAndPosition'
+import UseStageScaleAndPosition from './scripts/hooks/UseStageScaleAndPosition'
 import { KonvaEventObject } from 'konva/lib/Node'
 import Objects from './Objects'
-import UseCanvasObjects from '../hooks/UseCanvasObjects'
+import UseObjectsInteraction from './scripts/hooks/canvasObjectsHooks/UseObjectsInteraction'
 import SelectionLayer from './SelectionLayer'
 import { CanvasMode } from '../../../Types/Canvas'
 
@@ -25,7 +25,7 @@ function Canvas({canvasState, setCanvasState}) {
     onMouseDown: onMouseDownUseObjects, 
     onMouseMove: onMouseMoveUseObjects,
     onMouseUp: onMouseUpUseObjects,
-  } = UseCanvasObjects({canvasState, setCanvasState, stageScale})
+  } = UseObjectsInteraction({canvasState, setCanvasState, stageScale})
 
   return (
     <Stage

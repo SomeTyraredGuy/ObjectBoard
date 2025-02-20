@@ -25,9 +25,6 @@ export type CanvasState =
         mode: CanvasMode.Inserting,
         objectType: CanvasObjectType,
     }
-    | {
-        mode: CanvasMode.Resizing,
-    }
 
 
 export enum CanvasMode {
