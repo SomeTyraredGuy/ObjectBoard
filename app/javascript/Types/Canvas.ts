@@ -7,6 +7,10 @@ export enum Side {
     Right = 8, 
 }
 
+export type LineModification = {
+    pointIndex: number,
+}
+
 export type CanvasState = 
     | {
         mode: CanvasMode.None
@@ -15,6 +19,7 @@ export type CanvasState =
         mode: CanvasMode.Selected
         objects: CanvasObject[],
         movedBy?: Point, 
+        lineModification?: LineModification
     }
     | {
         mode: CanvasMode.SelectionNet,

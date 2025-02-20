@@ -18,7 +18,8 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
     const { 
         canvasObjects,
         addNewObject, 
-        moveSelectedObjects 
+        moveSelectedObjects ,
+        moveLinePoint
     } = UseObjects({canvasState, setCanvasState, stageScale})
     const {
         temporaryObject,
@@ -56,6 +57,7 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
 
             case CanvasMode.Selected:
                 if (e.target.getType() !== 'Stage') break
+                // if clicked directly on the stage
 
                 setCanvasState({
                     mode: CanvasMode.SelectionNet,
@@ -102,18 +104,11 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
                     y: currentPoint.y - startingPoint.current.y,
                 }
 
-                // canvasState.objects.forEach(object => {
-                //     if (object.type === CanvasObjectType.Line){
-                //         object.points = object.points.map((point, i) => {
-                //             if (i % 2 === 0) return point + movedBy.x
-                //             return point + movedBy.y
-                //         })
-                //     } else{
-                //         object.x += movedBy.x
-                //         object.y += movedBy.y
-                //     }
-                // })
-                moveSelectedObjects(movedBy)
+                if (canvasState.lineModification) {
+                    moveLinePoint(canvasState.lineModification.pointIndex, movedBy)
+                } else {
+                    moveSelectedObjects(movedBy)
+                }
 
                 startingPoint.current = currentPoint
                 break

@@ -4,7 +4,7 @@ import UseStageScaleAndPosition from './scripts/hooks/UseStageScaleAndPosition'
 import { KonvaEventObject } from 'konva/lib/Node'
 import Objects from './Objects'
 import UseObjectsInteraction from './scripts/hooks/canvasObjectsHooks/UseObjectsInteraction'
-import SelectionLayer from './SelectionLayer'
+import SelectionLayer from './SelectionLayer/SelectionLayer'
 import { CanvasMode } from '../../../Types/Canvas'
 
 function Canvas({canvasState, setCanvasState}) {
@@ -52,6 +52,7 @@ function Canvas({canvasState, setCanvasState}) {
       { (canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.Selected) &&
         <SelectionLayer 
           canvasState={canvasState}
+          setCanvasState={setCanvasState}
           scale={stageScale}
         />
       }

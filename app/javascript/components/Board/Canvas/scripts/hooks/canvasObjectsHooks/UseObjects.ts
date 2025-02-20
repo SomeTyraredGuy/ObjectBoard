@@ -54,9 +54,38 @@ export default function UseObjects({canvasState, setCanvasState, stageScale}: Pr
         setCanvasObjects(newObjects)
     }
 
+    function moveLinePoint(pointIndex: number, moveBy: Point) {
+        if (canvasState.mode !== CanvasMode.Selected || 
+            canvasState.lineModification === undefined ||
+            canvasState.objects.length !== 1 // assumes that line is only one selected object
+        ) return
+        
+        let line = canvasState.objects[0]
+        if (!line || line.index === undefined) return
+        
+        line = canvasObjects[line.index]
+        if (!line || line.index === undefined || line.type !== CanvasObjectType.Line) return
+        
+        const xIndex = pointIndex * 2
+        let points = [...line.points]
+        points[xIndex] = points[xIndex] + moveBy.x
+        points[xIndex + 1] = points[xIndex + 1] + moveBy.y
+
+        let newObjects = [...canvasObjects]
+        newObjects[line.index] = {...line, points: points}
+
+        setCanvasState({
+            ...canvasState,
+            objects: [newObjects[line.index]],
+        })
+
+        setCanvasObjects(newObjects)
+    }
+
     return { 
         canvasObjects,
         addNewObject, 
-        moveSelectedObjects 
+        moveSelectedObjects,
+        moveLinePoint
     }
 }
