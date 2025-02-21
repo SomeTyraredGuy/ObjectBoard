@@ -1,4 +1,4 @@
-import { CanvasObject, CanvasObjectType, Point } from "./CanvasObjects"
+import { CanvasObject, CanvasObjectType, Point, XYWH } from "./CanvasObjects"
 
 export enum Side {
     Top = 1,
@@ -11,6 +11,12 @@ export type LineModification = {
     pointIndex: number,
 }
 
+export type Resizing = {
+    side: Side,
+    initialSelectionNet: XYWH,
+    initialSelectedObjects: CanvasObject[],
+}
+
 export type CanvasState = 
     | {
         mode: CanvasMode.None
@@ -18,8 +24,9 @@ export type CanvasState =
     | {
         mode: CanvasMode.Selected
         objects: CanvasObject[],
-        movedBy?: Point, 
-        lineModification?: LineModification
+        movedBy?: Point, // for SelectionLayer to just move and not fully recalculate
+        lineModification?: LineModification,
+        resizing?: Resizing,
     }
     | {
         mode: CanvasMode.SelectionNet,

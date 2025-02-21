@@ -1,6 +1,7 @@
 import { useState } from "react"
-import { CanvasObject, CanvasObjectType, Point } from "../../../../../../Types/CanvasObjects"
-import { CanvasState, CanvasMode } from "../../../../../../Types/Canvas"
+import { CanvasObject, CanvasObjectType, Point, XYWH } from "../../../../../../Types/CanvasObjects"
+import { CanvasState, CanvasMode, Side } from "../../../../../../Types/Canvas"
+import { getResizedByPercent, resizeRectangle, resizeEllipse, resizeLine, resizeText } from "../../getResized"
 
 
 type Props = {
@@ -54,7 +55,7 @@ export default function UseObjects({canvasState, setCanvasState, stageScale}: Pr
         setCanvasObjects(newObjects)
     }
 
-    function moveLinePoint(pointIndex: number, moveBy: Point) {
+    function moveLinePoint(moveBy: Point, final = false) {
         if (canvasState.mode !== CanvasMode.Selected || 
             canvasState.lineModification === undefined ||
             canvasState.objects.length !== 1 // assumes that line is only one selected object
@@ -66,7 +67,7 @@ export default function UseObjects({canvasState, setCanvasState, stageScale}: Pr
         line = canvasObjects[line.index]
         if (!line || line.index === undefined || line.type !== CanvasObjectType.Line) return
         
-        const xIndex = pointIndex * 2
+        const xIndex = canvasState.lineModification.pointIndex * 2
         let points = [...line.points]
         points[xIndex] = points[xIndex] + moveBy.x
         points[xIndex + 1] = points[xIndex + 1] + moveBy.y
@@ -74,18 +75,87 @@ export default function UseObjects({canvasState, setCanvasState, stageScale}: Pr
         let newObjects = [...canvasObjects]
         newObjects[line.index] = {...line, points: points}
 
-        setCanvasState({
-            ...canvasState,
-            objects: [newObjects[line.index]],
-        })
+        if (final) {
+            setCanvasState({
+                ...canvasState,
+                objects: [newObjects[line.index]],
+                lineModification: undefined,
+            })
+        } else{
+            setCanvasState({
+                ...canvasState,
+                objects: [newObjects[line.index]],
+            })
+        }
 
         setCanvasObjects(newObjects)
+    }
+
+    function resizeSelectedObjects(currentPoint: Point, final = false) {
+        if (canvasState.mode !== CanvasMode.Selected || !canvasState.resizing) return
+        
+        const side = canvasState.resizing.side
+        const initialSelectedObjects = canvasState.resizing.initialSelectedObjects
+        const initialSelectionNet = canvasState.resizing.initialSelectionNet
+        const resizedByPercent = getResizedByPercent(side, currentPoint, initialSelectionNet)
+
+        let newObjects = [...canvasObjects]
+        let newSelected: CanvasObject[] = []
+    
+        canvasState.objects.forEach( (obj, i) => {
+            if (obj.index === undefined) return
+    
+            let newObject = {...obj}
+            switch (newObject.type) {
+                case CanvasObjectType.Line:
+                    if (initialSelectedObjects[i].type !== CanvasObjectType.Line) return
+                    resizeLine(newObject, resizedByPercent, currentPoint, initialSelectionNet, initialSelectedObjects[i], side)
+                    break
+                    
+                case CanvasObjectType.Rectangle:
+                    if (initialSelectedObjects[i].type !== CanvasObjectType.Rectangle) return
+                    resizeRectangle(newObject, resizedByPercent, currentPoint, initialSelectionNet, initialSelectedObjects[i], side)
+                    break
+
+                case CanvasObjectType.Ellipse:
+                    if (initialSelectedObjects[i].type !== CanvasObjectType.Ellipse) return
+                    resizeEllipse(newObject, resizedByPercent, currentPoint, initialSelectionNet, initialSelectedObjects[i], side)
+                    break
+
+                case CanvasObjectType.Text:
+                    if (initialSelectedObjects[i].type !== CanvasObjectType.Text) return
+                    resizeText(newObject, resizedByPercent, currentPoint, initialSelectionNet, initialSelectedObjects[i], side)
+                    break
+
+                default:
+                    return
+            }
+    
+            newObjects[obj.index] = newObject
+            newSelected.push(newObject)
+        })
+    
+        setCanvasObjects(newObjects)
+
+        if (final) {
+            setCanvasState({
+                ...canvasState,
+                objects: newSelected,
+                resizing: undefined,
+            })
+        } else{
+            setCanvasState({
+                ...canvasState,
+                objects: newSelected,
+            })
+        }
     }
 
     return { 
         canvasObjects,
         addNewObject, 
         moveSelectedObjects,
-        moveLinePoint
+        moveLinePoint,
+        resizeSelectedObjects
     }
 }

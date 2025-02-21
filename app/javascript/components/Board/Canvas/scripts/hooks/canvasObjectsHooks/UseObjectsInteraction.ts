@@ -19,7 +19,8 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
         canvasObjects,
         addNewObject, 
         moveSelectedObjects ,
-        moveLinePoint
+        moveLinePoint,
+        resizeSelectedObjects
     } = UseObjects({canvasState, setCanvasState, stageScale})
     const {
         temporaryObject,
@@ -99,13 +100,19 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
             case CanvasMode.Selected:
                 currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
                 if (!currentPoint) break
+
+                if (canvasState.resizing) {
+                    resizeSelectedObjects(currentPoint)
+                    break
+                }
+
                 const movedBy = {
                     x: currentPoint.x - startingPoint.current.x,
                     y: currentPoint.y - startingPoint.current.y,
                 }
 
                 if (canvasState.lineModification) {
-                    moveLinePoint(canvasState.lineModification.pointIndex, movedBy)
+                    moveLinePoint(movedBy)
                 } else {
                     moveSelectedObjects(movedBy)
                 }
@@ -155,6 +162,21 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
                     mode: CanvasMode.Selected,
                     objects: overlappingObjects,
                 })
+                break
+
+            case CanvasMode.Selected:
+                if (canvasState.lineModification) {
+                    moveLinePoint({x: 0, y: 0}, true)
+                    break
+                }
+
+                if (canvasState.resizing) {
+                    const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
+                    if (!currentPoint) break
+                    
+                    resizeSelectedObjects(currentPoint, true)
+                    break
+                }
                 break
         }
 

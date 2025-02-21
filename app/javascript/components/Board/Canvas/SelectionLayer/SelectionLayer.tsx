@@ -234,7 +234,10 @@ function SelectionLayer({canvasState, setCanvasState, scale} : Props) {
                     point={point.calcPoint(XYWH.current)}
                     side={point.side}
                     scale={scale}
+                    selectionNet={XYWH.current}
                     key={i}
+                    canvasState={canvasState}
+                    setCanvasState={setCanvasState}
                   />
                 )
               })}

@@ -1,25 +1,20 @@
 import React from 'react'
-import { Point } from '../../../../Types/CanvasObjects'
+import { Point, XYWH } from '../../../../Types/CanvasObjects'
 import { Circle } from 'react-konva'
-import { Side } from '../../../../Types/Canvas'
+import { CanvasState, CanvasMode, Side } from '../../../../Types/Canvas'
 import { onMouseLeave } from '../scripts/generalObjectsEventsHandlers'
 import { KonvaEventObject } from 'konva/lib/Node'
-
-function setOnMouseEnter(cursor: string) {
-    return (e: KonvaEventObject<MouseEvent>) => {
-        const stage = e.target.getStage()
-        if (!stage) return
-        stage.container().style.cursor = cursor
-    }
-}
 
 type Props = {
     point: Point,
     scale: number,
-    side: Side
+    side: Side,
+    selectionNet: XYWH,
+    canvasState: CanvasState,
+    setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
 }
 
-function ResizePoint({point, scale, side} : Props) {
+function ResizePoint({point, scale, side, selectionNet, canvasState, setCanvasState} : Props) {
     let cursor: string
 
     switch (side) {
@@ -50,7 +45,26 @@ function ResizePoint({point, scale, side} : Props) {
         default:
             return null
     }
-    
+
+    function onMouseEnter(e: KonvaEventObject<MouseEvent>) {
+        const stage = e.target.getStage()
+        if (!stage) return
+        stage.container().style.cursor = cursor
+    }
+
+    function onMouseDown(e: KonvaEventObject<MouseEvent>) {
+        e.evt.preventDefault()
+        if (canvasState.mode !== CanvasMode.Selected) return
+
+        setCanvasState({
+            ...canvasState,
+            resizing: {
+                side: side,
+                initialSelectionNet: selectionNet,
+                initialSelectedObjects: canvasState.objects,
+            },
+        })
+    }
 
     return (
         <Circle
@@ -60,8 +74,9 @@ function ResizePoint({point, scale, side} : Props) {
             fill='black'
             strokeWidth={1 / scale}
             radius={8 / scale}
-            onMouseEnter={setOnMouseEnter(cursor)}
+            onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
+            onMouseDown={onMouseDown}
         />
     )
 }

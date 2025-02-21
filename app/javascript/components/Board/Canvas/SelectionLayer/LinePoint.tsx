@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { Point } from '../../../../Types/CanvasObjects'
 import { Circle } from 'react-konva'
 import { onMouseEnter, onMouseLeave } from '../scripts/generalObjectsEventsHandlers'
@@ -27,16 +27,6 @@ function LinePoint({ canvasState, setCanvasState, point, pointIndex, scale } : P
         })
     }
 
-    function onMouseUp(e: KonvaEventObject<MouseEvent>) {
-        e.evt.preventDefault()
-        if (canvasState.mode !== CanvasMode.Selected) return
-
-        setCanvasState({
-            ...canvasState,
-            lineModification: undefined
-        })
-    }
-
 
   return (
     <Circle
@@ -49,7 +39,6 @@ function LinePoint({ canvasState, setCanvasState, point, pointIndex, scale } : P
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onMouseDown={onMouseDown}
-        onMouseUp={onMouseUp}
     />
   )
 }
