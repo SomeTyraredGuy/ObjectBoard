@@ -115,24 +115,18 @@ function resizeRectangle(rectangle: Rectangle, resizedByPercent: Point, currentP
 }
 
 function resizeEllipse(ellipse: Ellipse, resizedByPercent: Point, currentPoint: Point, initialSelectionNet: XYWH, initialEllipse: Ellipse, side: Side) {
-    ellipse.radiusX = Math.abs(initialEllipse.radiusX * resizedByPercent.x)
-    ellipse.radiusY = Math.abs(initialEllipse.radiusY * resizedByPercent.y)
+    const newRadiusX = initialEllipse.radiusX * resizedByPercent.x
+    const newRadiusY = initialEllipse.radiusY * resizedByPercent.y
+    ellipse.radiusX = Math.abs(newRadiusX)
+    ellipse.radiusY = Math.abs(newRadiusY)
 
-    let rightX = () => {}
-    let leftX = () => {}
-    let bottomY = () => {}
-    let topY = () => {}
+    const paddingX = () => (initialEllipse.x - initialEllipse.radiusX - initialSelectionNet.x) * resizedByPercent.x
+    const paddingY = () => (initialEllipse.y - initialEllipse.radiusY - initialSelectionNet.y) * resizedByPercent.y
 
-    if (resizedByPercent.x < 0){
-        const resizedByPercentX = Math.abs(resizedByPercent.x)
-        rightX = () => {}
-        leftX = () => {}
-    } 
-    if (resizedByPercent.y < 0){
-        const resizedByPercentY = Math.abs(resizedByPercent.y)
-        bottomY = () => {}
-        topY = () => {}
-    }
+    let rightX = () => {ellipse.x = initialSelectionNet.x + newRadiusX + paddingX()}
+    let leftX = () => {ellipse.x = currentPoint.x + newRadiusX + paddingX()}
+    let bottomY = () => {ellipse.y = initialSelectionNet.y + newRadiusY + paddingY()}
+    let topY = () => {ellipse.y = currentPoint.y + newRadiusY + paddingY()}
 
     iterateSidesAndCorners(side, rightX, leftX, bottomY, topY)
 }
