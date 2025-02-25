@@ -132,7 +132,35 @@ function resizeEllipse(ellipse: Ellipse, resizedByPercent: Point, currentPoint: 
 }
 
 function resizeLine(line: Line, resizedByPercent: Point, currentPoint: Point, initialSelectionNet: XYWH, initialLine: Line, side: Side) {
-    
+    let points = [...line.points]
+
+    const paddingX = (i) => (initialLine.points[i] - initialSelectionNet.x) * resizedByPercent.x
+    const paddingY = (i) => (initialLine.points[i] - initialSelectionNet.y) * resizedByPercent.y
+
+    let rightX = () => {
+         for (let i = 0; i < points.length; i += 2){
+            points[i] = initialSelectionNet.x + paddingX(i)
+         }
+     }
+    let leftX = () => {
+        for (let i = 0; i < points.length; i += 2){
+            points[i] = currentPoint.x + paddingX(i)
+        }
+    }
+    let bottomY = () => {
+        for (let i = 1; i < points.length; i += 2){
+            points[i] = initialSelectionNet.y + paddingY(i)
+        }
+    }
+    let topY = () => {
+        for (let i = 1; i < points.length; i += 2){
+            points[i] = currentPoint.y + paddingY(i)
+        }
+    }
+
+    iterateSidesAndCorners(side, rightX, leftX, bottomY, topY)
+
+    line.points = points
 }
 
 function resizeText(text: Text, resizedByPercent: Point, currentPoint: Point, initialSelectionNet: XYWH, initialText: Text, side: Side) {

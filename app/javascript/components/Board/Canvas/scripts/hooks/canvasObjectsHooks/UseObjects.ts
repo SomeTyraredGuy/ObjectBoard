@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { CanvasObject, CanvasObjectType, Point, XYWH } from "../../../../../../Types/CanvasObjects"
-import { CanvasState, CanvasMode, Side } from "../../../../../../Types/Canvas"
-import { getResizedByPercent, resizeRectangle, resizeEllipse, resizeLine, resizeText } from "../../getResized"
+import { CanvasObject, CanvasObjectType, Point } from "../../../../../../Types/CanvasObjects"
+import { CanvasState, CanvasMode } from "../../../../../../Types/Canvas"
+import { getResizedByPercent, resizeRectangle, resizeEllipse, resizeLine, resizeText } from "../../resize"
 
 
 type Props = {
