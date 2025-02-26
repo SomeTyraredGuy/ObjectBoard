@@ -5,9 +5,14 @@ import { KonvaEventObject } from 'konva/lib/Node'
 import Objects from './Objects'
 import UseObjectsInteraction from './scripts/hooks/canvasObjectsHooks/UseObjectsInteraction'
 import SelectionLayer from './SelectionLayer/SelectionLayer'
-import { CanvasMode } from '../../../Types/Canvas'
+import { CanvasMode, CanvasState } from '../../../Types/Canvas'
 
-function Canvas({canvasState, setCanvasState}) {
+type Props = {
+  canvasState: CanvasState,
+  setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>
+}
+
+function Canvas({canvasState, setCanvasState}: Props) {
 
   const { 
     onWheel, 

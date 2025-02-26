@@ -6,11 +6,10 @@ import { getResizedByPercent, resizeRectangle, resizeEllipse, resizeLine, resize
 
 type Props = {
     canvasState: CanvasState,
-    setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
-    stageScale: number
+    setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>
 }
 
-export default function UseObjects({canvasState, setCanvasState, stageScale}: Props) {
+export default function UseObjects({canvasState, setCanvasState}: Props) {
     const [canvasObjects, setCanvasObjects] = useState<CanvasObject[]>([])
     
     function addNewObject(object: CanvasObject){

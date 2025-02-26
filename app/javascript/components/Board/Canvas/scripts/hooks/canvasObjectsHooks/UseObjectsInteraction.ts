@@ -21,7 +21,7 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
         moveSelectedObjects ,
         moveLinePoint,
         resizeSelectedObjects
-    } = UseObjects({canvasState, setCanvasState, stageScale})
+    } = UseObjects({canvasState, setCanvasState})
     const {
         temporaryObject,
         createTemporaryObject,

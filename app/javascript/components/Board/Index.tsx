@@ -10,7 +10,7 @@ import {useState} from 'react'
 import {CanvasMode, CanvasState} from '../../Types/Canvas'
 import Canvas from './Canvas/Canvas.js'
 
-function Index({db}) {
+function Index({db}: {db: any}) {
   const [canvasState, setCanvasState] = useState<CanvasState>({
     mode: CanvasMode.None
   })  
