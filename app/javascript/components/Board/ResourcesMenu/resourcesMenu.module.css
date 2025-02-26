@@ -7,4 +7,13 @@
     height: 80vh;
     
     background-color: #F3F3F3;
+
+    border: 2px solid var(--border-color);
+    border-radius: 15px 0 0 15px;
+    border-collapse: initial;
+}
+
+.wrapper tr:first-child td:first-child {
+    border-bottom: 2px solid var(--border-color);
+    height: 64px;
 }

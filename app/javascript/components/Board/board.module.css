@@ -1,62 +1,87 @@
 .background {
-    background-color: #F3F3F3;
+  background-color: #F3F3F3;
+}
+
+.border {
+  border: 2px solid var(--border-color);
+}
+
+.leftBorder {
+  border: 2px solid var(--border-color);
+}
+
+.leftRounded {
+  border-radius: 15px 0 0 15px !important;
+}
+
+.rightBorder {
+  border: 2px solid var(--border-color);
+  border-left: none;
+}
+
+.rightRounded {
+  border-radius: 0 15px 15px 0 !important;
+}
+
+.bottomBorder {
+  border-bottom: 2px solid var(--border-color);
 }
 
 .ellipsis {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 200px;
-    min-width: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 200px;
+  min-width: 0;
 }
 
 .avatarCard {
-    position: relative; 
-    width: 42px; 
-    height: 42px;
-    margin-right: -36px;
-    margin-top: 14px;
-    border: 1px solid #9e9e9e;
+  position: relative; 
+  width: 42px; 
+  height: 42px;
+  margin-right: -36px;
+  margin-top: 14px;
+  border: 1px solid var(--border-color);
 }
 
 .avatarCard:nth-child(1) {
-    margin-top: 6px;
-    z-index: 2;
+  margin-top: 6px;
+  z-index: 2;
 }
 
 .avatarCard:nth-child(2) {
-    margin-top: 10px;
-    z-index: 1;
+  margin-top: 10px;
+  z-index: 1;
 }
 
 .buttonHover{
-    background-color: transparent;
-    border-radius: 12px;
+  background-color: transparent;
+  border-radius: 12px;
 }
 
 .buttonHover:hover{
-    background-color: #dfdfdf;
+  background-color: #dfdfdf;
 }
 
-  .AButton {
-    flex-grow: 1;
-    height: 50px;
-    text-decoration: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 12px;
-    border: 2px solid #9e9e9e;
-    background-color: white;
-    color: black;
-    margin:  0 5% 0 5%;
-  }
+.AButton {
+  flex-grow: 1;
+  height: 50px;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  border: 2px solid var(--border-color);
+  background-color: white;
+  color: black;
+  margin:  0 5% 0 5%;
+}
 
-  .AButton:hover {
-    background-color: #dfdfdf;
-    color: black;
-  }
+.AButton:hover {
+  background-color: #dfdfdf;
+  color: black;
+}
 
-  .maxwidthSmall {
-    max-width: 400px;
-  }
+.maxwidthSmall {
+  max-width: 400px;
+}

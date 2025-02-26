@@ -1,5 +1,6 @@
 import React from 'react'
 import classes from '../Board/board.module.css'
+import generalClasses from '../General/general.module.css'
 import PlusCircleSVG from '../svg/PlusCircleSVG.jsx'
 import { useQuery } from '@tanstack/react-query'
 import { BASE_BOARD_URL } from '../../Data/constants.js'
@@ -53,7 +54,7 @@ function OtherUsersButton({currentUser}) {
   return (
     <div className="dropdown" >
         <button type="button" id="dropdownMenuButton1" data-bs-toggle={`${!noOtherUsers() && "dropdown"}`} aria-expanded="false"
-        className={`min-w-100 border-0 d-flex ${buttonHover()} ${noOtherUsers() && "justify-content-center align-items-center"}`} 
+        className={`w-100 border-0 d-flex ${classes.rightRounded} ${buttonHover()} ${noOtherUsers() && "justify-content-center align-items-center"}`} 
         style={{width: "66px", height:"64px"}} 
         onClick={buttonFunction()} disabled={!currentUser.role.can_change_roles && noOtherUsers()}
         >
@@ -65,7 +66,7 @@ function OtherUsersButton({currentUser}) {
             ))}
         </button>
 
-        <ul className={`dropdown-menu p-0 ${classes.scroll}`} style={{width: "272px", maxHeight: "80vh"}} aria-labelledby="dropdownMenuButton1">
+        <ul className={`dropdown-menu p-0 ${classes.border} ${generalClasses.scroll}`} style={{width: "272px", maxHeight: "80vh"}} aria-labelledby="dropdownMenuButton1">
             {otherUsers !== undefined && otherUsers.map( (user, i) =>     
                 <UserListItem user={user} toggleMenu={toggleUserMenu} key={i} disabledButton={!currentUser.role.can_change_roles}/>
             )}

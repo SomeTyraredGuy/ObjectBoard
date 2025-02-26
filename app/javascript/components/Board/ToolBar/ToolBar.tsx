@@ -75,7 +75,7 @@ function ToolBar({canvasState, setCanvasState, undo, redo, canUndo, canRedo} : T
   return (
     <div className={`${classes.wrapper}`} role="group" aria-label="Vertical radio toggle button group">
 
-      <div className={`${classes.section} border border-dark-subtle border-2`}>
+      <div className={`${classes.section}`}>
           {switchButtons.map((button, i) => (
             <IconButton key={i} 
               icon={button.icon}
@@ -88,7 +88,7 @@ function ToolBar({canvasState, setCanvasState, undo, redo, canUndo, canRedo} : T
           ))}
       </div>
 
-      <div className={`${classes.section} border border-dark-subtle border-2`}>
+      <div className={`${classes.section}`}>
           {actionButtons.map((button, i) => (
             <IconButton key={i} 
             icon={button.icon}

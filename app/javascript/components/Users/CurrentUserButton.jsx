@@ -18,7 +18,7 @@ function CurrentUser({currentUser}) {
   
   return (
     <div>
-        <button onClick={toggleMenu} className={`p-2 d-flex flex-row border-0 align-items-center ${classes.buttonHover}`} style={{width: "200px"}}>
+        <button onClick={toggleMenu} className={`p-2 d-flex flex-row border-0 align-items-center w-100 ${classes.leftRounded} ${classes.buttonHover}`}>
             <img className='rounded-circle' src={`${currentUser.avatar}`} alt='Current user avatar' style={{width: '42px', height: '42px'}}/>
             <span className={`text-start mx-2 ${classes.ellipsis}`}><strong>{currentUser.name}</strong><br/>Role: {currentUser.role.name}</span>
         </button>
