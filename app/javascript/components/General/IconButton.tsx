@@ -1,5 +1,6 @@
 import React from 'react'
 import classes from './general.module.css'
+import { Side } from '../../Types/Canvas'
 
 type Props = {
     icon: any,
@@ -8,9 +9,10 @@ type Props = {
     isDisabled?: boolean,
     isActive?: boolean,
     href?: string,
+    side: Side
 }
 
-function IconButton({icon: Icon, onClick, label, isDisabled, isActive, href}: Props) {
+function IconButton({icon: Icon, onClick, label, isDisabled, isActive, href, side}: Props) {
     const button = onClick ? (
         <button
             onClick={onClick}
@@ -27,11 +29,30 @@ function IconButton({icon: Icon, onClick, label, isDisabled, isActive, href}: Pr
             <Icon width='24'/>
         </a>
     )
+    
+    let sideClass
+    switch (side) {
+        case Side.Top:
+            sideClass = classes.topHint
+            break
+
+        case Side.Bottom:
+            sideClass = classes.bottomHint
+            break
+
+        case Side.Left:
+            sideClass = classes.leftHint
+            break
+
+        case Side.Right:
+            sideClass = classes.rightHint
+            break
+    }
 
   return (
     <div className={classes.hintWrapper}>
         {button}
-        {label && <span className={classes.rightHint}>
+        {label && <span className={`${classes.hint} ${sideClass}`}>
             {label}
         </span>}
     </div>

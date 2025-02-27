@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import classes from './resourcesMenu.module.css'
 import IconButton from '../../General/IconButton'
 import { UndoSVG } from '../../svg/ToolsSVG'
+import { Side } from '../../../Types/Canvas'
 
 enum State {
   none = "none",
@@ -47,6 +48,7 @@ function ResourcesMenu() {
                 isDisabled={button.isDisabled}
                 isActive={button.isActive}
                 href={null}
+                side={Side.Top}
               />
             ))}
           </td>

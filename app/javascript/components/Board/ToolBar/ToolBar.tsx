@@ -2,7 +2,7 @@ import React from 'react'
 import classes from './toolBar.module.css'
 import {SelectSVG, UndoSVG, RedoSVG, TextSVG, RectangleSVG, CircleSVG, ArrowSVG} from '../../svg/ToolsSVG'
 import IconButton from '../../General/IconButton'
-import { CanvasMode, CanvasState } from '../../../Types/Canvas'
+import { CanvasMode, CanvasState, Side } from '../../../Types/Canvas'
 import { CanvasObjectType } from '../../../Types/CanvasObjects'
 
 interface ToolBarProps {
@@ -84,6 +84,7 @@ function ToolBar({canvasState, setCanvasState, undo, redo, canUndo, canRedo} : T
               isDisabled={button.isDisabled}
               isActive={button.isActive}
               href={null}
+              side={Side.Right}
             />
           ))}
       </div>
@@ -97,6 +98,7 @@ function ToolBar({canvasState, setCanvasState, undo, redo, canUndo, canRedo} : T
             isDisabled={button.isDisabled}
             isActive={null}
             href={null}
+            side={Side.Right}
           />
           ))}
       </div>
