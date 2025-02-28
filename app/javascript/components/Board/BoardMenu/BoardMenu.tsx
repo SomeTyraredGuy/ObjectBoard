@@ -22,13 +22,12 @@ function BoardMenu({board, isLoading} : Props) {
       <tbody className='w-100'>
         <tr className='d-flex justify-content-end'>
           <th className={`${classes.leftBorder} ${classes.leftRounded} ${classes.background} p-2`}>
-            <a href="/boards">
-              <IconButton 
-                icon={UndoSVG} 
-                label={"Exit board"}
-                side={Side.Right}
-              />
-            </a>
+            <IconButton 
+              icon={UndoSVG} 
+              label={"Exit board"}
+              side={Side.Right}
+              href='/boards'
+            />
           </th>
           <th className={`flex-grow-1 p-2 ${classes.ellipsis} text-center align-content-center ${classes.rightBorder} ${classes.rightRounded} ${classes.background}`}>
             {board.name}

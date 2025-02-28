@@ -1,53 +1,50 @@
 import React, { useState } from 'react'
 import classes from './resourcesMenu.module.css'
 import IconButton from '../../General/IconButton'
-import { UndoSVG } from '../../svg/ToolsSVG'
 import { Side } from '../../../Types/Canvas'
+import { FolderSVG, PaletteSVG } from '../../svg/ResourcesSVG'
+import ObjectsProperties from './ObjectsProperties'
+import ObjectsGroups from './ObjectsGroups'
+import { CanvasState } from '../../../Types/Canvas'
 
 enum State {
-  none = "none",
-  properties = "properties",
+  Properties = "Properties",
+  Groups = "Groups",
 }
 
-function ResourcesMenu() {
-  const [state, setState] = useState(State.none)
+type Props = {
+  canvasState: CanvasState,
+  setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>
+}
+
+function ResourcesMenu({canvasState, setCanvasState}: Props) {
+  const [state, setState] = useState(State.Properties)
 
   const stateButtons = [
     {
-      icon: UndoSVG,
-      onClick: () => setState(State.properties),
+      icon: PaletteSVG,
+      onClick: () => setState(State.Properties),
       label: "Properties",
-      isDisabled: false,
-      isActive: state === State.properties
+      isActive: state === State.Properties
     },
     {
-      icon: UndoSVG,
-      onClick: () => setState(State.none),
-      label: "none",
-      isDisabled: false,
-      isActive: false
-    },
-    {
-      icon: UndoSVG,
-      onClick: () => {},
-      label: "123",
-      isDisabled: false,
-      isActive: false
+      icon: FolderSVG,
+      onClick: () => setState(State.Groups),
+      label: "Groups",
+      isActive: state === State.Groups
     },
   ]
 
   return (
     <table className={`${classes.wrapper}`}><tbody>
       <tr>
-          <td>
+          <td className='d-flex justify-content-evenly align-items-center'>
             {stateButtons.map((button, i) => (
               <IconButton key={i} 
                 icon={button.icon}
                 onClick={button.onClick}
                 label={button.label}
-                isDisabled={button.isDisabled}
                 isActive={button.isActive}
-                href={null}
                 side={Side.Top}
               />
             ))}
@@ -56,7 +53,8 @@ function ResourcesMenu() {
 
       <tr>
         <td>
-          Resources
+          {state === State.Properties && <ObjectsProperties canvasState={canvasState} setCanvasState={setCanvasState}/>}
+          {state === State.Groups && <ObjectsGroups canvasState={canvasState} setCanvasState={setCanvasState}/>}
         </td>
       </tr>
     </tbody></table>

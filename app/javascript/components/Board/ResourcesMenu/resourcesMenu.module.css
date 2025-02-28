@@ -14,6 +14,10 @@
 }
 
 .wrapper tr:first-child td:first-child {
+    height: 100%;
     border-bottom: 2px solid var(--border-color);
-    height: 64px;
+}
+
+.wrapper tr:first-child {
+    height: 54px;
 }

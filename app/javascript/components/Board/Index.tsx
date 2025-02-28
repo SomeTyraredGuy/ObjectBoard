@@ -41,7 +41,10 @@ function Index({db}: {db: any}) {
         setCanvasState={setCanvasState}
       />
 
-      <BoardMenu board={db.board} isLoading={isLoading}/>
+      <BoardMenu 
+        board={db.board} 
+        isLoading={isLoading}
+      />
       <ToolBar 
         canvasState={canvasState}
         setCanvasState={setCanvasState}
@@ -51,8 +54,14 @@ function Index({db}: {db: any}) {
         canRedo={false}
       />
 
-      <ResourcesMenu/>
-      <UserCard currentUser={currentUser} isLoading={isLoading}/>
+      <ResourcesMenu
+        canvasState={canvasState}
+        setCanvasState={setCanvasState}
+      />
+      <UserCard 
+        currentUser={currentUser} 
+        isLoading={isLoading}
+      />
     </>
   )
 }
