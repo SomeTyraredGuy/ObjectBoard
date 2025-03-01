@@ -4,6 +4,8 @@ import { PaletteSVG } from '../../svg/ResourcesSVG'
 import ColorPicker from '../../General/Inputs/ColorPicker/ColorPicker'
 import { ChangeObjectProperty } from '../Canvas/scripts/hooks/canvasObjectsHooks/UseObjects'
 import { CanvasObjectType, numOfObjectTypes } from '../../../Types/CanvasObjects'
+import Slider from '../../General/Inputs/Slider/Slider'
+import classes from '../../General/general.module.css'
 
 type Props = {
   canvasState: CanvasState,
@@ -17,7 +19,7 @@ function ObjectsProperties({canvasState, setCanvasState, resourcesProperties}: P
   if (canvasState.mode !== CanvasMode.Selected && canvasState.mode !== CanvasMode.Inserting) return (
     <div className='p-5'>
       <PaletteSVG/>
-      <p className='p-2 text-center'>No object to be edit</p>
+      <p className='p-2 text-center fs-4 fw-bold'>No object to be edit</p>
     </div>
   )
 
@@ -25,21 +27,23 @@ function ObjectsProperties({canvasState, setCanvasState, resourcesProperties}: P
     changeProperty
   } = resourcesProperties
 
-  const setColorOf = (propertyName: "fill" | "stroke") => {
-    return (color: string) => {
+  const setProperty = <P extends ChangeObjectProperty["propertyName"]>(propertyName: P) => {
+    return (
+      value: Extract<ChangeObjectProperty, { propertyName: P }>["newValue"]
+    ) => {
       if (canvasState.mode === CanvasMode.Inserting) {
         setCanvasState({
           ...canvasState,
           startingProperties: {
             ...canvasState.startingProperties,
-            [propertyName]: color
+            [propertyName]: value
           }
         })
       }
       if (canvasState.mode === CanvasMode.Selected) {
         changeProperty({
           propertyName: propertyName,
-          newValue: color
+          newValue: value
         })
       }
     }
@@ -51,6 +55,8 @@ function ObjectsProperties({canvasState, setCanvasState, resourcesProperties}: P
 
       let foundTypes: CanvasObjectType[] = []
       for (const object of canvasState.objects){
+        if (!object) continue
+
         if (!foundTypes.includes(object.type)){
           foundTypes.push(object.type)
           defaultProperties = {
@@ -65,13 +71,8 @@ function ObjectsProperties({canvasState, setCanvasState, resourcesProperties}: P
 
     case CanvasMode.Inserting:
       defaultProperties = {
-        stroke: canvasState.startingProperties.stroke,
-      }
-      if (canvasState.startingProperties.type !== CanvasObjectType.Line){
-        defaultProperties = {
-          ...defaultProperties,
-          fill: canvasState.startingProperties.fill,
-        }
+        ...defaultProperties,
+        ...canvasState.startingProperties
       }
       break
   }
@@ -79,24 +80,55 @@ function ObjectsProperties({canvasState, setCanvasState, resourcesProperties}: P
   const properties = [
     <ColorPicker 
       label='Fill'
-      initialValue={defaultProperties.fill}
-      setColor={ setColorOf("fill") }
+      value={defaultProperties.fill}
+      setColor={ setProperty("fill") }
     />,
 
     <ColorPicker 
       label='Stroke'
-      initialValue={defaultProperties.stroke}
-      setColor={ setColorOf("stroke") }
+      value={defaultProperties.stroke}
+      setColor={ setProperty("stroke") }
+    />,
+
+    <Slider
+      min={0}
+      max={50}
+      step={0.5}
+      label='Stroke Width'
+      value={defaultProperties.strokeWidth}
+      onChange={ setProperty("strokeWidth") }
+    />,
+
+    <Slider
+      min={0.1}
+      max={1}
+      step={0.01}
+      multiple100={true}
+      units='%'
+      label='Opacity'
+      value={defaultProperties.opacity}
+      onChange={ setProperty("opacity") }
+    />,
+
+    <Slider
+      min={0}
+      max={1}
+      step={0.01}
+      multiple100={true}
+      units='%'
+      label='Corner Radius'
+      value={defaultProperties.cornerRadius}
+      onChange={ setProperty("cornerRadius") }
     />,
   ]
     
   return (
-    <div className='h-100 d-flex flex-column align-items-start ps-3 pt-3'>
+    <div className={`h-100 d-flex flex-column align-items-start p-3 ${classes.scroll}`}>
       {properties.map((property, i) => {
-        if (!property.props.initialValue) return null
+        if (property.props.value === undefined) return null
         
         return(
-          <div key={i} className='mb-3'>
+          <div key={i} className='mb-3 w-100'>
             {property}
           </div>
         )

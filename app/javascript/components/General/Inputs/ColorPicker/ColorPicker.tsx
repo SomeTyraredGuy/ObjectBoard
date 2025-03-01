@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import classes from './colorPicker.module.css'
 import ColorCircle from './ColorCircle'
+import inputClasses from '../input.module.css'
 
 type Props = {
-    initialValue?: string,
+    value?: string,
     label: string,
     setColor: (color: string) => void,
 }
 
-function ColorPicker({label, setColor, initialValue}: Props) {
+function ColorPicker({label, setColor, value}: Props) {
   const colors = [
     "#000000",
     "#FFFFFF",
@@ -18,16 +19,18 @@ function ColorPicker({label, setColor, initialValue}: Props) {
     "transparent",
   ]
   const [selected, setSelected] = useState( 
-    colors.findIndex((color) => color === initialValue)
+    colors.findIndex((color) => color === value)
   )
   useEffect(() => {
-    setSelected( colors.findIndex((color) => color === initialValue) )
-  }, [initialValue])
+    let index = colors.findIndex((color) => color === value)
+    if (index === -1) index = colors.length
+    setSelected( index )
+  }, [value])
   
 
   return (
     <div >
-        <p className='me-3 mb-0'>{label}</p>
+        <p className={inputClasses.inputLabel}>{label}</p>
 
         <div className='d-flex align-items-center gap-2'>
           {
@@ -46,7 +49,7 @@ function ColorPicker({label, setColor, initialValue}: Props) {
 
           <input 
             type="color" 
-            value={selected === colors.length ? initialValue : "#000000"}
+            value={value}
             className={`${classes.colorPicker} ${selected === colors.length && classes.selected}`}
             onClick={() => {
               setSelected(colors.length)

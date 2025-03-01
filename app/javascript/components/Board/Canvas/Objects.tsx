@@ -40,8 +40,9 @@ function Objects({canvasObjects, temporaryObject, setCanvasState, canvasState}) 
   function renderObject(object: CanvasObject, i?: number) {
     const commonProps = {
       key: object.id ? object.id : i,
-      fill: object.type !== CanvasObjectType.Line && object.fill ? object.fill : "#2565db",
       stroke: object.stroke ? object.stroke : "none",
+      strokeWidth: object.strokeWidth,
+      opacity: object.opacity,
 
       onMouseEnter: onMouseEnter,
       onMouseLeave: onMouseLeave,
@@ -57,6 +58,8 @@ function Objects({canvasObjects, temporaryObject, setCanvasState, canvasState}) 
           y={object.y}
           width={object.width} 
           height={object.height} 
+          fill={object.fill}
+          cornerRadius={ object.width * object.cornerRadius}
         />
 
       case CanvasObjectType.Ellipse:
@@ -66,6 +69,7 @@ function Objects({canvasObjects, temporaryObject, setCanvasState, canvasState}) 
           y={object.y}
           radiusX={object.radiusX} 
           radiusY={object.radiusY} 
+          fill={object.fill}
         />
 
       case CanvasObjectType.Text:
@@ -74,6 +78,7 @@ function Objects({canvasObjects, temporaryObject, setCanvasState, canvasState}) 
           x={object.x}
           y={object.y}
           text={object.text} 
+          fill={object.fill}
         />
 
       case CanvasObjectType.Line:

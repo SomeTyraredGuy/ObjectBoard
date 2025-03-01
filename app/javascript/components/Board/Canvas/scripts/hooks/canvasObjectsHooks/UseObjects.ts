@@ -11,6 +11,18 @@ export type ChangeObjectProperty = {
     propertyName: "stroke",
     newValue: string,
 }
+| {
+    propertyName: "strokeWidth",
+    newValue: number,
+}
+| {
+    propertyName: "opacity",
+    newValue: number,
+}
+| {
+    propertyName: "cornerRadius",
+    newValue: number,
+}
 
 type Props = {
     canvasState: CanvasState,
@@ -165,14 +177,18 @@ export default function UseObjects({canvasState, setCanvasState}: Props) {
         let newSelected: CanvasObject[] = []
         
         canvasState.objects.forEach( obj => {
-            if (obj.index === undefined ||
-                obj.type === CanvasObjectType.Line && propertyName === "fill"
-            ) return
+            if ( obj.index === undefined ) return
     
-            let newObject = {
-                ...obj,
-                [propertyName]: newValue,
+            let newObject = { ...obj }
+
+            if ( propertyName in obj ){
+                newObject = {
+                    ...newObject,
+                    [propertyName]: newValue,
+                }
             }
+            
+
             newObjects[obj.index] = newObject
             newSelected.push(newObject)
         })
