@@ -1,7 +1,7 @@
 import React from 'react'
 import CenterMenu from '../General/CenterMenu'
 import classes from '../Board/board.module.css'
-import TextInput from '../General/TextInput/TextInput'
+import TextInput from '../General/Inputs/TextInput/TextInput'
 import MemberUseMutation from './MemberUseMutation'
 import DefaultNotificationGroup from '../General/Notification/DefaultNotificationGroup.jsx'
 

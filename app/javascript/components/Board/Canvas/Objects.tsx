@@ -40,7 +40,9 @@ function Objects({canvasObjects, temporaryObject, setCanvasState, canvasState}) 
   function renderObject(object: CanvasObject, i?: number) {
     const commonProps = {
       key: object.id ? object.id : i,
-      fill: 'red',      
+      fill: object.type !== CanvasObjectType.Line && object.fill ? object.fill : "#2565db",
+      stroke: object.stroke ? object.stroke : "none",
+
       onMouseEnter: onMouseEnter,
       onMouseLeave: onMouseLeave,
 
@@ -78,7 +80,6 @@ function Objects({canvasObjects, temporaryObject, setCanvasState, canvasState}) 
         return <Line  
           {...commonProps} 
           points={object.points} 
-          stroke={object.stroke} 
         />
     }
   }

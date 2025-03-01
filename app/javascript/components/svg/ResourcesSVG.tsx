@@ -2,8 +2,8 @@ import React from 'react'
 import SVG from './SVG'
 
 type Props = {
-    width: number,
-    height: number
+    width?: number,
+    height?: number
 }
 
 function PaletteSVG({width, height = width} : Props) {

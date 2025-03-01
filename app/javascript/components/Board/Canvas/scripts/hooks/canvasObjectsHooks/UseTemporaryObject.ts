@@ -2,58 +2,27 @@ import { useState } from "react"
 import { CanvasObject, CanvasObjectType, Point } from "../../../../../../Types/CanvasObjects"
 import { getDirection } from "../../getters"
 
-function createNewObject(objectType: CanvasObjectType, currentPoint: Point): CanvasObject {
-    const CommonObjectProps = {
-        locked: false,
+function createNewObject(currentPoint: Point, startingProperties: CanvasObject): CanvasObject {
+    if (startingProperties.type === CanvasObjectType.Text) return {
+        ...startingProperties,
+        x: currentPoint.x,
+        y: currentPoint.y,
+        text: 'Text',
     }
 
-    switch (objectType) {
-        case CanvasObjectType.Rectangle:
-            let width: number, height: number
-            width = 0
-            height = 0
 
-            return {
-                ...CommonObjectProps,
-                type: objectType,
-                x: 0,
-                y: 0,
-                width: width,
-                height: height,
-            }
-        case CanvasObjectType.Ellipse:
-            return {
-                ...CommonObjectProps,
-                type: objectType,
-                x: 0,
-                y: 0,
-                radiusX: 0,
-                radiusY: 0
-            }
-        case CanvasObjectType.Text:
-            return {
-                ...CommonObjectProps,
-                x: currentPoint.x,
-                y: currentPoint.y,
-                type: objectType,
-                text: 'Text',
-            }
-        case CanvasObjectType.Line:
-            return {
-                ...CommonObjectProps,
-                type: objectType,
-                points: [0, 0, 0, 0],
-                stroke: 'red',
-         }
+    return {
+        locked: false,
+        ...startingProperties
     }
 }
 
 
-export default function UseTemporaryObject() {
+export default function UseTemporaryObject({canvasState}) {
     const [temporaryObject, setTemporaryObject] = useState<CanvasObject | null>(null)
 
-    function createTemporaryObject(objectType: CanvasObjectType, currentPoint: Point) {
-        setTemporaryObject( createNewObject(objectType, currentPoint) )
+    function createTemporaryObject(currentPoint: Point) {
+        setTemporaryObject( createNewObject(currentPoint, canvasState.startingProperties) )
     }
 
     function updateTemporaryObject(startingPoint: Point, currentPoint: Point){

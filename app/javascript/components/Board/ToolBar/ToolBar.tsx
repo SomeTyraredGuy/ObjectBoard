@@ -3,7 +3,7 @@ import classes from './toolBar.module.css'
 import {SelectSVG, UndoSVG, RedoSVG, TextSVG, RectangleSVG, CircleSVG, ArrowSVG} from '../../svg/ToolsSVG'
 import IconButton from '../../General/IconButton'
 import { CanvasMode, CanvasState, Side } from '../../../Types/Canvas'
-import { CanvasObjectType } from '../../../Types/CanvasObjects'
+import { CanvasObjectType, defaultEllipse, defaultLine, defaultRectangle, defaultText } from '../../../Types/CanvasObjects'
 
 interface ToolBarProps {
   canvasState: CanvasState,
@@ -25,7 +25,11 @@ function ToolBar({canvasState, setCanvasState, undo, redo, canUndo, canRedo} : T
     },
     {
       icon: TextSVG,
-      onClick: () => {setCanvasState({mode: CanvasMode.Inserting, objectType: CanvasObjectType.Text})},
+      onClick: () => {setCanvasState({
+        mode: CanvasMode.Inserting, 
+        objectType: CanvasObjectType.Text,
+        startingProperties: defaultText
+      })},
       label: "Text",
       isDisabled: false,
       isActive: canvasState.mode === CanvasMode.Inserting &&
@@ -33,7 +37,11 @@ function ToolBar({canvasState, setCanvasState, undo, redo, canUndo, canRedo} : T
     },
     {
       icon: RectangleSVG,
-      onClick: () => {setCanvasState({mode: CanvasMode.Inserting, objectType: CanvasObjectType.Rectangle})},
+      onClick: () => {setCanvasState({
+        mode: CanvasMode.Inserting, 
+        objectType: CanvasObjectType.Rectangle,
+        startingProperties: defaultRectangle
+      })},
       label: "Rectangle",
       isDisabled: false,
       isActive: canvasState.mode === CanvasMode.Inserting &&
@@ -41,7 +49,11 @@ function ToolBar({canvasState, setCanvasState, undo, redo, canUndo, canRedo} : T
     },
     {
       icon: CircleSVG,
-      onClick: () => {setCanvasState({mode: CanvasMode.Inserting, objectType: CanvasObjectType.Ellipse})},
+      onClick: () => {setCanvasState({
+        mode: CanvasMode.Inserting, 
+        objectType: CanvasObjectType.Ellipse,
+        startingProperties: defaultEllipse
+      })},
       label: "Ellipse",
       isDisabled: false,
       isActive: canvasState.mode === CanvasMode.Inserting &&
@@ -49,7 +61,11 @@ function ToolBar({canvasState, setCanvasState, undo, redo, canUndo, canRedo} : T
     },
     {
       icon: ArrowSVG,
-      onClick: () => {setCanvasState({mode: CanvasMode.Inserting, objectType: CanvasObjectType.Line})},
+      onClick: () => {setCanvasState({
+        mode: CanvasMode.Inserting, 
+        objectType: CanvasObjectType.Line,
+        startingProperties: defaultLine
+      })},
       label: "Line",
       isDisabled: false,
       isActive: canvasState.mode === CanvasMode.Inserting &&

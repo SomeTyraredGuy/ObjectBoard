@@ -6,7 +6,15 @@ const SCALE_BY = 1.1
 
 const getLimitedScale = (scale: number, min: number, max: number) => Math.max(min, Math.min(scale, max))
 
-export default function UseStageScaleAndPosition() {
+export default function UseStageScaleAndPosition():{
+    onWheel, 
+    onMouseMove,
+    onMouseDown, 
+    onMouseUp,
+    stagePosition, 
+    stageScale, 
+    isDragging
+} {
     const [stagePosition, setStagePosition] = useState({x: 0, y: 0})
     const [stageScale, setStageScale] = useState(1)
 
@@ -50,7 +58,7 @@ export default function UseStageScaleAndPosition() {
         setIsDragging(true)
     }
 
-    const onMouseUp = (e: KonvaEventObject<MouseEvent>) => {
+    const onMouseUp = () => {
         setIsDragging(false)
     }
 

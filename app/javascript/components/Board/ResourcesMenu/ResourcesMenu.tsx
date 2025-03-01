@@ -14,10 +14,11 @@ enum State {
 
 type Props = {
   canvasState: CanvasState,
-  setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>
+  setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
+  resourcesProperties
 }
 
-function ResourcesMenu({canvasState, setCanvasState}: Props) {
+function ResourcesMenu({canvasState, setCanvasState, resourcesProperties}: Props) {
   const [state, setState] = useState(State.Properties)
 
   const stateButtons = [
@@ -53,8 +54,19 @@ function ResourcesMenu({canvasState, setCanvasState}: Props) {
 
       <tr>
         <td>
-          {state === State.Properties && <ObjectsProperties canvasState={canvasState} setCanvasState={setCanvasState}/>}
-          {state === State.Groups && <ObjectsGroups canvasState={canvasState} setCanvasState={setCanvasState}/>}
+          {state === State.Properties && 
+            <ObjectsProperties 
+              canvasState={canvasState} 
+              setCanvasState={setCanvasState}
+              resourcesProperties={resourcesProperties}
+            />
+          }
+          {state === State.Groups && 
+            <ObjectsGroups 
+              canvasState={canvasState} 
+              setCanvasState={setCanvasState}
+            />
+          }
         </td>
       </tr>
     </tbody></table>

@@ -20,14 +20,15 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
         addNewObject, 
         moveSelectedObjects ,
         moveLinePoint,
-        resizeSelectedObjects
+        resizeSelectedObjects,
+        resourcesProperties
     } = UseObjects({canvasState, setCanvasState})
     const {
         temporaryObject,
         createTemporaryObject,
         updateTemporaryObject,
         deleteTemporaryObject,
-    } = UseTemporaryObject()
+    } = UseTemporaryObject({canvasState})
 
     const startingPoint = useRef<Point>({x: 0, y: 0})
     const mouseDown = useRef(false)
@@ -53,7 +54,7 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
                 break
 
             case CanvasMode.Inserting:
-                createTemporaryObject(canvasState.objectType, cursorPoint)
+                createTemporaryObject(cursorPoint)
                 break
 
             case CanvasMode.Selected:
@@ -184,5 +185,14 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
         mouseDown.current = false
     }
 
-    return { canvasObjects, temporaryObject, onMouseDown, onMouseMove, onMouseUp }
+    return { 
+        canvasObjects,
+        canvasUseObjectsInteraction: {
+            temporaryObject,
+            onMouseDown, 
+            onMouseMove, 
+            onMouseUp 
+        },
+        resourcesProperties
+    }
 }

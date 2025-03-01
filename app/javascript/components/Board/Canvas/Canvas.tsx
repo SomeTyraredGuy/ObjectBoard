@@ -1,18 +1,40 @@
 import React from 'react'
 import { Layer, Stage} from 'react-konva'
-import UseStageScaleAndPosition from './scripts/hooks/UseStageScaleAndPosition'
 import { KonvaEventObject } from 'konva/lib/Node'
 import Objects from './Objects'
-import UseObjectsInteraction from './scripts/hooks/canvasObjectsHooks/UseObjectsInteraction'
 import SelectionLayer from './SelectionLayer/SelectionLayer'
 import { CanvasMode, CanvasState } from '../../../Types/Canvas'
+import { CanvasObject, Point } from '../../../Types/CanvasObjects'
 
 type Props = {
   canvasState: CanvasState,
-  setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>
+  setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
+  canvasObjects: CanvasObject[],
+  canvasUseObjects: {
+    temporaryObject: CanvasObject | null,
+    onMouseDown: (e: KonvaEventObject<MouseEvent>) => void,
+    onMouseMove: (e: KonvaEventObject<MouseEvent>) => void,
+    onMouseUp: (e: KonvaEventObject<MouseEvent>) => void,
+  }
+  canvasStageScaleAndPosition: {
+    onWheel: (e: KonvaEventObject<MouseEvent>) => void,
+    onMouseMove: (e: KonvaEventObject<MouseEvent>) => void,
+    onMouseDown: (e: KonvaEventObject<MouseEvent>) => void,
+    onMouseUp: (e: KonvaEventObject<MouseEvent>) => void,
+    stagePosition: Point, 
+    stageScale: number, 
+    isDragging: boolean, 
+  }
 }
 
-function Canvas({canvasState, setCanvasState}: Props) {
+function Canvas({canvasState, setCanvasState, canvasObjects, canvasUseObjects, canvasStageScaleAndPosition}: Props) {
+
+  const {
+    temporaryObject,
+    onMouseDown: onMouseDownUseObjects, 
+    onMouseMove: onMouseMoveUseObjects,
+    onMouseUp: onMouseUpUseObjects,
+  } = canvasUseObjects  
 
   const { 
     onWheel, 
@@ -22,15 +44,7 @@ function Canvas({canvasState, setCanvasState}: Props) {
     stagePosition, 
     stageScale, 
     isDragging 
-  } = UseStageScaleAndPosition()
-
-  const { 
-    canvasObjects, 
-    temporaryObject,
-    onMouseDown: onMouseDownUseObjects, 
-    onMouseMove: onMouseMoveUseObjects,
-    onMouseUp: onMouseUpUseObjects,
-  } = UseObjectsInteraction({canvasState, setCanvasState, stageScale})
+  } = canvasStageScaleAndPosition
 
   return (
     <Stage

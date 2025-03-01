@@ -3,6 +3,14 @@ import { CanvasObject, CanvasObjectType, Point } from "../../../../../../Types/C
 import { CanvasState, CanvasMode } from "../../../../../../Types/Canvas"
 import { getResizedByPercent, resizeRectangle, resizeEllipse, resizeLine, resizeText } from "../../resize"
 
+export type ChangeObjectProperty = {
+    propertyName: "fill",
+    newValue: string,
+}
+| {
+    propertyName: "stroke",
+    newValue: string,
+}
 
 type Props = {
     canvasState: CanvasState,
@@ -150,11 +158,41 @@ export default function UseObjects({canvasState, setCanvasState}: Props) {
         }
     }
 
+    function changeProperty({propertyName,newValue}: ChangeObjectProperty) {
+        if (canvasState.mode !== CanvasMode.Selected) return
+        
+        let newObjects = [...canvasObjects]
+        let newSelected: CanvasObject[] = []
+        
+        canvasState.objects.forEach( obj => {
+            if (obj.index === undefined ||
+                obj.type === CanvasObjectType.Line && propertyName === "fill"
+            ) return
+    
+            let newObject = {
+                ...obj,
+                [propertyName]: newValue,
+            }
+            newObjects[obj.index] = newObject
+            newSelected.push(newObject)
+        })
+    
+        setCanvasObjects(newObjects)
+
+        setCanvasState({
+            ...canvasState,
+            objects: newSelected,
+        })
+    }
+
     return { 
         canvasObjects,
         addNewObject, 
         moveSelectedObjects,
         moveLinePoint,
-        resizeSelectedObjects
+        resizeSelectedObjects,
+        resourcesProperties: {
+            changeProperty
+        }
     }
 }

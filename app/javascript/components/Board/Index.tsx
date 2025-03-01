@@ -9,6 +9,8 @@ import ResourcesMenu from './ResourcesMenu/ResourcesMenu.jsx'
 import {useState} from 'react'
 import {CanvasMode, CanvasState} from '../../Types/Canvas'
 import Canvas from './Canvas/Canvas.js'
+import UseObjectsInteraction from './Canvas/scripts/hooks/canvasObjectsHooks/UseObjectsInteraction.js'
+import UseStageScaleAndPosition from './Canvas/scripts/hooks/UseStageScaleAndPosition.js'
 
 function Index({db}: {db: any}) {
   const [canvasState, setCanvasState] = useState<CanvasState>({
@@ -33,12 +35,26 @@ function Index({db}: {db: any}) {
       <Notification name={"Error!"} message={error} type={"error"} setVisible={undefined}/>
     )
   }
+
+  const useStageScaleAndPosition = UseStageScaleAndPosition()
+  const {
+    stageScale
+  } = useStageScaleAndPosition
+
+  const { 
+      canvasObjects, 
+      canvasUseObjectsInteraction,
+      resourcesProperties
+    } = UseObjectsInteraction({canvasState, setCanvasState, stageScale})
   
   return (
     <>
       <Canvas
         canvasState={canvasState}
         setCanvasState={setCanvasState}
+        canvasObjects={canvasObjects}
+        canvasUseObjects={canvasUseObjectsInteraction}
+        canvasStageScaleAndPosition={useStageScaleAndPosition}
       />
 
       <BoardMenu 
@@ -57,6 +73,7 @@ function Index({db}: {db: any}) {
       <ResourcesMenu
         canvasState={canvasState}
         setCanvasState={setCanvasState}
+        resourcesProperties={resourcesProperties}
       />
       <UserCard 
         currentUser={currentUser} 

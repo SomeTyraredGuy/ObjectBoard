@@ -36,6 +36,7 @@ export type CanvasState =
     | {
         mode: CanvasMode.Inserting,
         objectType: CanvasObjectType,
+        startingProperties: CanvasObject
     }
 
 
