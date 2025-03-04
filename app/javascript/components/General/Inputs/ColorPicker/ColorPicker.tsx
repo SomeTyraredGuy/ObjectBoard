@@ -49,7 +49,7 @@ function ColorPicker({label, setColor, value}: Props) {
 
           <input 
             type="color" 
-            value={value}
+            value={ /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(value) ? value : "#FFFFFF" }
             className={`${classes.colorPicker} ${selected === colors.length && classes.selected}`}
             onClick={() => {
               setSelected(colors.length)

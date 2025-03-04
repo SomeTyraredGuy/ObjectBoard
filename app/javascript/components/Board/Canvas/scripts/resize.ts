@@ -1,5 +1,6 @@
 import { Side } from "../../../../Types/Canvas"
 import { Ellipse, Line, Text, Point, Rectangle, XYWH } from "../../../../Types/CanvasObjects"
+import { ChangeRecord } from "./hooks/UseHistory"
 
 function getResizedByPercent(side: Side, currentPoint: Point, initialXYWH: XYWH): Point {
     let referencePointOnInitial: Point = {x: initialXYWH.x, y: initialXYWH.y}
@@ -91,7 +92,18 @@ function iterateSidesAndCorners(side: Side, rightX: () => void, leftX: () => voi
     }
 }
 
-function resizeRectangle(rectangle: Rectangle, resizedByPercent: Point, currentPoint: Point, initialSelectionNet: XYWH, initialRectangle: Rectangle, side: Side) {
+function resizeRectangle(rectangle: Rectangle, resizedByPercent: Point, currentPoint: Point, initialSelectionNet: XYWH, initialRectangle: Rectangle, side: Side): ChangeRecord {
+    let changeRecord: ChangeRecord= {
+        id: initialRectangle.id,
+        oldProperties: {
+            width: initialRectangle.width,
+            height: initialRectangle.height,
+            x: initialRectangle.x,
+            y: initialRectangle.y,
+        },
+        newProperties: null
+    }
+
     rectangle.width = Math.abs(initialRectangle.width * resizedByPercent.x)
     rectangle.height = Math.abs(initialRectangle.height * resizedByPercent.y)
 
@@ -112,9 +124,28 @@ function resizeRectangle(rectangle: Rectangle, resizedByPercent: Point, currentP
     }
 
     iterateSidesAndCorners(side, rightX, leftX, bottomY, topY)
+
+    changeRecord.newProperties= {
+        width: rectangle.width,
+        height: rectangle.height,
+        x: rectangle.x,
+        y: rectangle.y,
+    }
+    return changeRecord
 }
 
 function resizeEllipse(ellipse: Ellipse, resizedByPercent: Point, currentPoint: Point, initialSelectionNet: XYWH, initialEllipse: Ellipse, side: Side) {
+    let changeRecord: ChangeRecord= {
+        id: initialEllipse.id,
+        oldProperties: {
+            radiusX: initialEllipse.radiusX,
+            radiusY: initialEllipse.radiusY,
+            x: initialEllipse.x,
+            y: initialEllipse.y,
+        },
+        newProperties: null
+    }
+
     const newRadiusX = initialEllipse.radiusX * resizedByPercent.x
     const newRadiusY = initialEllipse.radiusY * resizedByPercent.y
     ellipse.radiusX = Math.abs(newRadiusX)
@@ -129,9 +160,25 @@ function resizeEllipse(ellipse: Ellipse, resizedByPercent: Point, currentPoint: 
     let topY = () => {ellipse.y = currentPoint.y + newRadiusY + paddingY()}
 
     iterateSidesAndCorners(side, rightX, leftX, bottomY, topY)
+
+    changeRecord.newProperties= {
+        radiusX: ellipse.radiusX,
+        radiusY: ellipse.radiusY,
+        x: ellipse.x,
+        y: ellipse.y,
+    }
+    return changeRecord
 }
 
 function resizeLine(line: Line, resizedByPercent: Point, currentPoint: Point, initialSelectionNet: XYWH, initialLine: Line, side: Side) {
+    let changeRecord: ChangeRecord= {
+        id: initialLine.id,
+        oldProperties: {
+            points: initialLine.points
+        },
+        newProperties: null
+    }
+
     let points = [...line.points]
 
     const paddingX = (i) => (initialLine.points[i] - initialSelectionNet.x) * resizedByPercent.x
@@ -161,10 +208,28 @@ function resizeLine(line: Line, resizedByPercent: Point, currentPoint: Point, in
     iterateSidesAndCorners(side, rightX, leftX, bottomY, topY)
 
     line.points = points
+
+    changeRecord.newProperties = {
+        points: line.points
+    }
+    return changeRecord
 }
 
 function resizeText(text: Text, resizedByPercent: Point, currentPoint: Point, initialSelectionNet: XYWH, initialText: Text, side: Side) {
+    // let changeRecord: ChangeRecord= {
+    //     id: initialText.id,
+    //     oldProperties: {
+
+    //     },
+    //     newProperties: null
+    // }
+
     // TODO: text resizing by dragging
+
+    // changeRecord.newProperties = {
+
+    // }
+    // return changeRecord
 }
 
 export { getResizedByPercent, resizeRectangle, resizeEllipse, resizeLine, resizeText }

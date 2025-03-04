@@ -1,17 +1,19 @@
 import React from 'react'
 import { CanvasMode, CanvasState } from '../../../Types/Canvas'
-import { PaletteSVG } from '../../svg/ResourcesSVG'
+import { PaletteSVG, TrashSVG } from '../../svg/ResourcesSVG'
 import ColorPicker from '../../General/Inputs/ColorPicker/ColorPicker'
 import { ChangeObjectProperty } from '../Canvas/scripts/hooks/canvasObjectsHooks/UseObjects'
 import { CanvasObjectType, numOfObjectTypes } from '../../../Types/CanvasObjects'
 import Slider from '../../General/Inputs/Slider/Slider'
 import classes from '../../General/general.module.css'
+import IconButton from '../../General/IconButton'
 
 type Props = {
   canvasState: CanvasState,
   setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
   resourcesProperties: {
     changeProperty: (ChangeObjectProperty) => void,
+    deleteSelectedObjects: () => void
   }
 }
 
@@ -24,7 +26,8 @@ function ObjectsProperties({canvasState, setCanvasState, resourcesProperties}: P
   )
 
   const {
-    changeProperty
+    changeProperty,
+    deleteSelectedObjects
   } = resourcesProperties
 
   const setProperty = <P extends ChangeObjectProperty["propertyName"]>(propertyName: P) => {
@@ -133,6 +136,12 @@ function ObjectsProperties({canvasState, setCanvasState, resourcesProperties}: P
           </div>
         )
       })}
+      <IconButton 
+        icon={TrashSVG}
+        label='Delete'
+        side={4}
+        onClick={deleteSelectedObjects}
+      />
     </div>
   )
 }

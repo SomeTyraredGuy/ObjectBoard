@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import UserCard from '../Users/UsersCard.jsx'
 import { BASE_BOARD_URL } from '../../Data/constants.js'
 import { useQuery } from '@tanstack/react-query'
@@ -11,6 +11,7 @@ import {CanvasMode, CanvasState} from '../../Types/Canvas'
 import Canvas from './Canvas/Canvas.js'
 import UseObjectsInteraction from './Canvas/scripts/hooks/canvasObjectsHooks/UseObjectsInteraction.js'
 import UseStageScaleAndPosition from './Canvas/scripts/hooks/UseStageScaleAndPosition.js'
+import UseHistory from './Canvas/scripts/hooks/UseHistory.js'
 
 function Index({db}: {db: any}) {
   const [canvasState, setCanvasState] = useState<CanvasState>({
@@ -41,11 +42,33 @@ function Index({db}: {db: any}) {
     stageScale
   } = useStageScaleAndPosition
 
+  const changeObjects = useRef(() => {})
+
+  const {
+    historyHandleChanges,
+    undo,
+    redo,
+    removeAdditionalDelay: removeAdditionalHistoryDelay
+  } = UseHistory({
+    canvasState, 
+    setCanvasState, 
+    changeObjects
+  })
+
   const { 
       canvasObjects, 
       canvasUseObjectsInteraction,
       resourcesProperties
-    } = UseObjectsInteraction({canvasState, setCanvasState, stageScale})
+  } = UseObjectsInteraction({
+    canvasState, 
+    setCanvasState, 
+    stageScale, 
+    handleHistory: {
+      changeObjects,
+      historyHandleChanges,
+      removeAdditionalHistoryDelay
+    },
+  })
   
   return (
     <>
@@ -64,8 +87,8 @@ function Index({db}: {db: any}) {
       <ToolBar 
         canvasState={canvasState}
         setCanvasState={setCanvasState}
-        undo={() => {}}
-        redo={() => {}}
+        undo={undo}
+        redo={redo}
         canUndo={false}
         canRedo={false}
       />

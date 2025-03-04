@@ -11,10 +11,11 @@ import UseTemporaryObject from './UseTemporaryObject'
 type Props = {
     canvasState: CanvasState,
     setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
-    stageScale: number
+    stageScale: number,
+    handleHistory: any
 }
 
-export default function UseCanvasObjects({canvasState, setCanvasState, stageScale}: Props) {
+export default function UseCanvasObjects({canvasState, setCanvasState, stageScale, handleHistory}: Props) {
     const { 
         canvasObjects,
         addNewObject, 
@@ -22,13 +23,16 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
         moveLinePoint,
         resizeSelectedObjects,
         resourcesProperties
-    } = UseObjects({canvasState, setCanvasState})
+    } = UseObjects({canvasState, setCanvasState, handleHistory})
     const {
         temporaryObject,
         createTemporaryObject,
         updateTemporaryObject,
         deleteTemporaryObject,
     } = UseTemporaryObject({canvasState})
+    const {
+        removeAdditionalHistoryDelay
+    } = handleHistory
 
     const startingPoint = useRef<Point>({x: 0, y: 0})
     const mouseDown = useRef(false)
@@ -183,6 +187,8 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
 
         deleteTemporaryObject()
         mouseDown.current = false
+
+        removeAdditionalHistoryDelay() // for changes that happened while the mouse was down
     }
 
     return { 
