@@ -50,7 +50,6 @@ export interface Text extends CommonCanvasObject, Point, Fill {
 export interface Line extends CommonCanvasObject {
     type: CanvasObjectType.Line,
     points: number[],
-    stroke: string,
 }
 
 export type CanvasObject = Rectangle | Ellipse | Text | Line

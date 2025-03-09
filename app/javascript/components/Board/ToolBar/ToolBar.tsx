@@ -86,13 +86,13 @@ function ToolBar({canvasState, setCanvasState, undo, redo, canUndo, canRedo} : T
       icon: UndoSVG,
       onClick: undo,
       label: "Undo",
-      isDisabled: canUndo
+      isDisabled: !canUndo
     },
     {
       icon: RedoSVG,
       onClick: redo,
       label: "Redo",
-      isDisabled: canRedo
+      isDisabled: !canRedo
     },
   ]
 

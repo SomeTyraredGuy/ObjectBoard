@@ -47,12 +47,16 @@ function Index({db}: {db: any}) {
   const {
     historyHandleChanges,
     undo,
+    canUndo,
     redo,
-    removeAdditionalDelay: removeAdditionalHistoryDelay
+    canRedo,
+    removeAdditionalDelay: removeAdditionalHistoryDelay,
+    unsavedChanges
   } = UseHistory({
     canvasState, 
     setCanvasState, 
-    changeObjects
+    changeObjects,
+    boardId: db.board.id
   })
 
   const { 
@@ -83,14 +87,15 @@ function Index({db}: {db: any}) {
       <BoardMenu 
         board={db.board} 
         isLoading={isLoading}
+        unsavedChanges={unsavedChanges}
       />
       <ToolBar 
         canvasState={canvasState}
         setCanvasState={setCanvasState}
         undo={undo}
         redo={redo}
-        canUndo={false}
-        canRedo={false}
+        canUndo={canUndo()}
+        canRedo={canRedo()}
       />
 
       <ResourcesMenu

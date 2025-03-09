@@ -41,13 +41,13 @@ export default function UseObjects({canvasState, setCanvasState, handleHistory}:
         historyHandleChanges,
     } = handleHistory
 
-    historyChangeObjects.current = (HistoryRecord: HistoryRecord, redo: boolean = false) => {
+    historyChangeObjects.current = (historyRecord: HistoryRecord, redo: boolean = false) => {
         let newObjects: CanvasObject[] = [...canvasObjects]
         let newSelected: CanvasObject[] = []
         let numOfDeleted = 0
         const selectedMode = canvasState.mode === CanvasMode.Selected
         
-        HistoryRecord.forEach( changeRecord => {
+        historyRecord.forEach( changeRecord => {
             const nextProps: Partial<CanvasObject> = redo ? changeRecord.newProperties : changeRecord.oldProperties
             const prevProps: Partial<CanvasObject> = redo ? changeRecord.oldProperties : changeRecord.newProperties
 

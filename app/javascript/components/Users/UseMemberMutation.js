@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 
 
-export default function MemberUseMutation({path, board_id, refetchFn, defaultValue, method}) {
+export default function UseMemberMutation({path, board_id, refetchFn, defaultValue, method}) {
     const [value, setValue] = useState(defaultValue)
 
     const {

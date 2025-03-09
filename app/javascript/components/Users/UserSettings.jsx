@@ -4,7 +4,7 @@ import Selector from '../General/Selector'
 import SwitchCheck from '../General/SwitchCheck'
 import DefaultNotificationGroup from '../General/Notification/DefaultNotificationGroup'
 import classes from '../Board/board.module.css'
-import MemberUseMutation from './MemberUseMutation'
+import UseMemberMutation from './UseMemberMutation'
 
 const roleDefaults = [
   { name: "Admin",
@@ -35,7 +35,7 @@ function UserSettings({currentUser, user, closeFn, refetchFn}) {
     isSuccess,
     value : newRole,
     setValue : setNewRole
-  } = MemberUseMutation({
+  } = UseMemberMutation({
     path: `update_role/${user.member_id}`,
     board_id: currentUser.board_id,
     refetchFn: refetchFn,
