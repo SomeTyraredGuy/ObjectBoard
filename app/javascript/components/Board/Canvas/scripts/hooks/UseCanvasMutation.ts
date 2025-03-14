@@ -1,26 +1,52 @@
-import { useRef, useState } from "react";
+import { RefObject, useRef, useState } from "react";
 import { ChangeRecord, HistoryRecord } from "./UseHistory";
 import useTimeout from "../../../../../hooks/UseTimeout";
 import { useMutation } from "@tanstack/react-query";
 import { BASE_BOARD_URL, getCSRFToken } from "../../../../../Data/constants";
+import { CanvasObject, isCanvasObject } from "../../../../../Types/CanvasObjects";
 
 type Props = {
     boardId: number,
     noChanges: (changeRecord: ChangeRecord) => boolean,
+    changeObjects: RefObject<(HistoryRecord: HistoryRecord, useNewProp?: boolean) => void>,
 }
 
-export default function UseCanvasMutation({boardId, noChanges}: Props) {
+export default function UseCanvasMutation({boardId, noChanges, changeObjects}: Props) {
     const unsavedRecord = useRef<HistoryRecord>([])
     const [unsavedChanges, setUnsavedChanges] = useState<boolean>(false)
+    const localIDs = useRef<number[]>([])
 
     function getJSONRecord() {
 
+        let del: number[] = []
+        let create: CanvasObject[] = []
+        localIDs.current = []
+        let update: {id: number, type: string, newProperties: Partial<CanvasObject>}[] = []
+
+        unsavedRecord.current.forEach(record =>{
+            if (record.newProperties === null) del.push(record.id)
+
+            else if (
+                record.oldProperties === null && 
+                record.newProperties.id < 0 && 
+                isCanvasObject(record.newProperties) ){
+                    localIDs.current.push(record.newProperties.id)
+                    create.push(record.newProperties)
+            } 
+
+            else update.push({
+                id: record.id,
+                type: record.type,
+                newProperties: record.newProperties
+            })
+        })
+
         const recordToSend = {
-            changes: unsavedRecord.current.map(change => ({
-                id: change.id,
-                newProperties: change.newProperties
-            })),
-            board_id: boardId
+            record:{
+                create: create,
+                delete: del,
+                update: update
+            }
         }
 
         unsavedRecord.current = []
@@ -31,8 +57,8 @@ export default function UseCanvasMutation({boardId, noChanges}: Props) {
         mutateAsync
     } = useMutation({
         mutationFn: async () => {
-            const response = await fetch(`${BASE_BOARD_URL}${boardId}/TODO`, {
-                method: "PATCH",
+            const response = await fetch(`${BASE_BOARD_URL}${boardId}/content/save`, {
+                method: "POST",
                 headers: {
                   'Content-Type': 'application/json',
                   'Accept': 'application/json',
@@ -41,13 +67,21 @@ export default function UseCanvasMutation({boardId, noChanges}: Props) {
                 body: getJSONRecord()
             })
     
-            if (!response.ok) {
-              const errorData = await response.json();
-                
-              if (errorData.user) throw new Error(errorData.user[0]);
-              if (errorData.board) throw new Error(errorData.board[0]);
-              if (errorData.role) throw new Error(errorData.role[0]);
-              throw new Error(errorData.message)
+            const resp = await response.json()
+            if (!resp.assigned_IDs) {
+              if (resp.user) throw new Error(resp.user[0]);
+              if (resp.board) throw new Error(resp.board[0]);
+              if (resp.role) throw new Error(resp.role[0]);
+              throw new Error(resp.message)
+            } else{
+                changeObjects.current(
+                    localIDs.current.map((id, i) => ({
+                        id: id,
+                        type: "assignID",
+                        oldProperties: {id: id},
+                        newProperties: {id: resp.assigned_IDs[i]}
+                    })), true
+                )
             }
         },
         onSuccess: () => {setUnsavedChanges(false)}
@@ -57,7 +91,7 @@ export default function UseCanvasMutation({boardId, noChanges}: Props) {
         startTimeout,
         clearTimer: clearTimeout
     } = useTimeout({
-        delay: 50000, // 10 seconds
+        delay: 2000, // 2 seconds
         callback: () => {
             clearMaxTimeout()
             mutateAsync()
@@ -69,7 +103,7 @@ export default function UseCanvasMutation({boardId, noChanges}: Props) {
         clearTimer: clearMaxTimeout
 
     } = useTimeout({
-        delay: 60000, // 1 minute
+        delay: 15000, // 15 seconds
         callback: () => {
             clearTimeout()
             mutateAsync()

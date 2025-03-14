@@ -1,11 +1,14 @@
 import { RefObject, useRef } from "react"
 import { CanvasState } from "../../../../../Types/Canvas"
-import { CanvasObject } from "../../../../../Types/CanvasObjects"
+import { CanvasObject, CanvasObjectType } from "../../../../../Types/CanvasObjects"
 import useTimeout from "../../../../../hooks/UseTimeout"
 import UseCanvasMutation from "./UseCanvasMutation"
 
+export type ChangeType = CanvasObjectType | "assignID"
+
 export type ChangeRecord = {
     id: number,
+    type: ChangeType,
     oldProperties: Partial<CanvasObject>,
     newProperties: Partial<CanvasObject>,
 }
@@ -31,7 +34,7 @@ export default function UseHistory({changeObjects, boardId}: Props) {
     const {
         addChanges: addToMutation,
         unsavedChanges
-    } = UseCanvasMutation({boardId, noChanges})
+    } = UseCanvasMutation({boardId, noChanges, changeObjects})
 
     const {startTimeout} = useTimeout({
         delay: 200, 
@@ -105,6 +108,7 @@ export default function UseHistory({changeObjects, boardId}: Props) {
         addToMutation(
             record.map(change => ({
                 id: change.id,
+                type: change.type,
                 newProperties: change.oldProperties,
                 oldProperties: change.newProperties
             }))

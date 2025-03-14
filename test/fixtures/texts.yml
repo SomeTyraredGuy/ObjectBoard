@@ -1,0 +1,8 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  canvas_object: four
+  x: 1
+  'y': 1
+  fill: MyString
+  text: MyString

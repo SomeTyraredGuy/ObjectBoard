@@ -10,6 +10,8 @@ Rails.application.routes.draw do
         get "member/others" => "members#others"
         patch "member/update_role/:member_id" => "members#update_role", as: "member_update_role"
         post "member/add_to_board" => "members#add_to_board"
+        get "content/full" => "board_content#full", as: "content_full"
+        post "content/save" => "board_content#save", as: "content_save"
       end
     end
   end

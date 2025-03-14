@@ -100,6 +100,7 @@ export default function UseObjects({canvasState, setCanvasState, handleHistory}:
         historyHandleChanges(
             [{
                 id: object.id,
+                type: object.type,
                 oldProperties: null,
                 newProperties: object,
             }],
@@ -115,6 +116,7 @@ export default function UseObjects({canvasState, setCanvasState, handleHistory}:
             if (canvasState.objects.includes(obj)){
                 const changeRecord: ChangeRecord = {
                     id: obj.id,
+                    type: obj.type,
                     newProperties: null,
                     oldProperties: obj,
                 }
@@ -125,6 +127,7 @@ export default function UseObjects({canvasState, setCanvasState, handleHistory}:
             if (obj.index !== newIndex) {
                 const changeRecord: ChangeRecord = {
                     id: obj.id,
+                    type: obj.type,
                     oldProperties: {index: obj.index},
                     newProperties: {index: newIndex},
                 }
@@ -156,6 +159,7 @@ export default function UseObjects({canvasState, setCanvasState, handleHistory}:
             let newObject = {...obj}
             let changeRecord: ChangeRecord = {
                 id: newObject.id,
+                type: newObject.type,
                 oldProperties: null,
                 newProperties: null
             }
@@ -208,6 +212,7 @@ export default function UseObjects({canvasState, setCanvasState, handleHistory}:
 
         let changeRecord: ChangeRecord= {
             id: line.id,
+            type: line.type,
             oldProperties: {points: line.points},
             newProperties: null
         }
@@ -319,6 +324,7 @@ export default function UseObjects({canvasState, setCanvasState, handleHistory}:
             if ( propertyName in obj ){
                 let newChangeRecord: ChangeRecord = {
                     id: newObject.id,
+                    type: newObject.type,
                     oldProperties: {[propertyName]: newObject[propertyName]},
                     newProperties: null
                 }

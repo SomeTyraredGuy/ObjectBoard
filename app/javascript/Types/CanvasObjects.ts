@@ -18,7 +18,7 @@ export interface Size {
 export interface XYWH extends Point, Size {}
 
 export interface CommonCanvasObject {
-    id: number,
+    id: number, // represent id in canvas_objects table. If negative, it's not saved in the database yet
     index?: number,
     type: CanvasObjectType,
     locked: boolean,
@@ -54,3 +54,45 @@ export interface Line extends CommonCanvasObject {
 
 export type CanvasObject = Rectangle | Ellipse | Text | Line
 export const numOfObjectTypes = 4
+
+export function isCanvasObject(obj: any): obj is CanvasObject {
+    if (!obj || typeof obj !== "object" || !("type" in obj)) return false
+  
+    switch (obj.type) {
+      case CanvasObjectType.Rectangle:
+        return (
+          "x" in obj &&
+          "y" in obj &&
+          "width" in obj &&
+          "height" in obj &&
+          "fill" in obj &&
+          "cornerRadius" in obj
+        );
+  
+      case CanvasObjectType.Ellipse:
+        return (
+            "x" in obj && 
+            "y" in obj && 
+            "fill" in obj && 
+            "radiusX" in obj && 
+            "radiusY" in obj
+        )
+  
+      case CanvasObjectType.Text:
+        return (
+            "x" in obj && 
+            "y" in obj && 
+            "fill" in obj && 
+            "text" in obj
+        )
+  
+      case CanvasObjectType.Line:
+        return (
+            "points" in obj && 
+            Array.isArray(obj.points)
+        )
+  
+      default:
+        return false;
+    }
+  }
