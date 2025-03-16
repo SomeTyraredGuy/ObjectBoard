@@ -12,7 +12,7 @@ type Props = {
     name: string,
     description: string,
   },
-  isLoading: boolean,
+  isLoading?: boolean,
   unsavedChanges: boolean
 }
 

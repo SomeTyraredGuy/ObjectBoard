@@ -12,6 +12,8 @@ import Canvas from './Canvas/Canvas.js'
 import UseObjectsInteraction from './Canvas/scripts/hooks/canvasObjectsHooks/UseObjectsInteraction.js'
 import UseStageScaleAndPosition from './Canvas/scripts/hooks/UseStageScaleAndPosition.js'
 import UseHistory from './Canvas/scripts/hooks/UseHistory.js'
+import useCanvasContentQuery from './Canvas/scripts/hooks/useCanvasContentQuery.js'
+import Loader from '../General/Loader/Loader.js'
 
 function Index({db}: {db: any}) {
   const [canvasState, setCanvasState] = useState<CanvasState>({
@@ -20,9 +22,9 @@ function Index({db}: {db: any}) {
 
   const {
     data: currentUser,
-    isLoading,
-    error,
-    isError
+    isLoading: isUserLoading,
+    error: currentUserError,
+    isError: isCurrentUserError
   } = useQuery({
     queryKey: ['user', db.currentMemberId],
     queryFn: async () => {
@@ -30,12 +32,6 @@ function Index({db}: {db: any}) {
         return (await response.json())
     },
   })
-
-  if( useNotification(isError) ){
-    return (
-      <Notification name={"Error!"} message={error} type={"error"} setVisible={undefined}/>
-    )
-  }
 
   const useStageScaleAndPosition = UseStageScaleAndPosition()
   const {
@@ -51,16 +47,17 @@ function Index({db}: {db: any}) {
     redo,
     canRedo,
     removeAdditionalDelay: removeAdditionalHistoryDelay,
-    unsavedChanges
+    unsavedChanges,
+    isContentMutationError,
+    contentMutationError
   } = UseHistory({
-    canvasState, 
-    setCanvasState, 
     changeObjects,
-    boardId: db.board.id
+    boardId: db.board.id,
   })
 
   const { 
-      canvasObjects, 
+      canvasObjects,
+      setCanvasObjects,
       canvasUseObjectsInteraction,
       resourcesProperties
   } = UseObjectsInteraction({
@@ -71,8 +68,34 @@ function Index({db}: {db: any}) {
       changeObjects,
       historyHandleChanges,
       removeAdditionalHistoryDelay
-    },
+    }
   })
+
+  const {
+    isLoading: contentIsLoading,
+    error: contentQueryError,
+    isError: isContentQueryError,
+  } = useCanvasContentQuery({boardId: db.board.id, setCanvasState, setCanvasObjects, isContentMutationError})
+
+  if( useNotification(isCurrentUserError || isContentQueryError || isContentMutationError) ){
+    return (
+      <Notification 
+        name={"Error!"} 
+        message={currentUserError ? currentUserError : 
+          contentQueryError ? contentQueryError : 
+          contentMutationError
+        } 
+        type={"error"} 
+        setVisible={undefined}
+      />
+    )
+  }
+
+  if( contentIsLoading || isUserLoading ){
+    return (
+      <Loader/>
+    )
+  }
   
   return (
     <>
@@ -86,7 +109,6 @@ function Index({db}: {db: any}) {
 
       <BoardMenu 
         board={db.board} 
-        isLoading={isLoading}
         unsavedChanges={unsavedChanges}
       />
       <ToolBar 
@@ -105,7 +127,6 @@ function Index({db}: {db: any}) {
       />
       <UserCard 
         currentUser={currentUser} 
-        isLoading={isLoading}
       />
     </>
   )

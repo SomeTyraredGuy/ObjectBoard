@@ -31,7 +31,7 @@ type Props = {
     handleHistory: {
         changeObjects: RefObject<(HistoryRecord: HistoryRecord, useNewProp?: boolean) => void>,
         historyHandleChanges: (record: HistoryRecord, waitForFinal?: boolean) => void,
-    }
+    },
 }
 
 export default function UseObjects({canvasState, setCanvasState, handleHistory}: Props) {
@@ -261,6 +261,8 @@ export default function UseObjects({canvasState, setCanvasState, handleHistory}:
     
             let changeRecord: ChangeRecord
             let newObject = {...obj}
+            newObjects[obj.index] = newObject
+            newSelected.push(newObject)
             switch (newObject.type) {
                 case CanvasObjectType.Line:
                     if (initialSelectedObjects[i].type !== CanvasObjectType.Line) return
@@ -277,17 +279,16 @@ export default function UseObjects({canvasState, setCanvasState, handleHistory}:
                     changeRecord = resizeEllipse(newObject, resizedByPercent, currentPoint, initialSelectionNet, initialSelectedObjects[i], side)
                     break
 
-                case CanvasObjectType.Text:
-                    if (initialSelectedObjects[i].type !== CanvasObjectType.Text) return
-                    resizeText(newObject, resizedByPercent, currentPoint, initialSelectionNet, initialSelectedObjects[i], side)
-                    break
+                // TODO
+                // case CanvasObjectType.Text:
+                //     if (initialSelectedObjects[i].type !== CanvasObjectType.Text) return
+                //     resizeText(newObject, resizedByPercent, currentPoint, initialSelectionNet, initialSelectedObjects[i], side)
+                //     break
 
                 default:
                     return
             }
     
-            newObjects[obj.index] = newObject
-            newSelected.push(newObject)
             historyRecord.push(changeRecord)
         })
     
@@ -355,6 +356,7 @@ export default function UseObjects({canvasState, setCanvasState, handleHistory}:
 
     return { 
         canvasObjects,
+        setCanvasObjects,
         addNewObject, 
         moveSelectedObjects,
         moveLinePoint,

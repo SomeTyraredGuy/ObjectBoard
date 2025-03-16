@@ -95,6 +95,7 @@ function iterateSidesAndCorners(side: Side, rightX: () => void, leftX: () => voi
 function resizeRectangle(rectangle: Rectangle, resizedByPercent: Point, currentPoint: Point, initialSelectionNet: XYWH, initialRectangle: Rectangle, side: Side): ChangeRecord {
     let changeRecord: ChangeRecord= {
         id: initialRectangle.id,
+        type: initialRectangle.type,
         oldProperties: {
             width: initialRectangle.width,
             height: initialRectangle.height,
@@ -137,6 +138,7 @@ function resizeRectangle(rectangle: Rectangle, resizedByPercent: Point, currentP
 function resizeEllipse(ellipse: Ellipse, resizedByPercent: Point, currentPoint: Point, initialSelectionNet: XYWH, initialEllipse: Ellipse, side: Side) {
     let changeRecord: ChangeRecord= {
         id: initialEllipse.id,
+        type: initialEllipse.type,
         oldProperties: {
             radiusX: initialEllipse.radiusX,
             radiusY: initialEllipse.radiusY,
@@ -173,6 +175,7 @@ function resizeEllipse(ellipse: Ellipse, resizedByPercent: Point, currentPoint: 
 function resizeLine(line: Line, resizedByPercent: Point, currentPoint: Point, initialSelectionNet: XYWH, initialLine: Line, side: Side) {
     let changeRecord: ChangeRecord= {
         id: initialLine.id,
+        type: initialLine.type,
         oldProperties: {
             points: initialLine.points
         },
@@ -218,6 +221,7 @@ function resizeLine(line: Line, resizedByPercent: Point, currentPoint: Point, in
 function resizeText(text: Text, resizedByPercent: Point, currentPoint: Point, initialSelectionNet: XYWH, initialText: Text, side: Side) {
     // let changeRecord: ChangeRecord= {
     //     id: initialText.id,
+    //     type: initialText.type,
     //     oldProperties: {
 
     //     },

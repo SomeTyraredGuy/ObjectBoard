@@ -12,12 +12,13 @@ type Props = {
     canvasState: CanvasState,
     setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
     stageScale: number,
-    handleHistory: any
+    handleHistory: any,
 }
 
 export default function UseCanvasObjects({canvasState, setCanvasState, stageScale, handleHistory}: Props) {
     const { 
         canvasObjects,
+        setCanvasObjects,
         addNewObject, 
         moveSelectedObjects ,
         moveLinePoint,
@@ -193,6 +194,7 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
 
     return { 
         canvasObjects,
+        setCanvasObjects,
         canvasUseObjectsInteraction: {
             temporaryObject,
             onMouseDown, 

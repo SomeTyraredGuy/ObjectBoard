@@ -1,7 +1,14 @@
 import React from 'react'
 import classes from './general.module.css'
 
-function CenterMenu({children, className, buttons, closeFn}) {
+type Props = {
+  children: React.ReactNode,
+  className?: string,
+  buttons?: {name: string, onClick: () => void, disabled?: boolean}[],
+  closeFn?: () => void
+}
+
+function CenterMenu({children, className, buttons = [], closeFn}: Props) {
   const backgroundClick = (event) => {
     if (event.target === event.currentTarget) {
       closeFn();

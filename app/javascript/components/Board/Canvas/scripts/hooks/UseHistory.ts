@@ -1,8 +1,7 @@
 import { RefObject, useRef } from "react"
-import { CanvasState } from "../../../../../Types/Canvas"
 import { CanvasObject, CanvasObjectType } from "../../../../../Types/CanvasObjects"
 import useTimeout from "../../../../../hooks/UseTimeout"
-import UseCanvasMutation from "./UseCanvasMutation"
+import UseCanvasContentMutation from "./UseCanvasContentMutation"
 
 export type ChangeType = CanvasObjectType | "assignID"
 
@@ -16,8 +15,6 @@ export type ChangeRecord = {
 export type HistoryRecord = ChangeRecord[]
 
 type Props = {
-    canvasState: CanvasState,
-    setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
     changeObjects: RefObject<(HistoryRecord: HistoryRecord, useNewProp?: boolean) => void>,
     boardId: number,
 }
@@ -33,8 +30,10 @@ export default function UseHistory({changeObjects, boardId}: Props) {
 
     const {
         addChanges: addToMutation,
-        unsavedChanges
-    } = UseCanvasMutation({boardId, noChanges, changeObjects})
+        unsavedChanges,
+        isError: isContentMutationError,
+        error: contentMutationError
+    } = UseCanvasContentMutation({boardId, noChanges, changeObjects})
 
     const {startTimeout} = useTimeout({
         delay: 200, 
@@ -161,6 +160,8 @@ export default function UseHistory({changeObjects, boardId}: Props) {
         redo,
         canRedo,
         removeAdditionalDelay,
-        unsavedChanges
+        unsavedChanges,
+        isContentMutationError,
+        contentMutationError
     }
 }

@@ -1,14 +1,12 @@
 class BoardContentController < ApplicationController
   include BoardRelated
 
-  def full
-    all_canvas_objects = []
+  def get
+    canvas_content = {
+      objects: CanvasObject.formatted_with_type(@board.id)
+    }
 
-    CanvasObject.with_shape_type.where(board_id: @board.id).each do |obj|
-      all_canvas_objects.push(obj)
-    end
-
-    render json: all_canvas_objects
+    render json: canvas_content
   end
 
   def save
@@ -36,12 +34,12 @@ class BoardContentController < ApplicationController
 
   def save_params
     params.require(:record).permit(
-      create: CanvasObject.full_attrs,
+      create: CanvasObject.permitted_attrs,
       delete: [],
       update: [
         :id,
         :type,
-        newProperties: CanvasObject.full_attrs
+        newProperties: CanvasObject.permitted_attrs
       ]
     )
   end
@@ -63,7 +61,7 @@ class BoardContentController < ApplicationController
   end
 
   def update_content(obj)
-    unprocessable_entity("No id in object update") if obj["id"].nil?
+    unprocessable_entity("Unprocessable content update data") if obj["id"].nil? || obj["newProperties"].nil? || obj["type"].nil?
 
     canvas_object = CanvasObject.find(obj["id"])
     unprocessable_entity("Object not found") if canvas_object.nil?

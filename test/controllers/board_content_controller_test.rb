@@ -17,7 +17,7 @@ class BoardContentControllerTest < ActionDispatch::IntegrationTest
       stroke: "#000000",
       strokeWidth: 2,
       fill: "transparent",
-      opacity: 1,
+      opacity: 0.5,
       x: 0,
       y: 0,
       width: 0,
@@ -27,10 +27,11 @@ class BoardContentControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get all content in board" do
-    get content_full_board_path @board
+    get content_get_board_path @board
 
+    resp = JSON.parse(response.body)
     assert_response :success
-    assert_equal 4, JSON.parse(response.body).length
+    assert_equal 4, resp["objects"].length
   end
 
   test "should save new object" do

@@ -11,13 +11,12 @@ type Props = {
     changeObjects: RefObject<(HistoryRecord: HistoryRecord, useNewProp?: boolean) => void>,
 }
 
-export default function UseCanvasMutation({boardId, noChanges, changeObjects}: Props) {
+export default function UseCanvasContentMutation({boardId, noChanges, changeObjects}: Props) {
     const unsavedRecord = useRef<HistoryRecord>([])
     const [unsavedChanges, setUnsavedChanges] = useState<boolean>(false)
     const localIDs = useRef<number[]>([])
 
     function getJSONRecord() {
-
         let del: number[] = []
         let create: CanvasObject[] = []
         localIDs.current = []
@@ -54,7 +53,10 @@ export default function UseCanvasMutation({boardId, noChanges, changeObjects}: P
         return JSON.stringify(recordToSend)
     }
     const {
-        mutateAsync
+        mutate,
+        isPending,
+        isError,
+        error
     } = useMutation({
         mutationFn: async () => {
             const response = await fetch(`${BASE_BOARD_URL}${boardId}/content/save`, {
@@ -69,11 +71,13 @@ export default function UseCanvasMutation({boardId, noChanges, changeObjects}: P
     
             const resp = await response.json()
             if (!resp.assigned_IDs) {
-              if (resp.user) throw new Error(resp.user[0]);
-              if (resp.board) throw new Error(resp.board[0]);
-              if (resp.role) throw new Error(resp.role[0]);
-              throw new Error(resp.message)
+                throw new Error(resp.message)
             } else{
+                if (resp.assigned_IDs.length === 0) return
+
+                if (resp.assigned_IDs.length !== localIDs.current.length) throw new Error("Server response error")
+                if (resp.assigned_IDs.some(id => id < 0)) throw new Error("Server response error")
+                
                 changeObjects.current(
                     localIDs.current.map((id, i) => ({
                         id: id,
@@ -82,6 +86,12 @@ export default function UseCanvasMutation({boardId, noChanges, changeObjects}: P
                         newProperties: {id: resp.assigned_IDs[i]}
                     })), true
                 )
+                unsavedRecord.current.forEach(record => { // assign new IDs to records that were created before response
+                    if (record.id < 0){
+                        const index = localIDs.current.indexOf(record.id)
+                        if (index !== -1) record.id = resp.assigned_IDs[index]
+                    }
+                })
             }
         },
         onSuccess: () => {setUnsavedChanges(false)}
@@ -93,8 +103,13 @@ export default function UseCanvasMutation({boardId, noChanges, changeObjects}: P
     } = useTimeout({
         delay: 2000, // 2 seconds
         callback: () => {
+            if (isPending){
+                startTimeout()
+                return
+            }
+
             clearMaxTimeout()
-            mutateAsync()
+            mutate()
         }
     })
 
@@ -106,7 +121,7 @@ export default function UseCanvasMutation({boardId, noChanges, changeObjects}: P
         delay: 15000, // 15 seconds
         callback: () => {
             clearTimeout()
-            mutateAsync()
+            mutate()
         }
     })
 
@@ -126,7 +141,10 @@ export default function UseCanvasMutation({boardId, noChanges, changeObjects}: P
 
                 unsavedRecord.current[index] = {
                     ...unsavedRecord.current[index],
-                    newProperties: change.newProperties,
+                    newProperties: {
+                        ...unsavedRecord.current[index].newProperties,
+                        ...change.newProperties
+                    }
                 }
 
                 if ( noChanges(unsavedRecord.current[index]) ) {
@@ -146,11 +164,13 @@ export default function UseCanvasMutation({boardId, noChanges, changeObjects}: P
         
         clearTimeout()
         clearMaxTimeout()
-        mutateAsync()
+        mutate()
     });
 
     return {
         addChanges,
-        unsavedChanges
+        unsavedChanges,
+        isError,
+        error
     }
 }

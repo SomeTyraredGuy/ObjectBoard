@@ -3,7 +3,12 @@ import classes from '../Board/board.module.css'
 import CurrentUser from './CurrentUserButton'
 import OtherUsersButton from './OtherUsersButton'
 
-function UsersCard({currentUser, isLoading}) {
+type Props = {
+  currentUser: any,
+  isLoading?: boolean
+}
+
+function UsersCard({currentUser, isLoading}: Props) {
   return (
     <table className={`m-2 position-fixed top-0 end-0 ${isLoading && "placeholder-wave"}`} style={{height: "70px"}}>
       {isLoading ? 
