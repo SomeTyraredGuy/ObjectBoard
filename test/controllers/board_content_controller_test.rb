@@ -11,7 +11,7 @@ class BoardContentControllerTest < ActionDispatch::IntegrationTest
     @rectangle = rectangles(:one)
     @new_rectangle = {
       id: -1,
-      index: 0,
+      index: 99,
       type: "Rectangle",
       locked: false,
       stroke: "#000000",
@@ -52,12 +52,12 @@ class BoardContentControllerTest < ActionDispatch::IntegrationTest
 
   test "should respond with assigned indexes to new objects" do
     post content_save_board_path(@board), params: {
-        record: {
-          create: [
-            @new_rectangle
-          ],
-          delete: [],
-          update: []
+      record: {
+        create: [
+          @new_rectangle
+        ],
+        delete: [],
+        update: []
       }
     }
 

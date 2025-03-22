@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_09_174822) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_22_222542) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -31,6 +31,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_09_174822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["board_id"], name: "index_canvas_objects_on_board_id"
+    t.index ["index", "board_id"], name: "index_canvas_objects_on_index_and_board_id", unique: true
   end
 
   create_table "ellipses", force: :cascade do |t|
@@ -42,7 +43,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_09_174822) do
     t.integer "radiusY"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["canvas_object_id"], name: "index_ellipses_on_canvas_object_id"
+    t.index ["canvas_object_id"], name: "index_ellipses_on_canvas_object_id", unique: true
   end
 
   create_table "lines", force: :cascade do |t|
@@ -50,7 +51,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_09_174822) do
     t.integer "points", array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["canvas_object_id"], name: "index_lines_on_canvas_object_id"
+    t.index ["canvas_object_id"], name: "index_lines_on_canvas_object_id", unique: true
   end
 
   create_table "members", force: :cascade do |t|
@@ -61,6 +62,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_09_174822) do
     t.bigint "role_id", null: false
     t.index ["board_id"], name: "index_members_on_board_id"
     t.index ["role_id"], name: "index_members_on_role_id"
+    t.index ["user_id", "board_id"], name: "index_members_on_user_id_and_board_id", unique: true
     t.index ["user_id"], name: "index_members_on_user_id"
   end
 
@@ -74,7 +76,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_09_174822) do
     t.integer "cornerRadius"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["canvas_object_id"], name: "index_rectangles_on_canvas_object_id"
+    t.index ["canvas_object_id"], name: "index_rectangles_on_canvas_object_id", unique: true
   end
 
   create_table "roles", force: :cascade do |t|
@@ -95,7 +97,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_09_174822) do
     t.string "text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["canvas_object_id"], name: "index_texts_on_canvas_object_id"
+    t.index ["canvas_object_id"], name: "index_texts_on_canvas_object_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|

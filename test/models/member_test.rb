@@ -6,9 +6,9 @@ class MemberTest < ActiveSupport::TestCase
     owner.role = roles(:AdminFull)
     assert owner.invalid?
 
-    nonOwner = members(:b1AdminFull)
-    nonOwner.role = roles(:Owner)
-    assert nonOwner.invalid?
+    non_owner = members(:b1AdminFull)
+    non_owner.role = roles(:Owner)
+    assert non_owner.invalid?
   end
 
   test "role changes correctly" do

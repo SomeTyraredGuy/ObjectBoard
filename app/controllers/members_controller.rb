@@ -2,14 +2,15 @@ class MembersController < ApplicationController
   include BoardRelated
 
   def current
-    render json: format_current(@member, current_user)
+    render json: @member.format_full
   end
 
   def others
     other_users = []
+    can_change_roles = @member.role.can_change_roles
 
-    @board.members.where.not(user_id: current_user.id).each do |member|
-      other_users.push(format_other(member, member.user))
+    @board.members.where.not(user_id: current_user.id).find_each do |member|
+      other_users.push(can_change_roles ? member.format_full : member.format_restricted)
     end
 
     render json: other_users
@@ -17,15 +18,9 @@ class MembersController < ApplicationController
 
   def update_role
     member_to_update = Member.find(params.expect(:member_id)) or not_found
-    new_role = params.expect(value: [ :name, :can_edit, :can_change_roles, :can_assign_admin, :can_ignore_rules ])
+    new_role = params.expect(value: %i[name can_edit can_change_roles can_assign_admin can_ignore_rules])
 
-    record = ApplicationPolicy::PolicyContext.new(member_to_update,
-      context = {
-        current_member: @member,
-        new_role: new_role.as_json
-      }
-    )
-    authorize record, policy_class: MemberPolicy
+    update_role_authorize new_role, member_to_update
 
     new_role = Role.find_by(new_role) or not_found
 
@@ -45,48 +40,15 @@ class MembersController < ApplicationController
 
   private
 
-  def format_current(memberDB, userDB)
-    {
-      board_id: memberDB.board_id,
-      member_id: memberDB.id,
-      user_id: userDB.id,
-      name: userDB.name,
-      avatar: "https://i.pinimg.com/736x/a7/23/42/a72342f9852d27544d62573990fa023d.jpg",
-      role: {
-        name: memberDB.role.name,
-        can_edit: memberDB.role.can_edit,
-        can_change_roles: memberDB.role.can_change_roles,
-        can_assign_admin: memberDB.role.can_assign_admin,
-        can_ignore_rules: memberDB.role.can_ignore_rules
-      }
+  def update_role_authorize(new_role, member_to_update)
+    context = {
+      current_member: @member,
+      new_role: new_role.as_json
     }
-  end
-
-  def format_other(memberDB, userDB)
-    if @member.role.can_change_roles
-      {
-        member_id: memberDB.id,
-        user_id: userDB.id,
-        name: userDB.name,
-        avatar: "https://i.pinimg.com/736x/a7/23/42/a72342f9852d27544d62573990fa023d.jpg",
-        role: {
-          name: memberDB.role.name,
-          can_edit: memberDB.role.can_edit,
-          can_change_roles: memberDB.role.can_change_roles,
-          can_assign_admin: memberDB.role.can_assign_admin,
-          can_ignore_rules: memberDB.role.can_ignore_rules
-        }
-      }
-    else
-      {
-        member_id: memberDB.id,
-        user_id: userDB.id,
-        name: userDB.name,
-        avatar: "https://i.pinimg.com/736x/a7/23/42/a72342f9852d27544d62573990fa023d.jpg",
-        role: {
-          name: memberDB.role.name
-        }
-      }
-    end
+    record = ApplicationPolicy::PolicyContext.new(
+      member_to_update,
+      context
+    )
+    authorize record, policy_class: MemberPolicy
   end
 end

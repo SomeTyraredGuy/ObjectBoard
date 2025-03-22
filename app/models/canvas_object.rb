@@ -1,84 +1,62 @@
-class CanvasObject < ApplicationRecord
+class CanvasObject < ApplicationRecord # rubocop:disable Metrics/ClassLength
   belongs_to :board
   has_one :ellipse, dependent: :destroy
   has_one :rectangle, dependent: :destroy
   has_one :line, dependent: :destroy
   has_one :text, dependent: :destroy
 
-  validate :has_one_specific_object
-  validates_presence_of :board, :index, :stroke, :strokeWidth, :opacity
-  validates :locked, inclusion: { in: [ true, false ] }
+  validate :one_specific_object?
+  validates :board, :index, :stroke, :strokeWidth, :opacity, presence: true
+  validates :locked, inclusion: { in: [true, false] }
   validates :opacity, inclusion: { in: 0..1 }
   validates :index, :strokeWidth, numericality: { greater_than_or_equal_to: 0 }
-  validates_uniqueness_of :index, scope: :board_id
+  validates :index, uniqueness: { scope: :board_id }
+
+  def self.attrs
+    %i[
+      index
+      locked
+      stroke
+      strokeWidth
+      opacity
+    ]
+  end
 
   def self.permitted_attrs
-    [
-      :id,
-      :index,
-      :type,
-      :locked,
-      :stroke,
-      :strokeWidth,
-      :opacity
-    ]
-    .union(Rectangle.attrs)
-    .union(Ellipse.attrs)
-    .union(Text.attrs)
-    .union(Line.permitted_attrs)
+    attrs
+      .union(%i[
+               id
+               type
+             ])
+      .union(Rectangle.attrs)
+      .union(Ellipse.attrs)
+      .union(Text.attrs)
+      .union(Line.permitted_attrs)
   end
 
   def self.create_canvas_object(attrs, board_id)
     canvas_object = CanvasObject.new(
-      board_id: board_id,
-      index: attrs[:index],
-      locked: attrs[:locked],
-      stroke: attrs[:stroke],
-      strokeWidth: attrs[:strokeWidth],
-      opacity: attrs[:opacity],
+      attrs.slice(*CanvasObject.attrs)
+        .merge(board_id: board_id)
     )
 
-    case attrs[:type]
-    when "Rectangle"
-      Rectangle.new(
-        attrs
-          .slice(*Rectangle.attrs)
-          .merge(canvas_object: canvas_object)
-      )
-
-    when "Ellipse"
-      Ellipse.new(
-        attrs
-          .slice(*Ellipse.attrs)
-          .merge(canvas_object: canvas_object)
-      )
-
-    when "Text"
-      Text.new(
-        attrs
-          .slice(*Text.attrs)
-          .merge(canvas_object: canvas_object)
-      )
-
-    when "Line"
-      Line.new(
-        attrs
-          .slice(*Line.attrs)
-          .merge(canvas_object: canvas_object)
-      )
-    end
+    type_class = CanvasObject.get_type_class(attrs["type"])
+    type_class.new(
+      attrs.slice(*type_class.attrs)
+        .merge(canvas_object: canvas_object)
+    )
 
     canvas_object
   end
 
-  def self.formatted_with_type(board_id)
+  def self.formatted_with_type(board_id) # rubocop:disable Metrics/MethodLength
     canvas_objects = joins("LEFT JOIN ellipses ON ellipses.canvas_object_id = canvas_objects.id")
-      .joins("LEFT JOIN rectangles ON rectangles.canvas_object_id = canvas_objects.id")
-      .joins("LEFT JOIN lines ON lines.canvas_object_id = canvas_objects.id")
-      .joins("LEFT JOIN texts ON texts.canvas_object_id = canvas_objects.id")
-      .where(canvas_objects: { board_id: board_id })
-      .select(
-        "canvas_objects.*,
+                     .joins("LEFT JOIN rectangles ON rectangles.canvas_object_id = canvas_objects.id")
+                     .joins("LEFT JOIN lines ON lines.canvas_object_id = canvas_objects.id")
+                     .joins("LEFT JOIN texts ON texts.canvas_object_id = canvas_objects.id")
+                     .where(canvas_objects: { board_id: board_id })
+                     .select(
+                       "canvas_objects.*,
         CASE
           WHEN ellipses.canvas_object_id IS NOT NULL THEN 'Ellipse'
           WHEN rectangles.canvas_object_id IS NOT NULL THEN 'Rectangle'
@@ -91,56 +69,70 @@ class CanvasObject < ApplicationRecord
           WHEN lines.canvas_object_id IS NOT NULL THEN to_jsonb(lines.*)
           WHEN texts.canvas_object_id IS NOT NULL THEN to_jsonb(texts.*)
         END AS specific_data"
-      )
+                     )
 
     canvas_objects.map do |canvas_object|
-      p canvas_object if canvas_object.type.nil?
-      formatted_canvas_object = canvas_object.attributes.symbolize_keys.except(:board_id, :created_at, :updated_at, :specific_data)
-      formatted_canvas_object.merge(canvas_object.specific_data.symbolize_keys.except(:id, :canvas_object_id, :created_at, :updated_at))
+      formatted_canvas_object = canvas_object.attributes.symbolize_keys.except(
+        :board_id, :created_at, :updated_at, :specific_data
+      )
+      formatted_canvas_object.merge(canvas_object.specific_data.symbolize_keys.except(:id, :canvas_object_id,
+                                                                                      :created_at, :updated_at))
     end
   end
 
+  def update_canvas_object(unfiltered_attrs)
+    canvas_object_attrs = unfiltered_attrs.slice(CanvasObject.attrs)
+
+    return if canvas_object_attrs.empty?
+
+    assign_attributes(canvas_object_attrs)
+    unprocessable_entity(errors.first.message) unless save
+  end
+
   # returns updated object or nil if no attributes were updated
-  def updated_canvas_object(type, unfiltered_attrs)
+  def updated_child_object(type, unfiltered_attrs)
+    type_class = CanvasObject.get_type_class(type)
+    new_attrs = unfiltered_attrs.slice(*type_class.attrs)
+    return nil if new_attrs.empty?
+
+    specific_object = get_type_object(type)
+    specific_object.assign_attributes(new_attrs)
+
+    unprocessable_entity(specific_object.errors.first.message) unless specific_object.nil? || specific_object.save
+  end
+
+  def self.get_type_class(type)
     case type
     when "Rectangle"
-      rectangle_attrs = unfiltered_attrs.slice(*Rectangle.attrs)
-      return nil if rectangle_attrs.empty?
-
-      specific_object = rectangle
-      specific_object.assign_attributes(rectangle_attrs)
-
+      Rectangle
     when "Ellipse"
-      ellipse_attrs = unfiltered_attrs.slice(*Ellipse.attrs)
-      return nil if ellipse_attrs.empty?
-
-      specific_object = ellipse
-      specific_object.assign_attributes(ellipse_attrs)
-
+      Ellipse
     when "Text"
-      text_attrs = unfiltered_attrs.slice(*Text.attrs)
-      return nil if text_attrs.empty?
-
-      specific_object = text
-      specific_object.assign_attributes(text_attrs)
-
+      Text
     when "Line"
-      line_attrs = unfiltered_attrs.slice(*Line.attrs)
-      return nil if line_attrs.empty?
-
-      specific_object = line
-      specific_object.assign_attributes(line_attrs)
+      Line
     end
+  end
 
-    specific_object
+  def get_type_object(type)
+    case type
+    when "Rectangle"
+      rectangle
+    when "Ellipse"
+      ellipse
+    when "Text"
+      text
+    when "Line"
+      line
+    end
   end
 
   private
 
-  def has_one_specific_object
-    specific_shapes = [ rectangle, ellipse, text, line ].compact
-    unless specific_shapes.size == 1 && specific_shapes.first.valid?
-      errors.add(:base, "CanvasObject must have exactly one associated specific object.")
-    end
+  def one_specific_object?
+    specific_shapes = [rectangle, ellipse, text, line].compact
+    return if specific_shapes.size == 1 && specific_shapes.first.valid?
+
+    errors.add(:base, "CanvasObject must have exactly one associated specific object.")
   end
 end

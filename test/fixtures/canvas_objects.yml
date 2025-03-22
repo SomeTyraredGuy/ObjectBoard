@@ -2,7 +2,7 @@
 
 one:
   board: one
-  index: 1
+  index: 0
   locked: false
   stroke: 1
   strokeWidth: 1
@@ -18,7 +18,7 @@ two:
 
 three:
   board: one
-  index: 1
+  index: 2
   locked: false
   stroke: 1
   strokeWidth: 1
@@ -26,7 +26,7 @@ three:
 
 four:
   board: one
-  index: 1
+  index: 3
   locked: false
   stroke: 2
   strokeWidth: 2

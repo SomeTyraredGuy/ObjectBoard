@@ -24,14 +24,9 @@ class BoardsController < ApplicationController
   # POST /boards or /boards.json
   def create
     @board = Board.new(board_params)
-    @member = Member.new(board: @board, user: current_user, role: Role.find_by(name: :Owner))
 
     respond_to do |format|
-      if @board.save
-        unless @member.save
-          format.html { render :new, status: :unprocessable_entity }
-          format.json { render json: @member.errors, status: :unprocessable_entity }
-        end
+      if save_board
         format.html { redirect_to @board, notice: "Board was successfully created." }
         format.json { render :show, status: :created, location: @board }
       else
@@ -69,7 +64,18 @@ class BoardsController < ApplicationController
   end
 
   private
-    def board_params
-      params.expect(board: [ :name, :description ])
-    end
+
+  def board_params
+    params.expect(board: %i[name description])
+  end
+
+  def create_owner
+    @member = Member.new(board: @board, user: current_user, role: Role.find_by(name: :Owner))
+  end
+
+  def save_board
+    create_owner
+
+    @board.save && @member.save
+  end
 end

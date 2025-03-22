@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
-  include ApplicationHelper
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -9,12 +8,13 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   protected
+
   def not_found
-    raise ActionController::RoutingError.new("Not Found")
+    raise ActionController::RoutingError, "Not Found"
   end
 
   def unprocessable_entity(message = "Something went wrong")
-    render json: { message: "Unprocessable entity: " + message }, status: :unprocessable_entity
+    render json: { message: "Unprocessable entity: #{message}" }, status: :unprocessable_entity
   end
 
   def user_not_authorized

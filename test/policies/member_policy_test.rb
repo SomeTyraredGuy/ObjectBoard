@@ -5,73 +5,67 @@ class MemberPolicyTest < ActiveSupport::TestCase
   setup do
     @user = users(:Owner)
     @owner = members(:b1Owner)
-    @AdminFull = members(:b1AdminFull)
+    @admin_full = members(:b1AdminFull)
     @viewer = members(:b1Viewer)
   end
 
   class UpdateRoleTest < MemberPolicyTest
     test "member can change role with can_change_roles" do
-      record = ApplicationPolicy::PolicyContext.new(@viewer,
-        context = {
-          current_member: @owner,
-          new_role: roles(:Editor).as_json
-        }
-      )
+      context = {
+        current_member: @owner,
+        new_role: roles(:Editor).as_json
+      }
+      record = ApplicationPolicy::PolicyContext.new(@viewer, context)
       policy = MemberPolicy.new(@user, record)
       assert policy.update_role?
     end
 
     test "member can't change role without can_change_roles" do
-      record = ApplicationPolicy::PolicyContext.new(@AdminFull,
-        context = {
-          current_member: @viewer,
-          new_role: roles(:Editor).as_json
-        }
-      )
+      context = {
+        current_member: @viewer,
+        new_role: roles(:Editor).as_json
+      }
+      record = ApplicationPolicy::PolicyContext.new(@admin_full, context)
       policy = MemberPolicy.new(@user, record)
       assert_not policy.update_role?
     end
 
     test "admin can be assigned with can_assign_admin" do
-      record = ApplicationPolicy::PolicyContext.new(@viewer,
-        context = {
-          current_member: @AdminFull,
-          new_role: roles(:AdminFull).as_json
-        }
-      )
+      context = {
+        current_member: @admin_full,
+        new_role: roles(:admin_full).as_json
+      }
+      record = ApplicationPolicy::PolicyContext.new(@viewer, context)
       policy = MemberPolicy.new(@user, record)
       assert policy.update_role?
     end
 
     test "admin role can be changed with can_assign_admin" do
-      record = ApplicationPolicy::PolicyContext.new(members(:b1AdminFull),
-        context = {
-          current_member: @AdminFull,
-          new_role: roles(:Viewer).as_json
-        }
-      )
+      context = {
+        current_member: @admin_full,
+        new_role: roles(:Viewer).as_json
+      }
+      record = ApplicationPolicy::PolicyContext.new(members(:b1AdminFull), context)
       policy = MemberPolicy.new(@user, record)
       assert policy.update_role?
     end
 
     test "admin can't be assigned without can_assign_admin" do
-      record = ApplicationPolicy::PolicyContext.new(@viewer,
-        context = {
-          current_member: @viewer,
-          new_role: roles(:AdminFull).as_json
-        }
-      )
+      context = {
+        current_member: @viewer,
+        new_role: roles(:admin_full).as_json
+      }
+      record = ApplicationPolicy::PolicyContext.new(@viewer, context)
       policy = MemberPolicy.new(@user, record)
       assert_not policy.update_role?
     end
 
     test "admin can't be changed without can_assign_admin" do
-      record = ApplicationPolicy::PolicyContext.new(@AdminFull,
-        context = {
-          current_member: @viewer,
-          new_role: roles(:Viewer).as_json
-        }
-      )
+      context = {
+        current_member: @viewer,
+        new_role: roles(:Viewer).as_json
+      }
+      record = ApplicationPolicy::PolicyContext.new(@admin_full, context)
       policy = MemberPolicy.new(@user, record)
       assert_not policy.update_role?
     end

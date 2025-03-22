@@ -12,21 +12,14 @@ class BoardContentController < ApplicationController
   def save
     new_params = save_params
 
-    new_IDs = []
-    new_params[:create].each do |obj|
-      new_IDs.push(create_content obj)
-    end unless new_params[:create].blank? || new_params[:create][0].blank?
+    new_ids = handle_create(new_params[:create])
 
-    new_params[:delete].each do |id|
-      delete_content id
-    end unless new_params[:delete].blank? || new_params[:delete][0].blank?
+    handle_delete new_params[:delete]
 
-    new_params[:update].each do |obj|
-      update_content obj
-    end unless new_params[:update].blank? || new_params[:update][0].blank?
+    handle_update new_params[:update]
 
     render json: {
-      assigned_IDs: new_IDs
+      assigned_IDs: new_ids
     }
   end
 
@@ -39,9 +32,21 @@ class BoardContentController < ApplicationController
       update: [
         :id,
         :type,
-        newProperties: CanvasObject.permitted_attrs
+        { newProperties: CanvasObject.permitted_attrs }
       ]
     )
+  end
+
+  def handle_create(create_params)
+    new_ids = []
+
+    unless create_params.blank? || create_params[0].blank?
+      create_params.each do |obj|
+        new_ids.push(create_content(obj))
+      end
+    end
+
+    new_ids
   end
 
   def create_content(attrs)
@@ -52,6 +57,14 @@ class BoardContentController < ApplicationController
     new_object.id
   end
 
+  def handle_delete(delete_params)
+    return if delete_params.blank? || delete_params[0].blank?
+
+    delete_params.each do |id|
+      delete_content id
+    end
+  end
+
   def delete_content(id)
     canvas_object = CanvasObject.find(id)
 
@@ -60,17 +73,20 @@ class BoardContentController < ApplicationController
     unprocessable_entity(id.errors.first.message) unless canvas_object.destroy
   end
 
+  def handle_update(update_params)
+    return if update_params.blank? || update_params[0].blank?
+
+    update_params.each do |obj|
+      update_content obj
+    end
+  end
+
   def update_content(obj)
-    unprocessable_entity("Unprocessable content update data") if obj["id"].nil? || obj["newProperties"].nil? || obj["type"].nil?
-
     canvas_object = CanvasObject.find(obj["id"])
-    unprocessable_entity("Object not found") if canvas_object.nil?
+    unprocessable_entity("Object id not found") if canvas_object.nil?
 
-    canvas_object_attrs = obj["newProperties"].slice(:index, :locked, :stroke, :strokeWidth, :opacity)
-    canvas_object.assign_attributes(canvas_object_attrs) unless canvas_object_attrs.empty?
+    canvas_object.update_canvas_object(obj["newProperties"])
 
-    specific_object = canvas_object.updated_canvas_object(obj["type"], obj["newProperties"])
-
-    unprocessable_entity(canvas_object.errors.first.message) unless (canvas_object_attrs.empty? || canvas_object.save) && (specific_object.nil? || specific_object.save)
+    canvas_object.updated_child_object(obj["type"], obj["newProperties"])
   end
 end

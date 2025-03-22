@@ -7,6 +7,7 @@ class BoardPolicy < ApplicationPolicy
   def edit?
     member = Member.find_by(board: record, user: user)
     return false if member.nil?
+
     member.role.name == "Owner"
   end
 

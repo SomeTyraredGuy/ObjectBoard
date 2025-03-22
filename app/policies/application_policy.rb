@@ -4,6 +4,15 @@ class ApplicationPolicy
   include ApplicationHelper
   attr_reader :user, :context, :record
 
+  class PolicyContext
+    attr_accessor :record, :context
+
+    def initialize(record, context)
+      @record = record
+      @context = context
+    end
+  end
+
   def initialize(user, record)
     @user = user
 

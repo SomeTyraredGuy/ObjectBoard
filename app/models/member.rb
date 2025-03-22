@@ -9,9 +9,7 @@ class Member < ApplicationRecord
   belongs_to :role
 
   def owner_is_immutable
-    if role.name == "Owner" || @old_role_name == "Owner"
-      errors.add(:role, "Owner role cannot be changed")
-    end
+    errors.add(:role, "Owner role cannot be changed") if role.name == "Owner" || @old_role_name == "Owner"
   end
 
   def role=(new_role)
@@ -20,7 +18,36 @@ class Member < ApplicationRecord
       return
     end
 
-    @old_role_name = Role.find(read_attribute(:role_id)).name unless read_attribute(:role_id).nil?
-    write_attribute(:role_id, new_role.id)
+    @old_role_name = Role.find(self[:role_id]).name unless self[:role_id].nil?
+    self[:role_id] = new_role.id
+  end
+
+  def format_full # rubocop:disable Metrics/MethodLength
+    {
+      board_id: board_id,
+      member_id: id,
+      user_id: user.id,
+      name: user.name,
+      avatar: "https://i.pinimg.com/736x/a7/23/42/a72342f9852d27544d62573990fa023d.jpg",
+      role: {
+        name: role.name,
+        can_edit: role.can_edit,
+        can_change_roles: role.can_change_roles,
+        can_assign_admin: role.can_assign_admin,
+        can_ignore_rules: role.can_ignore_rules
+      }
+    }
+  end
+
+  def format_restricted
+    {
+      member_id: id,
+      user_id: user.id,
+      name: user.name,
+      avatar: "https://i.pinimg.com/736x/a7/23/42/a72342f9852d27544d62573990fa023d.jpg",
+      role: {
+        name: role.name
+      }
+    }
   end
 end
