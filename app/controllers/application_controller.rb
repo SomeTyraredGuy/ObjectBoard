@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
+  around_action :switch_locale
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -24,5 +25,14 @@ class ApplicationController < ActionController::Base
       flash[:alert] = "You are not authorized to perform this action."
       redirect_back_or_to(root_path)
     end
+  end
+
+  def default_url_options
+    { locale: I18n.locale }
+  end
+
+  def switch_locale(&action)
+    locale = params[:locale] || I18n.default_locale
+    I18n.with_locale(locale, &action)
   end
 end
