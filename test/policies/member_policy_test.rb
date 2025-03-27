@@ -33,7 +33,7 @@ class MemberPolicyTest < ActiveSupport::TestCase
     test "admin can be assigned with can_assign_admin" do
       context = {
         current_member: @admin_full,
-        new_role: roles(:admin_full).as_json
+        new_role: roles(:AdminFull).as_json
       }
       record = ApplicationPolicy::PolicyContext.new(@viewer, context)
       policy = MemberPolicy.new(@user, record)
@@ -53,7 +53,7 @@ class MemberPolicyTest < ActiveSupport::TestCase
     test "admin can't be assigned without can_assign_admin" do
       context = {
         current_member: @viewer,
-        new_role: roles(:admin_full).as_json
+        new_role: roles(:AdminFull).as_json
       }
       record = ApplicationPolicy::PolicyContext.new(@viewer, context)
       policy = MemberPolicy.new(@user, record)

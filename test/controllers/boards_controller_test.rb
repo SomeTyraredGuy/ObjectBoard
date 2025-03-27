@@ -32,7 +32,7 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
       post boards_url, params: { board: { description: @board.description, name: @board.name } }
     end
 
-    assert_redirected_to board_url(Board.last)
+    assert_redirected_to board_url(Board.last, locale: I18n.locale)
   end
 
   test "should show board" do
@@ -46,7 +46,7 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
         delete board_url(@board)
       end
 
-      assert_redirected_to boards_url
+      assert_redirected_to boards_url(locale: I18n.locale)
     end
 
     test "admins can't destroy board" do
@@ -101,7 +101,7 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
   class UpdateTest < BoardsControllerTest
     test "should update board" do
       patch board_url(@board), params: { board: { description: @board.description, name: @board.name } }
-      assert_redirected_to board_url(@board)
+      assert_redirected_to board_url(@board, locale: I18n.locale)
     end
 
     test "Admins can't update board" do
@@ -125,25 +125,25 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
     sign_out users(:Owner)
 
     get boards_url
-    assert_redirected_to new_user_session_path
+    assert_redirected_to_login_page
 
     get new_board_url
-    assert_redirected_to new_user_session_path
+    assert_redirected_to_login_page
 
     get edit_board_url(@board)
-    assert_redirected_to new_user_session_path
+    assert_redirected_to_login_page
 
     get board_url(@board)
-    assert_redirected_to new_user_session_path
+    assert_redirected_to_login_page
 
     post boards_url, params: { board: { description: @board.description, name: @board.name } }
-    assert_redirected_to new_user_session_path
+    assert_redirected_to_login_page
 
     patch board_url(@board), params: { board: { description: @board.description, name: @board.name } }
-    assert_redirected_to new_user_session_path
+    assert_redirected_to_login_page
 
     delete board_url(@board)
-    assert_redirected_to new_user_session_path
+    assert_redirected_to_login_page
   end
 
   private
@@ -158,13 +158,17 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
   def assert_cant_open_edit_board_page(user)
     sign_in user
     get edit_board_url(@board)
-    assert_redirected_to root_url
+    assert_redirected_to root_url(locale: I18n.locale)
   end
 
   def assert_cant_update_board(user)
     sign_in user
     patch board_url(@board), params: { board: { description: @board.name } }
-    assert_redirected_to root_url
+    assert_redirected_to root_url(locale: I18n.locale)
     assert_not_equal @board.name, @board.description
+  end
+
+  def assert_redirected_to_login_page
+    assert_redirected_to new_user_session_url
   end
 end
