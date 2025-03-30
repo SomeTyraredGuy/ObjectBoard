@@ -1,8 +1,8 @@
 class Member < ApplicationRecord
   validates :user, presence: { message: "Username is invalid or does not exist" }
   validate :owner_is_immutable, on: :update
-  validates :board, :role, presence: { message: "Something went wrong" }
-  validates :user, uniqueness: { scope: :board, message: "This user is already member of this board" }
+  validates :board, :role, presence: {}
+  validates :user, uniqueness: { scope: :board, message: I18n.t("errors.members.already_exists") }
 
   belongs_to :user
   belongs_to :board
@@ -11,10 +11,30 @@ class Member < ApplicationRecord
   def handle_update_error
     return if errors.blank?
 
+    check_if_already_exists
     check_for_owner_immutable
 
-    raise MemberErrors::MemberCantBeUpdated.new(
+    raise MemberErrors::CantBeUpdated.new(
       metadata: { member: self, message: errors.full_messages }
+    )
+  end
+
+  def handle_create_error
+    return if errors.blank?
+
+    check_if_already_exists
+
+    raise MemberErrors::CantBeCreated.new(
+      metadata: { member: self }
+    )
+  end
+
+  def check_if_already_exists
+    uniqueness_error = errors.details[:user].find { |error| error[:error] == :taken }
+    return unless uniqueness_error
+
+    raise MemberErrors::AlreadyExists.new(
+      metadata: { user: user, board: board, message: errors.full_messages }
     )
   end
 
@@ -66,7 +86,7 @@ class Member < ApplicationRecord
 
   def self.find_member(id)
     member = Member.find_by(id: id)
-    raise MemberErrors::MemberNotFound.new(metadata: { member_id: id }) unless member
+    raise MemberErrors::NotFound.new(metadata: { member_id: id }) unless member
 
     member
   end

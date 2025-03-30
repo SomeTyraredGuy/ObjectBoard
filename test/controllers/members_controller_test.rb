@@ -39,7 +39,16 @@ class MembersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should add to board" do
-    post member_add_to_board_board_path(@board), params: {}
-    assert_response :bad_request
+    assert_difference("Member.count") do
+      post member_add_to_board_board_path(@board), params: { value: users(:NonMember).name }
+    end
+
+    assert_response :success
+  end
+
+  test "shouldn't add to board twice" do
+    assert_no_difference("Member.count") do
+      post member_add_to_board_board_path(@board), params: { value: @user.name }
+    end
   end
 end

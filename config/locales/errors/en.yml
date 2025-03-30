@@ -12,6 +12,7 @@ en:
       cant_be_updated: Can't update member settings
       cant_be_created: Can't add new member to board
       owner_is_immutable: Owner role can't be changed
+      already_exists: Can't add member that already belongs to the board
     boards:
       not_found: Board not found
       cant_be_updated: Can't update board settings

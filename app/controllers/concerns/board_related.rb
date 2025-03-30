@@ -16,7 +16,7 @@ module BoardRelated
     raise BoardErrors::NotFound.new(metadata: { board_id: params.expect(:id) }) unless @board
 
     @member = Member.find_by(board: @board, user: current_user)
-    raise MemberErrors::MemberNotFound.new(metadata: { board_id: @board.id, user_id: current_user.id }) unless @board
+    raise MemberErrors::NotFound.new(metadata: { board_id: @board.id, user_id: current_user.id }) unless @board
 
     authorize @board, :access?
   end

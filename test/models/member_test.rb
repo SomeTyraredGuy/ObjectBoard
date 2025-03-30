@@ -23,4 +23,13 @@ class MemberTest < ActiveSupport::TestCase
     assert member.save
     assert_equal member.role.name, "Editor"
   end
+
+  test "shouldn't create two members for one user within one board" do
+    new_member = members(:b1Owner).dup
+
+    assert_raises MemberErrors::AlreadyExists do
+      new_member.save
+      new_member.handle_create_error
+    end
+  end
 end

@@ -41,7 +41,7 @@ class MembersController < ApplicationController
     new_member = Member.new(user: user, board: @board, role: default_role)
     return if new_member.save
 
-    raise MemberErrors::MemberCantBeCreated.new(metadata: { new_member: new_member, message: new_member.errors })
+    new_member.handle_create_error
   end
 
   private
