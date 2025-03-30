@@ -4,6 +4,13 @@ class Role < ApplicationRecord
   enum :name, { Owner: 0, Admin: 1, Editor: 2, Viewer: 3 }
   has_many :members, dependent: nil
 
+  def self.find_role(role_attrs)
+    role = Role.find_by(role_attrs)
+    raise RoleErrors::NotFound(metadata: { role: role_attrs }) unless role
+
+    role
+  end
+
   private
 
   def set_defaults

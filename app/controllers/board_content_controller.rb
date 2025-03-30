@@ -12,11 +12,14 @@ class BoardContentController < ApplicationController
   def save
     new_params = save_params
 
-    new_ids = handle_create(new_params[:create])
+    new_ids = []
+    ActiveRecord::Base.transaction do
+      new_ids = handle_create(new_params[:create])
 
-    handle_delete new_params[:delete]
+      handle_delete new_params[:delete]
 
-    handle_update new_params[:update]
+      handle_update new_params[:update]
+    end
 
     render json: {
       assigned_IDs: new_ids
@@ -52,7 +55,7 @@ class BoardContentController < ApplicationController
   def create_content(attrs)
     new_object = CanvasObject.create_canvas_object(attrs, @board.id)
 
-    unprocessable_entity(new_object.errors.first.message) unless new_object.save
+    new_object.handle_create_error unless new_object.save
 
     new_object.id
   end
@@ -66,11 +69,15 @@ class BoardContentController < ApplicationController
   end
 
   def delete_content(id)
-    canvas_object = CanvasObject.find(id)
+    canvas_object = CanvasObject.find_canvas_object(id)
 
-    user_not_authorized if canvas_object.board != @board
+    user_not_authorized if canvas_object.board != @board # TODO
 
-    unprocessable_entity(id.errors.first.message) unless canvas_object.destroy
+    return if canvas_object.destroy
+
+    raise CanvasObjectErrors::CantBeDeleted.new(
+      metadata: { canvas_object: canvas_object, message: canvas_object.errors }
+    )
   end
 
   def handle_update(update_params)
@@ -82,8 +89,7 @@ class BoardContentController < ApplicationController
   end
 
   def update_content(obj)
-    canvas_object = CanvasObject.find(obj["id"])
-    unprocessable_entity("Object id not found") if canvas_object.nil?
+    canvas_object = CanvasObject.find_canvas_object(obj["id"])
 
     canvas_object.update_canvas_object(obj["newProperties"])
 

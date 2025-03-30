@@ -24,29 +24,23 @@ class BoardsController < ApplicationController
   # POST /boards or /boards.json
   def create
     @board = Board.new(board_params)
+    save_board!
 
     respond_to do |format|
-      if save_board
-        format.html { redirect_to @board, notice: "Board was successfully created." }
-        format.json { render :show, status: :created, location: @board }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @board.errors, status: :unprocessable_entity }
-      end
+      format.html { redirect_to @board, notice: "Board was successfully created." }
+      format.json { render :show, status: :created, location: @board }
     end
   end
 
   # PATCH/PUT /boards/1 or /boards/1.json
   def update
     authorize @board
+
+    update_board!
+
     respond_to do |format|
-      if @board.update(board_params)
-        format.html { redirect_to @board, notice: "Board was successfully updated." }
-        format.json { render :show, status: :ok, location: @board }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @board.errors, status: :unprocessable_entity }
-      end
+      format.html { redirect_to @board, notice: "Board was successfully updated." }
+      format.json { render :show, status: :ok, location: @board }
     end
   end
 
@@ -54,8 +48,7 @@ class BoardsController < ApplicationController
   def destroy
     authorize @board
 
-    @board.members.destroy_all
-    @board.destroy!
+    destroy_board!
 
     respond_to do |format|
       format.html { redirect_to boards_path, status: :see_other, notice: "Board was successfully destroyed." }
@@ -73,9 +66,26 @@ class BoardsController < ApplicationController
     @member = Member.new(board: @board, user: current_user, role: Role.find_by(name: :Owner))
   end
 
-  def save_board
+  def save_board!
     create_owner
 
-    @board.save && @member.save
+    ActiveRecord::Base.transaction do
+      @board.save!
+      @member.save!
+    end
+  rescue ActiveRecord::RecordInvalid => e
+    raise BoardErrors::CantBeCreated.new(metadata: { board: @board, owner: @member, message: e.message })
+  end
+
+  def destroy_board!
+    return if @board.destroy
+
+    raise BoardErrors::CantBeDeleted.new(metadata: { board: @board, message: @board.message })
+  end
+
+  def update_board!
+    return if @board.update(board_params)
+
+    raise BoardErrors::CantBeUpdated.new(metadata: { board: @board, message: @board.errors })
   end
 end

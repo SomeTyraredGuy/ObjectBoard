@@ -8,18 +8,31 @@ class Member < ApplicationRecord
   belongs_to :board
   belongs_to :role
 
-  def owner_is_immutable
-    errors.add(:role, "Owner role cannot be changed") if role.name == "Owner" || @old_role_name == "Owner"
+  def handle_update_error
+    return if errors.blank?
+
+    check_for_owner_immutable
+
+    raise MemberErrors::MemberCantBeUpdated.new(
+      metadata: { member: self, message: errors.full_messages }
+    )
   end
 
-  def role=(new_role)
-    if new_role.nil?
-      errors.add(:role, "Role is not valid")
-      return
-    end
+  def check_for_owner_immutable
+    owner_is_immutable = errors.details[:role].find { |error| error[:error] == :owner_is_immutable }
+    return unless owner_is_immutable
 
-    @old_role_name = Role.find(self[:role_id]).name unless self[:role_id].nil?
-    self[:role_id] = new_role.id
+    raise MemberErrors::OwnerIsImmutable, owner_is_immutable[:metadata]
+  end
+
+  def owner_is_immutable
+    return unless role_id_changed?
+
+    new_role = Role.find_role(id: role_id)
+    old_role = Role.find_role(id: role_id_was)
+    return unless old_role.name == "Owner" || new_role.name == "Owner"
+
+    errors.add(:role, :owner_is_immutable, metadata: { new_role: new_role, old_role: old_role })
   end
 
   def format_full # rubocop:disable Metrics/MethodLength
@@ -49,5 +62,12 @@ class Member < ApplicationRecord
         name: role.name
       }
     }
+  end
+
+  def self.find_member(id)
+    member = Member.find_by(id: id)
+    raise MemberErrors::MemberNotFound.new(metadata: { member_id: id }) unless member
+
+    member
   end
 end

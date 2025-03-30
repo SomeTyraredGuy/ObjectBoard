@@ -12,9 +12,12 @@ module BoardRelated
   private
 
   def set_board
-    @board = Board.find(params.expect(:id)) or not_found
+    @board = Board.find_by(id: params.expect(:id))
+    raise BoardErrors::NotFound.new(metadata: { board_id: params.expect(:id) }) unless @board
 
     @member = Member.find_by(board: @board, user: current_user)
+    raise MemberErrors::MemberNotFound.new(metadata: { board_id: @board.id, user_id: current_user.id }) unless @board
+
     authorize @board, :access?
   end
 end

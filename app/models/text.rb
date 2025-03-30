@@ -1,8 +1,8 @@
 class Text < ApplicationRecord
   belongs_to :canvas_object, dependent: :destroy
 
-  validates :canvas_object, :x, :y, :text, :fill, presence: true
-  validates :canvas_object, uniqueness: true
+  include SpecificCanvasObjectsValidation
+  validates :x, :y, :text, :fill, presence: true
 
   def self.attrs
     %i[

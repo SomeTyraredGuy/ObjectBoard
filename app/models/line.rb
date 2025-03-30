@@ -1,8 +1,8 @@
 class Line < ApplicationRecord
   belongs_to :canvas_object, dependent: :destroy
 
-  validates :canvas_object, :points, presence: true
-  validates :canvas_object, uniqueness: true
+  include SpecificCanvasObjectsValidation
+  validates :points, presence: true
 
   def self.attrs
     [
