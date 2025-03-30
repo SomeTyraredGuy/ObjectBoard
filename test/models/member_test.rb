@@ -9,6 +9,11 @@ class MemberTest < ActiveSupport::TestCase
     non_owner = members(:b1AdminFull)
     non_owner.role = roles(:Owner)
     assert non_owner.invalid?
+
+    assert_raises MemberErrors::OwnerIsImmutable do
+      non_owner.save
+      non_owner.handle_update_error
+    end
   end
 
   test "role changes correctly" do

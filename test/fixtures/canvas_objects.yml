@@ -6,7 +6,7 @@ one:
   locked: false
   stroke: 1
   strokeWidth: 1
-  opacity: 1.5
+  opacity: 0.5
 
 two:
   board: one
@@ -14,7 +14,7 @@ two:
   locked: false
   stroke: 1
   strokeWidth: 1
-  opacity: 1.5
+  opacity: 0.5
 
 three:
   board: one
@@ -22,7 +22,7 @@ three:
   locked: false
   stroke: 1
   strokeWidth: 1
-  opacity: 1.5
+  opacity: 1
 
 four:
   board: one
@@ -30,4 +30,4 @@ four:
   locked: false
   stroke: 2
   strokeWidth: 2
-  opacity: 2.5
+  opacity: 0.2
