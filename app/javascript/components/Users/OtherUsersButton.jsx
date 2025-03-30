@@ -24,15 +24,22 @@ function OtherUsersButton({currentUser}) {
     }
 
     const {
-        data: otherUsers,
+        data: otherUsers = [],
         isError,
         error,
         refetch
       } = useQuery({
         queryKey: ['other_users'],
         queryFn: async () => {
-            const response = await fetch(`${BASE_BOARD_URL}${currentUser.board_id}/member/others`)
-            return (await response.json())
+            const JSON = await fetch(`${BASE_BOARD_URL}${currentUser.board_id}/member/others`)
+            const response = await JSON.json()
+            
+            if (!JSON.ok) {
+                if (response.error) throw new Error(response.error)
+                throw new Error()
+            }
+            
+            return response
         }
     })
 
@@ -81,7 +88,7 @@ function OtherUsersButton({currentUser}) {
             }
         </ul>
 
-        {useNotification(isError) && <Notification name={"Error fetching other users!"} message={error} type={"error"}/>}
+        {useNotification(isError) && <Notification title={"Error fetching other users"} message={error?.message} type={"error"}/>}
         {chosenUser !== null && <UserSettings currentUser={currentUser} user={chosenUser} closeFn={toggleUserMenu} refetchFn={refetch}/>}
         {showAddUserMenu && <AddUserForm closeFn={toggleAddUserMenu} currentUser={currentUser} refetchFn={refetch}/>}
     </div>

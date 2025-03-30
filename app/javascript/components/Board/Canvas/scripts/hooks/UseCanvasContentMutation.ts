@@ -71,12 +71,13 @@ export default function UseCanvasContentMutation({boardId, noChanges, changeObje
     
             const resp = await response.json()
             if (!resp.assigned_IDs) {
-                throw new Error(resp.message)
+                if (resp.error) throw new Error(resp.error)
+                throw new Error()
             } else{
                 if (resp.assigned_IDs.length === 0) return
 
-                if (resp.assigned_IDs.length !== localIDs.current.length) throw new Error("Server response error")
-                if (resp.assigned_IDs.some(id => id < 0)) throw new Error("Server response error")
+                if (resp.assigned_IDs.length !== localIDs.current.length) throw new Error()
+                if (resp.assigned_IDs.some(id => id < 0)) throw new Error()
                 
                 changeObjects.current(
                     localIDs.current.map((id, i) => ({

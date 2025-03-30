@@ -24,12 +24,10 @@ export default function UseMemberMutation({path, board_id, refetchFn, defaultVal
           })
     
           if (!response.ok) {
-            const errorData = await response.json();
+            const errorData = await response.json()
             
-            if (errorData.user) throw new Error(errorData.user[0]);
-            if (errorData.board) throw new Error(errorData.board[0]);
-            if (errorData.role) throw new Error(errorData.role[0]);
-            throw new Error(errorData.message)
+            if (errorData.error) throw new Error(errorData.error)
+            throw new Error()
           }
         },
         onSuccess: refetchFn

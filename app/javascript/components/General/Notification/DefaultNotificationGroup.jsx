@@ -4,8 +4,8 @@ import {Notification, useNotification} from './Notification'
 function DefaultNotificationGroup({isError, error, isSuccess}) {
   return (
     <>
-    {useNotification(isError) && <Notification name={error.name} message={error.message} type={"error"}/>}
-    {useNotification(isSuccess) && <Notification name={"Success!"} type={"success"}/>}
+    {useNotification(isError) && <Notification title={error.name} message={error.message} type={"error"}/>}
+    {useNotification(isSuccess) && <Notification title={"Success!"} type={"success"}/>}
     </>
   )
 }

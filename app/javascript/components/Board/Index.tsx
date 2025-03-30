@@ -28,8 +28,15 @@ function Index({db}: {db: any}) {
   } = useQuery({
     queryKey: ['user', db.currentMemberId],
     queryFn: async () => {
-        const response = await fetch(`${BASE_BOARD_URL}${db.board.id}/member/current`)
-        return (await response.json())
+        const JSON = await fetch(`${BASE_BOARD_URL}${db.board.id}/member/current`)
+        const response = await JSON.json()
+            
+        if (!JSON.ok) {
+          if (response.error) throw new Error(response.error)
+          throw new Error()
+        }
+            
+        return response
     },
   })
 
@@ -77,21 +84,33 @@ function Index({db}: {db: any}) {
     isError: isContentQueryError,
   } = useCanvasContentQuery({boardId: db.board.id, setCanvasState, setCanvasObjects, isContentMutationError})
 
-  if( useNotification(isCurrentUserError || isContentQueryError || isContentMutationError) ){
+  if( useNotification(isCurrentUserError || isContentQueryError || isContentMutationError, 5000, true) ){
+    let message, title: string
+    if (currentUserError){
+      message = currentUserError.message
+      title = "Error loading user"
+    } else if (contentQueryError){
+      message = contentQueryError.message
+      title = "Error loading content"
+    } else if (contentMutationError){
+      message = contentMutationError.message
+      title = "Error saving content"
+    } else {
+      message = "Unknown error"
+      title = "Error"
+    }
+
     return (
       <Notification 
-        name={"Error!"} 
-        message={currentUserError ? currentUserError : 
-          contentQueryError ? contentQueryError : 
-          contentMutationError
-        } 
+        title={ title } 
+        message={ message }
         type={"error"} 
         setVisible={undefined}
       />
     )
   }
 
-  if( contentIsLoading || isUserLoading ){
+  if( contentIsLoading || isUserLoading || !currentUser){
     return (
       <Loader/>
     )

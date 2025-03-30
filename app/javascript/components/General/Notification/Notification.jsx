@@ -2,11 +2,11 @@ import React from 'react'
 import classes from './Notification.module.css'
 import { useEffect, useState } from 'react'
 
-function Notification({type, name, message, timeOut = 5000, setVisible}) {
+function Notification({type, title, message, timeOut = 5000, setVisible}) {
   function setType() {
     switch (type) {
       case "error":
-        if (message === undefined) message = "Something went wrong"
+        if (message === undefined || message === "") message = "Something went wrong"
         return classes.error
 
       case "warning":
@@ -26,20 +26,21 @@ function Notification({type, name, message, timeOut = 5000, setVisible}) {
 
   return (
     <div className={`${classes.tooltip} m-3 ${setType()}`}>
-      {name}
+      {title}
       {message !== undefined && <div className={`${classes.tooltiptext}`}>{message}</div>}
     </div>
   )
 }
 
-function useNotification(isError, ms = 5000) {
+function useNotification(isError, ms = 5000, reloadPage = false) {
   const [errorVisible, setErrorVisible] = useState(false)
 
   useEffect(() => {
     if (isError) {
       setErrorVisible(true)
       setTimeout(() => {
-          setErrorVisible(false)
+        if (reloadPage) window.location.reload()
+        else setErrorVisible(false)
       }, ms) 
     }
   }, [isError]);

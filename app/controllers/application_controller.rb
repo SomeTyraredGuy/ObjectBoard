@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
     user_message = I18n.t("errors.general.unauthorized")
 
     respond_to do |format|
-      format.json { render json: { message: user_message }, status: :forbidden }
+      format.json { render json: { error: user_message }, status: :forbidden }
       format.html do
         flash[:alert] = user_message
         redirect_back_or_to(root_path)
@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
     user_message = I18n.t("errors.general.unexpected")
 
     respond_to do |format|
-      format.json { render json: { message: user_message }, status: :internal_server_error }
+      format.json { render json: { error: user_message }, status: :internal_server_error }
       format.html do
         flash[:alert] = user_message
         redirect_back_or_to(root_path)

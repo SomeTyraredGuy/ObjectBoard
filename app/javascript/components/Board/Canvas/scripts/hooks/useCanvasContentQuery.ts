@@ -22,8 +22,16 @@ export default function useCanvasContentQuery({boardId, setCanvasState, setCanva
       } = useQuery({
         queryKey: ['canvasContent', boardId],
         queryFn: async () => {
-            const response = await fetch(`${BASE_BOARD_URL}${boardId}/content/get`)
-            return (await response.json())
+            const JSON = await fetch(`${BASE_BOARD_URL}${boardId}/content/get`)
+            const response = await JSON.json()
+                        
+            if (!JSON.ok) {
+                console.log(response)
+                if (response.error) throw new Error(response.error)
+                throw new Error()
+            }
+                        
+            return response
         },
         refetchInterval: false
     })
