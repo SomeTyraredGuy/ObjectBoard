@@ -96,7 +96,7 @@ function ObjectsProperties({canvasState, setCanvasState, resourcesProperties}: P
     <Slider
       min={0}
       max={50}
-      step={0.5}
+      step={1}
       label='Stroke Width'
       value={defaultProperties.strokeWidth}
       onChange={ setProperty("strokeWidth") }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_22_222542) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_31_055619) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -36,11 +36,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_22_222542) do
 
   create_table "ellipses", force: :cascade do |t|
     t.bigint "canvas_object_id", null: false
-    t.integer "x"
-    t.integer "y"
+    t.float "x"
+    t.float "y"
     t.string "fill"
-    t.integer "radiusX"
-    t.integer "radiusY"
+    t.float "radiusX"
+    t.float "radiusY"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["canvas_object_id"], name: "index_ellipses_on_canvas_object_id", unique: true
@@ -48,7 +48,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_22_222542) do
 
   create_table "lines", force: :cascade do |t|
     t.bigint "canvas_object_id", null: false
-    t.integer "points", array: true
+    t.float "points", array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["canvas_object_id"], name: "index_lines_on_canvas_object_id", unique: true
@@ -68,12 +68,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_22_222542) do
 
   create_table "rectangles", force: :cascade do |t|
     t.bigint "canvas_object_id", null: false
-    t.integer "x"
-    t.integer "y"
-    t.integer "width"
-    t.integer "height"
+    t.float "x"
+    t.float "y"
+    t.float "width"
+    t.float "height"
     t.string "fill"
-    t.integer "cornerRadius"
+    t.float "cornerRadius"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["canvas_object_id"], name: "index_rectangles_on_canvas_object_id", unique: true
@@ -91,8 +91,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_22_222542) do
 
   create_table "texts", force: :cascade do |t|
     t.bigint "canvas_object_id", null: false
-    t.integer "x"
-    t.integer "y"
+    t.float "x"
+    t.float "y"
     t.string "fill"
     t.string "text"
     t.datetime "created_at", null: false

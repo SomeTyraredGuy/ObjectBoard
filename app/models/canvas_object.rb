@@ -59,7 +59,7 @@ class CanvasObject < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def update_canvas_object(unfiltered_attrs)
-    canvas_object_attrs = unfiltered_attrs.slice(CanvasObject.attrs)
+    canvas_object_attrs = unfiltered_attrs.slice(*CanvasObject.attrs)
 
     return if canvas_object_attrs.empty?
 
