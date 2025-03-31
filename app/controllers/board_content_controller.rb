@@ -29,7 +29,7 @@ class BoardContentController < ApplicationController
   private
 
   def save_params
-    params.require(:record).permit(
+    params.require(:record).permit( # rubocop:disable Rails/StrongParametersExpect
       create: CanvasObject.permitted_attrs,
       delete: [],
       update: [

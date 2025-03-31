@@ -13,7 +13,7 @@ class MembersControllerTest < ActionDispatch::IntegrationTest
     get member_current_board_path @board
     assert_response :success
 
-    current = JSON.parse response.body
+    current = response.parsed_body
     assert_equal current["name"], @user.name
   end
 
@@ -21,7 +21,7 @@ class MembersControllerTest < ActionDispatch::IntegrationTest
     get member_others_board_path @board
     assert_response :success
 
-    current = JSON.parse response.body
+    current = response.parsed_body
     assert_equal 5, current.length
   end
 
