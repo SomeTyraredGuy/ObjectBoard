@@ -29,7 +29,7 @@ class BoardContentControllerTest < ActionDispatch::IntegrationTest
   test "should get all content in board" do
     get content_get_board_path @board
 
-    resp = JSON.parse(response.body)
+    resp = response.parsed_body
     assert_response :success
     assert_equal 4, resp["objects"].length
   end
@@ -63,7 +63,7 @@ class BoardContentControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
 
-    resp = JSON.parse(response.body)
+    resp = response.parsed_body
     assert_not_nil resp["assigned_IDs"]
     assert_equal resp["assigned_IDs"].length, 1
     assert_not_nil CanvasObject.find_by(id: resp["assigned_IDs"][0])

@@ -11,12 +11,13 @@ AllCops:
     - 'script/**/*'
     - 'bin/*'
     - 'app/javascript/**/*'
+    - 'vendor/**/*'
     - '*'
-
+  NewCops: enable
+  
 Style/StringLiterals:
   EnforcedStyle: double_quotes
-
 Style/FrozenStringLiteralComment:
   Enabled: false
-Documentation:
+Style/Documentation:
   Enabled: false
