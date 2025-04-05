@@ -1,0 +1,39 @@
+{
+    "folder-color.pathColors": [
+        {
+            "folderPath": "ObjectBoard/app/",
+            "color": "foldercolorizer.color_006633"
+        },
+        {
+            "folderPath": "ObjectBoard/app/views/",
+            "color": "foldercolorizer.color_cc6600"
+        },
+        {
+            "folderPath": "ObjectBoard/app/models/",
+            "color": "foldercolorizer.color_0066ff"
+        },
+        {
+            "folderPath": "ObjectBoard/app/controllers/",
+            "color": "foldercolorizer.color_cc0066"
+        },
+        {
+            "folderPath": "ObjectBoard/db/",
+            "color": "foldercolorizer.color_00cccc"
+        },
+        {
+            "folderPath": "ObjectBoard/app/javascript/",
+            "color": "foldercolorizer.color_00ccff"
+        },
+        {
+            "folderPath": "ObjectBoard/config/",
+            "color": "foldercolorizer.color_dddddd"
+        }
+    ],
+    "cSpell.words": [
+        "hotwired",
+        "importmap",
+        "Konva",
+        "stylesheet",
+        "XYWH"
+    ]
+}

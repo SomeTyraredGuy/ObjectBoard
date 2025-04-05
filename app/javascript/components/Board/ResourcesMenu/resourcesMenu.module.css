@@ -1,0 +1,23 @@
+.wrapper {
+    position: fixed;
+    right: 0;
+    top: 15vh;
+    
+    width: 290px;
+    height: 80vh;
+    
+    background-color: #F3F3F3;
+
+    border: 2px solid var(--border-color);
+    border-radius: 15px 0 0 15px;
+    border-collapse: initial;
+}
+
+.wrapper tr:first-child td:first-child {
+    height: 100%;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.wrapper tr:first-child {
+    height: 54px;
+}

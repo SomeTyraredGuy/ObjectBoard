@@ -1,0 +1,43 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+Owner:
+  name: Owner
+  can_edit: true
+  can_ignore_rules: true
+  can_change_roles: true
+  can_assign_admin: true
+
+AdminMinimal:
+  name: Admin
+  can_edit: true
+  can_ignore_rules: true
+  can_change_roles: false
+  can_assign_admin: false
+
+Admin2:
+  name: Admin
+  can_edit: true
+  can_ignore_rules: true
+  can_change_roles: true
+  can_assign_admin: false
+
+AdminFull:
+  name: Admin
+  can_edit: true
+  can_change_roles: true
+  can_change_roles: true
+  can_assign_admin: true
+
+Editor:
+  name: Editor
+  can_edit: true
+  can_ignore_rules: false
+  can_change_roles: false
+  can_assign_admin: false
+
+Viewer:
+  name: Viewer
+  can_edit: false
+  can_ignore_rules: false
+  can_change_roles: false
+  can_assign_admin: false

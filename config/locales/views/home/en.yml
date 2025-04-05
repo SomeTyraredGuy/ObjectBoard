@@ -1,0 +1,11 @@
+en:
+  general_description: Our platform is a visually rich, interactive, and highly configurable collaborative whiteboard. It offers advanced object customization and comprehensive access control, making it a powerful tool for structured collaboration.
+  additional_description: This system ensures a structured and regulated collaborative environment, allowing precise control over user roles and interactions.
+  key_features: Key Features
+  key_feature_1: Visual & Interactive - 
+  key_feature_1_text: A dynamic interface designed for intuitive user experience.
+  key_feature_2: Comprehensive Object Settings - 
+  key_feature_2_text: Objects can be extensively configured, including nesting and grouping.
+  key_feature_3: Advanced Access Management - 
+  key_feature_3_text: Users can set permissions for objects viewing and editing.
+

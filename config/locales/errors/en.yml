@@ -1,0 +1,26 @@
+en:
+  errors:
+    general:
+      unexpected: Unexpected error
+      unauthorized: You are not authorized to perform this action
+    users:
+      not_found: User not found
+    roles:
+      not_found: Role not found
+    members:
+      not_found: Member not found
+      cant_be_updated: Can't update member settings
+      cant_be_created: Can't add new member to board
+      owner_is_immutable: Owner role can't be changed
+      already_exists: Can't add member that already belongs to the board
+    boards:
+      not_found: Board not found
+      cant_be_updated: Can't update board settings
+      cant_be_deleted: Can't delete board
+      cant_be_created: Can't create new board
+    canvas_objects:
+      not_found: Canvas object not found
+      cant_be_updated: Can't update canvas object settings
+      cant_be_deleted: Can't delete canvas object
+      cant_be_created: Can't create new canvas object
+      get_query_failed: Failed to get canvas object belonging to the board

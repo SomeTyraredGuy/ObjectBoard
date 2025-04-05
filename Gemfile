@@ -63,3 +63,15 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "jsbundling-rails", "~> 1.3"
+
+gem "hotwire-livereload", "~> 1.4", group: :development
+
+gem "pundit", "~> 2.4"
+
+gem "rubocop", "~> 1.74", require: false
+gem "rubocop-rails", "~> 2.27", require: false
+gem "rubocop-performance", "~> 1.23", require: false
+
+gem "fasterer", "~> 0.11.0", require: false
