@@ -25,7 +25,7 @@ class MembersController < ApplicationController
 
     new_role = Role.find_role(new_role)
 
-    member_to_update.handle_update_error if member_to_update.update(role: new_role)
+    member_to_update.handle_update_error unless member_to_update.update(role: new_role)
   end
 
   def add_to_board
