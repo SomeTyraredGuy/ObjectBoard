@@ -19,7 +19,7 @@ class BoardContentControllerTest < ActionDispatch::IntegrationTest
     assert_equal 4, resp["objects"].length
   end
 
-  test "should save new object" do
+  test "should create new object" do
     setup_new_rectangle
 
     assert_difference("CanvasObject.count") do

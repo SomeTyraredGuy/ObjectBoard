@@ -31,3 +31,11 @@ four:
   stroke: 2
   strokeWidth: 2
   opacity: 0.2
+
+b2One:
+  board: two
+  index: 4
+  locked: false
+  stroke: 2
+  strokeWidth: 2
+  opacity: 0.2

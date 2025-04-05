@@ -3,3 +3,7 @@
 one:
   canvas_object: two
   points: [2, 2, 3 , 3]
+
+two:
+  canvas_object: b2One
+  points: [3, 3, 4 , 4]
