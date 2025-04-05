@@ -68,6 +68,7 @@ function Index({db}: {db: any}) {
       canvasUseObjectsInteraction,
       resourcesProperties
   } = UseObjectsInteraction({
+    blocked: !currentUser?.role?.can_edit,
     canvasState, 
     setCanvasState, 
     stageScale, 
@@ -119,6 +120,7 @@ function Index({db}: {db: any}) {
   return (
     <>
       <Canvas
+        objectsBlocked={!currentUser?.role?.can_edit}
         canvasState={canvasState}
         setCanvasState={setCanvasState}
         canvasObjects={canvasObjects}
@@ -126,24 +128,30 @@ function Index({db}: {db: any}) {
         canvasStageScaleAndPosition={useStageScaleAndPosition}
       />
 
-      <BoardMenu 
+      <BoardMenu
+        showSaving={currentUser?.role?.can_edit}
         board={db.board} 
         unsavedChanges={unsavedChanges}
       />
-      <ToolBar 
-        canvasState={canvasState}
-        setCanvasState={setCanvasState}
-        undo={undo}
-        redo={redo}
-        canUndo={canUndo()}
-        canRedo={canRedo()}
-      />
 
-      <ResourcesMenu
-        canvasState={canvasState}
-        setCanvasState={setCanvasState}
-        resourcesProperties={resourcesProperties}
-      />
+      {currentUser?.role?.can_edit && 
+      <>
+        <ToolBar 
+          canvasState={canvasState}
+          setCanvasState={setCanvasState}
+          undo={undo}
+          redo={redo}
+          canUndo={canUndo()}
+          canRedo={canRedo()}
+        />
+        <ResourcesMenu
+          canvasState={canvasState}
+          setCanvasState={setCanvasState}
+          resourcesProperties={resourcesProperties}
+        />
+      </>
+      }
+
       <UserCard 
         currentUser={currentUser} 
       />

@@ -7,6 +7,7 @@ import { CanvasMode, CanvasState } from '../../../Types/Canvas'
 import { CanvasObject, Point } from '../../../Types/CanvasObjects'
 
 type Props = {
+  objectsBlocked: boolean,
   canvasState: CanvasState,
   setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
   canvasObjects: CanvasObject[],
@@ -27,7 +28,7 @@ type Props = {
   }
 }
 
-function Canvas({canvasState, setCanvasState, canvasObjects, canvasUseObjects, canvasStageScaleAndPosition}: Props) {
+function Canvas({objectsBlocked, canvasState, setCanvasState, canvasObjects, canvasUseObjects, canvasStageScaleAndPosition}: Props) {
 
   const {
     temporaryObject,
@@ -60,7 +61,8 @@ function Canvas({canvasState, setCanvasState, canvasObjects, canvasUseObjects, c
       {...stagePosition}
     >
       <Layer>
-        <Objects 
+        <Objects
+          objectsBlocked={objectsBlocked}
           canvasObjects={canvasObjects} 
           temporaryObject={temporaryObject}
           setCanvasState={setCanvasState}

@@ -13,10 +13,11 @@ type Props = {
     description: string,
   },
   isLoading?: boolean,
-  unsavedChanges: boolean
+  unsavedChanges: boolean,
+  showSaving: boolean
 }
 
-function BoardMenu({board, isLoading, unsavedChanges} : Props) {
+function BoardMenu({board, isLoading, unsavedChanges, showSaving} : Props) {
   return (
     <table className={`m-2 position-fixed top-0 ${isLoading && "placeholder-wave"}`} style={{width: "280px"}}>
       {false ?
@@ -32,17 +33,22 @@ function BoardMenu({board, isLoading, unsavedChanges} : Props) {
               href='/boards'
             />
           </th>
-          <th className={`flex-grow-1 p-2 ${classes.ellipsis} text-center align-content-center ${classes.background} ${classes.border} border-start-0`}>
+          <th 
+            className={`flex-grow-1 p-2 text-center align-content-center border-start-0 
+            ${classes.ellipsis} ${classes.background} ${classes.border}
+            ${showSaving ? "" : classes.rightRounded}
+            `}
+          >
             {board.name}
           </th>
-          <th className={`${classes.rightBorder} ${classes.rightRounded} ${classes.background} p-2 align-content-center ${generalClasses.hintWrapper}`} role="status">
+          {showSaving && <th className={`${classes.rightBorder} ${classes.rightRounded} ${classes.background} p-2 align-content-center ${generalClasses.hintWrapper}`} role="status">
             <div className={`${unsavedChanges && "spinner-border opacity-50"}`} style={{width: "26px", height: "26px"}}>
               <CheckSVG width={26} className={`${unsavedChanges && "visually-hidden"}`}/>
             </div>
             <span className={`${generalClasses.hint} ${generalClasses.bottomHint}`}>
                 {unsavedChanges ? "Saving" : "Changes saved"}
               </span>
-          </th>
+          </th>}
         </tr>
       </tbody>}
     </table>

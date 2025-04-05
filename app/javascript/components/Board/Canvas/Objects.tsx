@@ -1,41 +1,54 @@
 import React from 'react'
 import { CanvasObject, CanvasObjectType } from '../../../Types/CanvasObjects'
 import { Ellipse, Rect, Text, Line } from 'react-konva'
-import { CanvasMode } from '../../../Types/Canvas'
+import { CanvasMode, CanvasState } from '../../../Types/Canvas'
 import { KonvaEventObject } from 'konva/lib/Node'
 
-function onMouseEnter(e: KonvaEventObject<MouseEvent>) {
-  const stage = e.target.getStage()
-  if (!stage) return
-  stage.container().style.cursor = "move"
+type Props = {
+  objectsBlocked: boolean,
+  canvasObjects: CanvasObject[],
+  temporaryObject: CanvasObject | null,
+  setCanvasState: React.Dispatch<React.SetStateAction<any>>,
+  canvasState: CanvasState
 }
 
-function onMouseLeave(e: KonvaEventObject<MouseEvent>) {
-  const stage = e.target.getStage()
-  if (!stage) return
-  stage.container().style.cursor = "default";
-}
+function Objects({objectsBlocked, canvasObjects, temporaryObject, setCanvasState, canvasState}: Props) {
 
-function onMouseDown(e: KonvaEventObject<MouseEvent>, setCanvasState, canvasState, object: CanvasObject) {
-  if (canvasState.mode !== CanvasMode.Selected && canvasState.mode !== CanvasMode.None) return
+  function onMouseEnter(e: KonvaEventObject<MouseEvent>) {
+    if (objectsBlocked) return
 
-  e.evt.preventDefault()
-
-  if (canvasState.mode === CanvasMode.Selected && e.evt.ctrlKey) {
-      setCanvasState({
-          ...canvasState,
-          objects: [ ...canvasState.objects, object ],
-      })
-      return
+    const stage = e.target.getStage()
+    if (!stage) return
+    stage.container().style.cursor = "move"
   }
+  
+  function onMouseLeave(e: KonvaEventObject<MouseEvent>) {
+    if (objectsBlocked) return
 
-  setCanvasState({
-      mode: CanvasMode.Selected,
-      objects: [object],
-  })
-}
-
-function Objects({canvasObjects, temporaryObject, setCanvasState, canvasState}) {
+    const stage = e.target.getStage()
+    if (!stage) return
+    stage.container().style.cursor = "default";
+  }
+  
+  function onMouseDown(e: KonvaEventObject<MouseEvent>, setCanvasState, canvasState, object: CanvasObject) {
+    if (objectsBlocked) return
+    if (canvasState.mode !== CanvasMode.Selected && canvasState.mode !== CanvasMode.None) return
+  
+    e.evt.preventDefault()
+  
+    if (canvasState.mode === CanvasMode.Selected && e.evt.ctrlKey) {
+        setCanvasState({
+            ...canvasState,
+            objects: [ ...canvasState.objects, object ],
+        })
+        return
+    }
+  
+    setCanvasState({
+        mode: CanvasMode.Selected,
+        objects: [object],
+    })
+  }
 
   function renderObject(object: CanvasObject, i?: number) {
     const commonProps = {

@@ -9,13 +9,14 @@ import UseTemporaryObject from './UseTemporaryObject'
 
 
 type Props = {
+    blocked: boolean,
     canvasState: CanvasState,
     setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
     stageScale: number,
     handleHistory: any,
 }
 
-export default function UseCanvasObjects({canvasState, setCanvasState, stageScale, handleHistory}: Props) {
+export default function UseCanvasObjects({blocked, canvasState, setCanvasState, stageScale, handleHistory}: Props) {
     const { 
         canvasObjects,
         setCanvasObjects,
@@ -39,9 +40,7 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
     const mouseDown = useRef(false)
 
     function onMouseDown(e: KonvaEventObject<MouseEvent>) {
-        if (e.evt.button !== 0) {
-            return;
-        }
+        if (e.evt.button !== 0 || blocked) return
 
         const cursorPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
         if (!cursorPoint) return
@@ -78,7 +77,8 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
     }
 
     function onMouseMove(e: KonvaEventObject<MouseEvent>) {
-        if (!mouseDown.current) return
+        if (!mouseDown.current || blocked) return
+
         e.evt.preventDefault()
         
         let currentPoint: Point | null
@@ -132,9 +132,8 @@ export default function UseCanvasObjects({canvasState, setCanvasState, stageScal
     }
 
     function onMouseUp(e: KonvaEventObject<MouseEvent>) {
-        if (e.evt.button !== 0) {
-            return;
-        }
+        if (e.evt.button !== 0 || blocked) return
+
         e.evt.preventDefault()
 
         switch (canvasState.mode) {
