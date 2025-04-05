@@ -10,6 +10,8 @@ class BoardContentController < ApplicationController
   end
 
   def save
+    authorize @member, policy_class: BoardContentPolicy
+
     new_params = save_params
 
     new_ids = []
@@ -21,9 +23,7 @@ class BoardContentController < ApplicationController
       handle_update new_params[:update]
     end
 
-    render json: {
-      assigned_IDs: new_ids
-    }
+    render json: { assigned_IDs: new_ids }
   end
 
   private
@@ -71,7 +71,7 @@ class BoardContentController < ApplicationController
   def delete_content(id)
     canvas_object = CanvasObject.find_canvas_object(id)
 
-    user_not_authorized if canvas_object.board != @board # TODO
+    authorize_belongs? id
 
     return if canvas_object.destroy
 
@@ -91,8 +91,21 @@ class BoardContentController < ApplicationController
   def update_content(obj)
     canvas_object = CanvasObject.find_canvas_object(obj["id"])
 
+    authorize_belongs? obj["id"]
+
     canvas_object.update_canvas_object(obj["newProperties"])
 
     canvas_object.updated_child_object(obj["type"], obj["newProperties"])
+  end
+
+  def authorize_belongs?(canvas_object_id)
+    context = {
+      canvas_object_id: canvas_object_id
+    }
+    record = ApplicationPolicy::PolicyContext.new(
+      @board,
+      context
+    )
+    authorize record, :belongs?, policy_class: BoardContentPolicy
   end
 end

@@ -12,10 +12,6 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def unprocessable_entity(message = "Something went wrong")
-    render json: { message: "Unprocessable entity: #{message}" }, status: :unprocessable_entity
-  end
-
   def handle_base_error(error)
     error.log_error
 

@@ -17,6 +17,7 @@ module BoardRelated
 
     @member = Member.find_by(board: @board, user: current_user)
     raise MemberErrors::NotFound.new(metadata: { board_id: @board.id, user_id: current_user.id }) unless @member
+
     authorize @board, :access?
   end
 end
