@@ -9,21 +9,6 @@ class BoardContentControllerTest < ActionDispatch::IntegrationTest
 
     @canvas_object = canvas_objects(:three) # Rectangle
     @rectangle = rectangles(:one)
-    @new_rectangle = {
-      id: -1,
-      index: 99,
-      type: "Rectangle",
-      locked: false,
-      stroke: "#000000",
-      strokeWidth: 2,
-      fill: "transparent",
-      opacity: 0.5,
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0,
-      cornerRadius: 0
-    }
   end
 
   test "should get all content in board" do
@@ -35,6 +20,8 @@ class BoardContentControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should save new object" do
+    setup_new_rectangle
+
     assert_difference("CanvasObject.count") do
       post content_save_board_path(@board), params: {
         record: {
@@ -51,6 +38,8 @@ class BoardContentControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should respond with assigned indexes to new objects" do
+    setup_new_rectangle
+
     post content_save_board_path(@board), params: {
       record: {
         create: [
@@ -104,5 +93,15 @@ class BoardContentControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_equal new_width, Rectangle.find(@rectangle.id).width
+  end
+
+  private
+
+  def setup_new_rectangle
+    @new_rectangle = @rectangle.attributes.merge(@rectangle.canvas_object.attributes)
+                               .symbolize_keys.slice(*CanvasObject.permitted_attrs)
+    @new_rectangle[:index] = CanvasObject.maximum(:index).to_i + 1
+    @new_rectangle[:id] = -1
+    @new_rectangle[:type] = "Rectangle"
   end
 end
