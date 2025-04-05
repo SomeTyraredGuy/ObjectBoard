@@ -1,10 +1,10 @@
 import React from 'react'
 import classes from '../Board/board.module.css'
 import generalClasses from '../General/general.module.css'
-import PlusCircleSVG from '../svg/PlusCircleSVG.jsx'
+import PlusCircleSVG from '../svg/PlusCircleSVG.js'
 import { useQuery } from '@tanstack/react-query'
 import { BASE_BOARD_URL } from '../../Data/constants.js'
-import { Notification, useNotification } from '../General/Notification/Notification'
+import Notification from '../General/Notification/Notification'
 import UserListItem from './UserListItem'
 import UserSettings from './UserSettings'
 import { useState } from 'react'
@@ -88,7 +88,7 @@ function OtherUsersButton({currentUser}) {
             }
         </ul>
 
-        {useNotification(isError) && <Notification title={"Error fetching other users"} message={error?.message} type={"error"}/>}
+        <Notification trigger={isError} title={"Error fetching other users"} message={error?.message} type={"error"}/>
         {chosenUser !== null && <UserSettings currentUser={currentUser} user={chosenUser} closeFn={toggleUserMenu} refetchFn={refetch}/>}
         {showAddUserMenu && <AddUserForm closeFn={toggleAddUserMenu} currentUser={currentUser} refetchFn={refetch}/>}
     </div>

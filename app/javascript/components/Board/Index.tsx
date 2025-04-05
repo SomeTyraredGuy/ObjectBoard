@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import UserCard from '../Users/UsersCard.jsx'
 import { BASE_BOARD_URL } from '../../Data/constants.js'
 import { useQuery } from '@tanstack/react-query'
-import {Notification, useNotification} from '../General/Notification/Notification.jsx'
+import Notification from '../General/Notification/Notification.jsx'
 import ToolBar from './ToolBar/ToolBar.jsx'
 import BoardMenu from './BoardMenu/BoardMenu.jsx'
 import ResourcesMenu from './ResourcesMenu/ResourcesMenu.jsx'
@@ -85,31 +85,23 @@ function Index({db}: {db: any}) {
     isError: isContentQueryError,
   } = useCanvasContentQuery({boardId: db.board.id, setCanvasState, setCanvasObjects, isContentMutationError})
 
-  if( useNotification(isCurrentUserError || isContentQueryError || isContentMutationError, 5000, true) ){
-    let message, title: string
-    if (currentUserError){
-      message = currentUserError.message
-      title = "Error loading user"
-    } else if (contentQueryError){
-      message = contentQueryError.message
-      title = "Error loading content"
-    } else if (contentMutationError){
-      message = contentMutationError.message
-      title = "Error saving content"
-    } else {
-      message = "Unknown error"
-      title = "Error"
+  const notifications = [
+    {
+      trigger: isCurrentUserError,
+      message: currentUserError?.message,
+      title: "Error loading user",
+    },
+    {
+      trigger: isContentQueryError,
+      message: contentQueryError?.message,
+      title: "Error loading content",
+    },
+    {
+      trigger: isContentMutationError,
+      message: contentMutationError?.message,
+      title: "Error saving content",
     }
-
-    return (
-      <Notification 
-        title={ title } 
-        message={ message }
-        type={"error"} 
-        setVisible={undefined}
-      />
-    )
-  }
+  ]
 
   if( contentIsLoading || isUserLoading || !currentUser){
     return (
@@ -155,6 +147,19 @@ function Index({db}: {db: any}) {
       <UserCard 
         currentUser={currentUser} 
       />
+
+      {
+        notifications.map((notification, index) => (
+          <Notification
+            key={index}
+            trigger={notification.trigger}
+            title={notification.title}
+            message={notification.message}
+            type={"error"}
+            reloadPage={true}
+          />
+        ))
+      }
     </>
   )
 }
