@@ -1,16 +1,16 @@
 import React from 'react'
-import classes from '../Board/board.module.css'
-import generalClasses from '../General/general.module.css'
-import PlusCircleSVG from '../svg/PlusCircleSVG.js'
+import classes from '../board.module.css'
+import generalClasses from '../../General/general.module.css'
+import PlusCircleSVG from '../../svg/PlusCircleSVG.js'
 import { useQuery } from '@tanstack/react-query'
-import { BASE_BOARD_URL } from '../../Data/constants.js'
-import Notification from '../General/Notification/Notification'
-import UserListItem from './UserListItem'
-import UserSettings from './UserSettings'
+import { BASE_BOARD_URL } from '../../../Data/constants.js'
+import Notification from '../../General/Notification/Notification'
+import MemberListItem from './MemberListItem'
+import MemberSettings from './MemberSettings'
 import { useState } from 'react'
-import AddUserForm from './AddUserForm.jsx'
+import AddMemberForm from './AddMemberForm.jsx'
 
-function OtherUsersButton({currentUser}) {
+function OtherMembersButton({currentUser}) {
     const [chosenUser, setChosenUser] = useState(null)
     const [showAddUserMenu, setShowAddUserMenu] = useState(false)
     
@@ -75,7 +75,7 @@ function OtherUsersButton({currentUser}) {
 
         <ul className={`dropdown-menu p-0 ${classes.border} ${generalClasses.scroll}`} style={{width: "272px", maxHeight: "80vh"}} aria-labelledby="dropdownMenuButton1">
             {otherUsers !== undefined && otherUsers.map( (user, i) =>     
-                <UserListItem user={user} toggleMenu={toggleUserMenu} key={i} disabledButton={!currentUser.role.can_change_roles}/>
+                <MemberListItem user={user} toggleMenu={toggleUserMenu} key={i} disabledButton={!currentUser.role.can_change_roles}/>
             )}
 
             {currentUser.role.can_change_roles && 
@@ -89,10 +89,10 @@ function OtherUsersButton({currentUser}) {
         </ul>
 
         <Notification trigger={isError} title={"Error fetching other users"} message={error?.message} type={"error"}/>
-        {chosenUser !== null && <UserSettings currentUser={currentUser} user={chosenUser} closeFn={toggleUserMenu} refetchFn={refetch}/>}
-        {showAddUserMenu && <AddUserForm closeFn={toggleAddUserMenu} currentUser={currentUser} refetchFn={refetch}/>}
+        {chosenUser !== null && <MemberSettings currentUser={currentUser} user={chosenUser} closeFn={toggleUserMenu} refetchFn={refetch}/>}
+        {showAddUserMenu && <AddMemberForm closeFn={toggleAddUserMenu} currentUser={currentUser} refetchFn={refetch}/>}
     </div>
   )
 }
 
-export default OtherUsersButton
+export default OtherMembersButton

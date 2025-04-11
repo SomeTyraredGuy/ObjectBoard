@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
-import classes from '../Board/board.module.css'
-import UserSettings from './UserSettings'
+import classes from '../board.module.css'
+import MemberSettings from './MemberSettings'
 
 const options = [
     { name: 'Profile', href: '' },
@@ -9,7 +9,7 @@ const options = [
     { name: 'Leave Board', href: '' }
 ]
 
-function CurrentUser({currentUser}) {
+function CurrentMemberButton({currentUser}) {
   const [showMenu, setShowMenu] = useState(false)
 
   function toggleMenu() {
@@ -22,9 +22,9 @@ function CurrentUser({currentUser}) {
             <img className='rounded-circle' src={`${currentUser.avatar}`} alt='Current user avatar' style={{width: '42px', height: '42px'}}/>
             <span className={`text-start mx-2 ${classes.ellipsis}`}><strong>{currentUser.name}</strong><br/>Role: {currentUser.role.name}</span>
         </button>
-        {showMenu && <UserSettings currentUser={currentUser} user={currentUser} closeFn={toggleMenu}/>}
+        {showMenu && <MemberSettings currentUser={currentUser} user={currentUser} closeFn={toggleMenu}/>}
   </div>
   )
 }
 
-export default CurrentUser
+export default CurrentMemberButton

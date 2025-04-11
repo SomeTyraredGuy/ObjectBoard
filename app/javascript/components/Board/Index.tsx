@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import UserCard from '../Users/UsersCard.jsx'
+import MemberMenu from './MemberMenu/MemberMenu.js'
 import { BASE_BOARD_URL } from '../../Data/constants.js'
 import { useQuery } from '@tanstack/react-query'
 import Notification from '../General/Notification/Notification.jsx'
@@ -144,7 +144,7 @@ function Index({db}: {db: any}) {
       </>
       }
 
-      <UserCard 
+      <MemberMenu 
         currentUser={currentUser} 
       />
 

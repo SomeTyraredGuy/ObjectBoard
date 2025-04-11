@@ -1,12 +1,12 @@
 import React from 'react'
-import CenterMenu from '../General/CenterMenu'
-import classes from '../Board/board.module.css'
-import TextInput from '../General/Inputs/TextInput/TextInput'
-import MemberUseMutation from '../../hooks/Board/Members/UseMemberMutation'
-import DefaultNotificationGroup from '../General/Notification/DefaultNotificationGroup.jsx'
+import CenterMenu from '../../General/CenterMenu'
+import classes from '../board.module.css'
+import TextInput from '../../General/Inputs/TextInput/TextInput'
+import MemberUseMutation from '../../../hooks/Board/Members/UseMemberMutation'
+import DefaultNotificationGroup from '../../General/Notification/DefaultNotificationGroup.js'
 
 
-function AddUserForm({closeFn, currentUser, refetchFn}) {
+function AddMemberForm({closeFn, currentUser, refetchFn}) {
     const {
       mutate :add,
       error,
@@ -36,4 +36,4 @@ function AddUserForm({closeFn, currentUser, refetchFn}) {
     )
 }
 
-export default AddUserForm
+export default AddMemberForm

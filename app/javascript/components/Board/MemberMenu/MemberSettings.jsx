@@ -1,10 +1,10 @@
 import React from 'react'
-import CenterMenu from '../General/CenterMenu'
-import Selector from '../General/Selector'
-import SwitchCheck from '../General/SwitchCheck'
-import DefaultNotificationGroup from '../General/Notification/DefaultNotificationGroup'
-import classes from '../Board/board.module.css'
-import UseMemberMutation from '../../hooks/Board/Members/UseMemberMutation'
+import CenterMenu from '../../General/CenterMenu'
+import Selector from '../../General/Selector'
+import SwitchCheck from '../../General/SwitchCheck'
+import DefaultNotificationGroup from '../../General/Notification/DefaultNotificationGroup'
+import classes from '../board.module.css'
+import UseMemberMutation from '../../../hooks/Board/Members/UseMemberMutation'
 
 const roleDefaults = [
   { name: "Admin",
@@ -27,7 +27,7 @@ const roleDefaults = [
   },
 ]
 
-function UserSettings({currentUser, user, closeFn, refetchFn}) {
+function MemberSettings({currentUser, user, closeFn, refetchFn}) {
   const {
     mutate : save,
     error,
@@ -91,4 +91,4 @@ function UserSettings({currentUser, user, closeFn, refetchFn}) {
   )
 }
 
-export default UserSettings
+export default MemberSettings

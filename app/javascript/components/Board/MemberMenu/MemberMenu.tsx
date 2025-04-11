@@ -1,14 +1,14 @@
 import React from 'react'
-import classes from '../Board/board.module.css'
-import CurrentUser from './CurrentUserButton'
-import OtherUsersButton from './OtherUsersButton'
+import classes from '../board.module.css'
+import CurrentMemberButton from './CurrentMemberButton'
+import OtherMembersButton from './OtherMembersButton'
 
 type Props = {
   currentUser: any,
   isLoading?: boolean
 }
 
-function UsersCard({currentUser, isLoading}: Props) {
+function MemberMenu({currentUser, isLoading}: Props) {
   return (
     <table className={`m-2 position-fixed top-0 end-0 ${isLoading && "placeholder-wave"}`} style={{height: "70px"}}>
       {isLoading ? 
@@ -17,10 +17,10 @@ function UsersCard({currentUser, isLoading}: Props) {
       <tbody className='w-100'>
         <tr className='align-items-center d-flex justify-content-end'>
           <th className={`${classes.leftBorder} ${classes.leftRounded} ${classes.background}`} style={{width: "216px"}}>
-            <CurrentUser currentUser={currentUser}/>
+            <CurrentMemberButton currentUser={currentUser}/>
           </th>
           <th className={`${classes.rightBorder} ${classes.rightRounded} ${classes.background}`} style={{width: "64px"}}>
-            <OtherUsersButton currentUser={currentUser}/>
+            <OtherMembersButton currentUser={currentUser}/>
           </th>
         </tr>
       </tbody>}
@@ -28,4 +28,4 @@ function UsersCard({currentUser, isLoading}: Props) {
   )
 }
 
-export default UsersCard
+export default MemberMenu
