@@ -37,7 +37,6 @@ function MemberSettings({currentUser, user, closeFn, refetchFn}) {
     setValue : setNewRole
   } = UseMemberMutation({
     path: `update_role/${user.member_id}`,
-    board_id: currentUser.board_id,
     refetchFn: refetchFn,
     defaultValue: user.role,
     method: "PATCH"

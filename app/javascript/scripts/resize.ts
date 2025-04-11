@@ -1,6 +1,6 @@
-import { Side } from "../../../../Types/Canvas"
-import { Ellipse, Line, Text, Point, Rectangle, XYWH } from "../../../../Types/CanvasObjects"
-import { ChangeRecord } from "../../../../hooks/Board/UseHistory"
+import { Side } from "../Types/Canvas"
+import { Ellipse, Line, Text, Point, Rectangle, XYWH } from "../Types/CanvasObjects"
+import { ChangeRecord } from "../hooks/Board/UseHistory"
 
 function getResizedByPercent(side: Side, currentPoint: Point, initialXYWH: XYWH): Point {
     let referencePointOnInitial: Point = {x: initialXYWH.x, y: initialXYWH.y}

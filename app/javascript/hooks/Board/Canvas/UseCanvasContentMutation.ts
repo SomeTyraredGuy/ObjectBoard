@@ -2,16 +2,15 @@ import { RefObject, useRef, useState } from "react";
 import { ChangeRecord, HistoryRecord } from "../UseHistory";
 import useTimeout from "../../UseTimeout";
 import { useMutation } from "@tanstack/react-query";
-import { BASE_BOARD_URL, getCSRFToken } from "../../../Data/constants";
+import { getCSRFToken, getBaseURL } from "../../../scripts/requestUtils";
 import { CanvasObject, isCanvasObject } from "../../../Types/CanvasObjects";
 
 type Props = {
-    boardId: number,
     noChanges: (changeRecord: ChangeRecord) => boolean,
     changeObjects: RefObject<(HistoryRecord: HistoryRecord, useNewProp?: boolean) => void>,
 }
 
-export default function UseCanvasContentMutation({boardId, noChanges, changeObjects}: Props) {
+export default function UseCanvasContentMutation({noChanges, changeObjects}: Props) {
     const unsavedRecord = useRef<HistoryRecord>([])
     const [unsavedChanges, setUnsavedChanges] = useState<boolean>(false)
     const localIDs = useRef<number[]>([])
@@ -59,7 +58,7 @@ export default function UseCanvasContentMutation({boardId, noChanges, changeObje
         error
     } = useMutation({
         mutationFn: async () => {
-            const response = await fetch(`${BASE_BOARD_URL}${boardId}/content/save`, {
+            const response = await fetch(`${ getBaseURL() }/content/save`, {
                 method: "POST",
                 headers: {
                   'Content-Type': 'application/json',

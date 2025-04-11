@@ -1,9 +1,9 @@
-import { BASE_BOARD_URL, getCSRFToken } from '../../../Data/constants.js'
+import { getCSRFToken, getBaseURL } from "../../../scripts/requestUtils.js";
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 
 
-export default function UseMemberMutation({path, board_id, refetchFn, defaultValue, method}) {
+export default function UseMemberMutation({path, refetchFn, defaultValue, method}) {
     const [value, setValue] = useState(defaultValue)
 
     const {
@@ -13,7 +13,7 @@ export default function UseMemberMutation({path, board_id, refetchFn, defaultVal
         isSuccess
       } = useMutation({
         mutationFn: async () => {
-          const response = await fetch(`${BASE_BOARD_URL}${board_id}/member/${path}`, {
+          const response = await fetch(`${ getBaseURL() }/member/${path}`, {
             method: method,
             headers: {
               'Content-Type': 'application/json',

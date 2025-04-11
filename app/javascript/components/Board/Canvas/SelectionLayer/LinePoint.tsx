@@ -1,7 +1,7 @@
 import React from 'react'
 import { Point } from '../../../../Types/CanvasObjects'
 import { Circle } from 'react-konva'
-import { onMouseEnter, onMouseLeave } from '../scripts/generalObjectsEventsHandlers'
+import { onMouseEnter, onMouseLeave } from '../generalObjectsEventsHandlers'
 import { CanvasMode, CanvasState } from '../../../../Types/Canvas'
 import { KonvaEventObject } from 'konva/lib/Node'
 

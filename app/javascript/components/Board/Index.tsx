@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import MemberMenu from './MemberMenu/MemberMenu.js'
-import { BASE_BOARD_URL } from '../../Data/constants.js'
+import { getBaseURL } from '../../scripts/requestUtils.js'
 import { useQuery } from '@tanstack/react-query'
 import Notification from '../General/Notification/Notification.jsx'
 import ToolBar from './ToolBar/ToolBar.jsx'
@@ -28,7 +28,7 @@ function Index({db}: {db: any}) {
   } = useQuery({
     queryKey: ['user', db.currentMemberId],
     queryFn: async () => {
-        const JSON = await fetch(`${BASE_BOARD_URL}${db.board.id}/member/current`)
+        const JSON = await fetch(`${ getBaseURL() }/member/current`)
         const response = await JSON.json()
             
         if (!JSON.ok) {
@@ -83,7 +83,7 @@ function Index({db}: {db: any}) {
     isLoading: contentIsLoading,
     error: contentQueryError,
     isError: isContentQueryError,
-  } = useCanvasContentQuery({boardId: db.board.id, setCanvasState, setCanvasObjects, isContentMutationError})
+  } = useCanvasContentQuery({setCanvasState, setCanvasObjects, isContentMutationError})
 
   const notifications = [
     {

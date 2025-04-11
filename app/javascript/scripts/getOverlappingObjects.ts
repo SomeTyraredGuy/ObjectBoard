@@ -1,16 +1,5 @@
-import { Stage } from "konva/lib/Stage";
-import { CanvasObject, CanvasObjectType, Point } from "../../../../Types/CanvasObjects";
-
-function getCursorOnCanvas(stage: Stage | null, scale: number): Point | null {
-    if (!stage) return null
-    const pointerPosition = stage?.getPointerPosition()
-    if (!pointerPosition) return null
-
-    return {
-        x: (pointerPosition.x - stage.x()) / scale,
-        y: (pointerPosition.y - stage.y()) / scale,
-    }
-}
+import { CanvasObject, CanvasObjectType, Point } from "../Types/CanvasObjects";
+import { isTooSmallDrag } from "./canvasUtils";
 
 function onSegment(p: Point, q: Point, r: Point) {
     if (q.x <= Math.max(p.x, r.x) && q.x >= Math.min(p.x, r.x) && 
@@ -49,7 +38,7 @@ function linesIntersect(A1: Point, B1: Point, A2: Point, B2: Point): boolean {
     return false
 }
 
-function getOverlappingObjects(objects: CanvasObject[], point1: Point, point2: Point): CanvasObject[] {
+export default function getOverlappingObjects(objects: CanvasObject[], point1: Point, point2: Point): CanvasObject[] {
     const overlappingObjects: CanvasObject[] = []
     let leftX1: number, rightX1: number, topY1: number, bottomY1: number
     let leftX2: number, rightX2: number, topY2: number, bottomY2: number
@@ -131,24 +120,3 @@ function getOverlappingObjects(objects: CanvasObject[], point1: Point, point2: P
 
     return overlappingObjects
 }
-
-function getDirection(startingPoint: Point, currentPoint: Point): {xRight: boolean, yBottom: boolean} {
-    return {
-        xRight: currentPoint.x > startingPoint.x,
-        yBottom: currentPoint.y < startingPoint.y,
-    }
-}
-
-const TOO_SMALL_DRAG = 5
-function isTooSmallDrag(startingPoint: Point, currentPoint: Point): boolean{
-    const { xRight, yBottom } = getDirection(startingPoint, currentPoint)
-
-    if(!xRight && startingPoint.x - currentPoint.x > TOO_SMALL_DRAG) return false
-    if(xRight && currentPoint.x - startingPoint.x > TOO_SMALL_DRAG) return false
-    if(yBottom && currentPoint.y - startingPoint.y > TOO_SMALL_DRAG) return false
-    if(!yBottom && startingPoint.y - currentPoint.y > TOO_SMALL_DRAG) return false
-
-    return true
-}
-
-export { getCursorOnCanvas, getOverlappingObjects, getDirection, isTooSmallDrag }

@@ -2,7 +2,7 @@ import React from 'react'
 import CenterMenu from '../../General/CenterMenu'
 import classes from '../board.module.css'
 import TextInput from '../../General/Inputs/TextInput/TextInput'
-import MemberUseMutation from '../../../hooks/Board/Members/UseMemberMutation'
+import useMemberUseMutation from '../../../hooks/Board/Members/UseMemberMutation'
 import DefaultNotificationGroup from '../../General/Notification/DefaultNotificationGroup.js'
 
 
@@ -14,9 +14,8 @@ function AddMemberForm({closeFn, currentUser, refetchFn}) {
       isSuccess,
       value : name,
       setValue : setName
-    } = MemberUseMutation({
+    } = useMemberUseMutation({
       path: "add_to_board", 
-      board_id: currentUser.board_id, 
       refetchFn: refetchFn, 
       defaultValue: "", 
       method: "POST"

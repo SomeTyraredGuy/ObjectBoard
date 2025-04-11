@@ -57,7 +57,6 @@ class Member < ApplicationRecord
 
   def format_full # rubocop:disable Metrics/MethodLength
     {
-      board_id: board_id,
       member_id: id,
       user_id: user.id,
       name: user.name,

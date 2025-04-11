@@ -33,7 +33,7 @@ export default function UseHistory({changeObjects, boardId}: Props) {
         unsavedChanges,
         isError: isContentMutationError,
         error: contentMutationError
-    } = UseCanvasContentMutation({boardId, noChanges, changeObjects})
+    } = UseCanvasContentMutation({noChanges, changeObjects})
 
     const {startTimeout} = useTimeout({
         delay: 200, 

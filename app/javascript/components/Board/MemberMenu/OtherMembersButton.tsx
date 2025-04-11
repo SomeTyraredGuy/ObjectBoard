@@ -3,7 +3,7 @@ import classes from '../board.module.css'
 import generalClasses from '../../General/general.module.css'
 import PlusCircleSVG from '../../svg/PlusCircleSVG.js'
 import { useQuery } from '@tanstack/react-query'
-import { BASE_BOARD_URL } from '../../../Data/constants.js'
+import { getBaseURL } from '../../../scripts/requestUtils'
 import Notification from '../../General/Notification/Notification'
 import MemberListItem from './MemberListItem'
 import MemberSettings from './MemberSettings'
@@ -31,7 +31,7 @@ function OtherMembersButton({currentUser}) {
       } = useQuery({
         queryKey: ['other_users'],
         queryFn: async () => {
-            const JSON = await fetch(`${BASE_BOARD_URL}${currentUser.board_id}/member/others`)
+            const JSON = await fetch(`${ getBaseURL() }/member/others`)
             const response = await JSON.json()
             
             if (!JSON.ok) {
