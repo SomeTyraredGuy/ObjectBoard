@@ -1,9 +1,9 @@
 import { RefObject, useRef, useState } from "react";
-import { ChangeRecord, HistoryRecord } from "./UseHistory";
-import useTimeout from "../../../../../hooks/UseTimeout";
+import { ChangeRecord, HistoryRecord } from "../UseHistory";
+import useTimeout from "../../UseTimeout";
 import { useMutation } from "@tanstack/react-query";
-import { BASE_BOARD_URL, getCSRFToken } from "../../../../../Data/constants";
-import { CanvasObject, isCanvasObject } from "../../../../../Types/CanvasObjects";
+import { BASE_BOARD_URL, getCSRFToken } from "../../../Data/constants";
+import { CanvasObject, isCanvasObject } from "../../../Types/CanvasObjects";
 
 type Props = {
     boardId: number,

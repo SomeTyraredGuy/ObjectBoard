@@ -4,7 +4,7 @@ import {SelectSVG, UndoSVG, RedoSVG, TextSVG, RectangleSVG, CircleSVG, ArrowSVG}
 import IconButton from '../../General/IconButton'
 import { CanvasMode, CanvasState, Side } from '../../../Types/Canvas'
 import { CanvasObjectType } from '../../../Types/CanvasObjects'
-import UseDefaultObjects from '../Canvas/scripts/hooks/canvasObjectsHooks/UseDefaultObjects'
+import UseDefaultObjects from '../../../hooks/Board/Canvas/Objects/UseDefaultObjects'
 
 interface ToolBarProps {
   canvasState: CanvasState,

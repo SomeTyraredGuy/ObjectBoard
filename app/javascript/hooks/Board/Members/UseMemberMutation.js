@@ -1,4 +1,4 @@
-import { BASE_BOARD_URL, getCSRFToken } from '../../Data/constants.js'
+import { BASE_BOARD_URL, getCSRFToken } from '../../../Data/constants.js'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 

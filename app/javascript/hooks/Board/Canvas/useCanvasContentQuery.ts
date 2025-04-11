@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { BASE_BOARD_URL } from "../../../../../Data/constants";
-import { CanvasMode } from "../../../../../Types/Canvas";
-import { CanvasObject } from "../../../../../Types/CanvasObjects";
-import { CanvasState } from "../../../../../Types/Canvas";
+import { BASE_BOARD_URL } from "../../../Data/constants";
+import { CanvasMode } from "../../../Types/Canvas";
+import { CanvasObject } from "../../../Types/CanvasObjects";
+import { CanvasState } from "../../../Types/Canvas";
 import { useEffect } from "react";
 
 type Props = {

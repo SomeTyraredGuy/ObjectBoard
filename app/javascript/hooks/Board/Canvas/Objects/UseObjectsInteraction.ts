@@ -1,8 +1,8 @@
 import { useRef } from 'react'
-import { CanvasObjectType, Point } from '../../../../../../Types/CanvasObjects'
+import { CanvasObjectType, Point } from '../../../../Types/CanvasObjects'
 import { KonvaEventObject } from 'konva/lib/Node'
-import { getCursorOnCanvas, getOverlappingObjects, isTooSmallDrag } from '../../getters'
-import { CanvasMode, CanvasState } from '../../../../../../Types/Canvas'
+import { getCursorOnCanvas, getOverlappingObjects, isTooSmallDrag } from '../../../../components/Board/Canvas/scripts/getters'
+import { CanvasMode, CanvasState } from '../../../../Types/Canvas'
 import UseObjects from './UseObjects'
 import UseTemporaryObject from './UseTemporaryObject'
 
@@ -16,7 +16,7 @@ type Props = {
     handleHistory: any,
 }
 
-export default function UseCanvasObjects({blocked, canvasState, setCanvasState, stageScale, handleHistory}: Props) {
+export default function UseObjectsInteraction({blocked, canvasState, setCanvasState, stageScale, handleHistory}: Props) {
     const { 
         canvasObjects,
         setCanvasObjects,

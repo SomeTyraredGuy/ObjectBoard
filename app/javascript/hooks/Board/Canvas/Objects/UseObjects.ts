@@ -1,8 +1,8 @@
 import { RefObject, useState } from "react"
-import { CanvasObject, CanvasObjectType, Point } from "../../../../../../Types/CanvasObjects"
-import { CanvasState, CanvasMode } from "../../../../../../Types/Canvas"
-import { getResizedByPercent, resizeRectangle, resizeEllipse, resizeLine, resizeText } from "../../resize"
-import { ChangeRecord, HistoryRecord } from "../UseHistory"
+import { CanvasObject, CanvasObjectType, Point } from "../../../../Types/CanvasObjects"
+import { CanvasState, CanvasMode } from "../../../../Types/Canvas"
+import { getResizedByPercent, resizeRectangle, resizeEllipse, resizeLine, resizeText } from "../../../../components/Board/Canvas/scripts/resize"
+import { ChangeRecord, HistoryRecord } from "../../UseHistory"
 
 export type ChangeObjectProperty = {
     propertyName: "fill",

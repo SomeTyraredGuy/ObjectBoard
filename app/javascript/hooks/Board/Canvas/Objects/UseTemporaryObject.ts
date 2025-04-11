@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { CanvasObject, CanvasObjectType, Point } from "../../../../../../Types/CanvasObjects"
-import { getDirection } from "../../getters"
+import { CanvasObject, CanvasObjectType, Point } from "../../../../Types/CanvasObjects"
+import { getDirection } from "../../../../components/Board/Canvas/scripts/getters"
 
 function createNewObject(currentPoint: Point, startingProperties: CanvasObject): CanvasObject {
     if (startingProperties.type === CanvasObjectType.Text) return {

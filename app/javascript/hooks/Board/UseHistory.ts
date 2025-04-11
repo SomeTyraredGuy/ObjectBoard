@@ -1,7 +1,7 @@
 import { RefObject, useRef } from "react"
-import { CanvasObject, CanvasObjectType } from "../../../../../Types/CanvasObjects"
-import useTimeout from "../../../../../hooks/UseTimeout"
-import UseCanvasContentMutation from "./UseCanvasContentMutation"
+import { CanvasObject, CanvasObjectType } from "../../Types/CanvasObjects"
+import useTimeout from "../UseTimeout"
+import UseCanvasContentMutation from "./Canvas/UseCanvasContentMutation"
 
 export type ChangeType = CanvasObjectType | "assignID"
 

@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import { Rectangle, CanvasObjectType, Ellipse, Text, Line } from "../../../../../../Types/CanvasObjects"
+import { Rectangle, CanvasObjectType, Ellipse, Text, Line } from "../../../../Types/CanvasObjects"
 
 
 export default function UseDefaultObjects() {

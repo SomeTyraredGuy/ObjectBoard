@@ -4,7 +4,7 @@ import Selector from '../General/Selector'
 import SwitchCheck from '../General/SwitchCheck'
 import DefaultNotificationGroup from '../General/Notification/DefaultNotificationGroup'
 import classes from '../Board/board.module.css'
-import UseMemberMutation from './UseMemberMutation'
+import UseMemberMutation from '../../hooks/Board/Members/UseMemberMutation'
 
 const roleDefaults = [
   { name: "Admin",
