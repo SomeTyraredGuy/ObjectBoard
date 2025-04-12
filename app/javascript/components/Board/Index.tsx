@@ -12,7 +12,7 @@ import Canvas from './Canvas/Canvas.js'
 import UseObjectsInteraction from '../../hooks/Board/Canvas/Objects/UseObjectsInteraction.js'
 import UseStageScaleAndPosition from '../../hooks/Board/Canvas/UseStageScaleAndPosition.js'
 import UseHistory from '../../hooks/Board/UseHistory.js'
-import useCanvasContentQuery from '../../hooks/Board/Canvas/useCanvasContentQuery.js'
+import UseCanvasContentQuery from '../../hooks/Board/Canvas/UseCanvasContentQuery.js'
 import Loader from '../General/Loader/Loader.js'
 
 function Index({db}: {db: any}) {
@@ -59,7 +59,6 @@ function Index({db}: {db: any}) {
     contentMutationError
   } = UseHistory({
     changeObjects,
-    boardId: db.board.id,
   })
 
   const { 
@@ -83,7 +82,7 @@ function Index({db}: {db: any}) {
     isLoading: contentIsLoading,
     error: contentQueryError,
     isError: isContentQueryError,
-  } = useCanvasContentQuery({setCanvasState, setCanvasObjects, isContentMutationError})
+  } = UseCanvasContentQuery({setCanvasState, setCanvasObjects, isContentMutationError})
 
   const notifications = [
     {

@@ -1,369 +1,242 @@
-import { RefObject, useState } from "react"
-import { CanvasObject, CanvasObjectType, Point } from "../../../../Types/CanvasObjects"
-import { CanvasState, CanvasMode } from "../../../../Types/Canvas"
-import { getResizedByPercent, resizeRectangle, resizeEllipse, resizeLine, resizeText } from "../../../../scripts/resize"
-import { ChangeRecord, HistoryRecord } from "../../UseHistory"
-
-export type ChangeObjectProperty = {
-    propertyName: "fill",
-    newValue: string,
-}
-| {
-    propertyName: "stroke",
-    newValue: string,
-}
-| {
-    propertyName: "strokeWidth",
-    newValue: number,
-}
-| {
-    propertyName: "opacity",
-    newValue: number,
-}
-| {
-    propertyName: "cornerRadius",
-    newValue: number,
-}
+import { RefObject, useState } from "react";
+import { CanvasObject, CanvasObjectType, Point, XYWH } from "../../../../Types/CanvasObjects";
+import { CanvasState, CanvasMode, Side } from "../../../../Types/Canvas";
+import {
+	getResizedByPercent,
+	resizeRectangle,
+	resizeEllipse,
+	resizeLine,
+	// resizeText,
+} from "../../../../scripts/CanvasObjects/resize";
+import { HistoryRecord, ChangeRecord } from "../../../../Types/History";
+import { ObjectPropertyChange } from "../../../../Types/ObjectPropertyChange";
+import createHistoryChangeObjects from "../../../../scripts/CanvasObjects/historyChangeObjects";
+import {
+	moveSelectedMode,
+	setNoneMode,
+	setSelectedMode,
+	updateSelectedMode,
+} from "../../../../scripts/canvasStateUtils";
+import { creationChangeRecord, deletionChangeRecord, modificationChangeRecord } from "../../../../scripts/historyUtils";
+import { moveLinePoint, moveObject } from "../../../../scripts/CanvasObjects/move";
 
 type Props = {
-    canvasState: CanvasState,
-    setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
-    handleHistory: {
-        changeObjects: RefObject<(HistoryRecord: HistoryRecord, useNewProp?: boolean) => void>,
-        historyHandleChanges: (record: HistoryRecord, waitForFinal?: boolean) => void,
-    },
-}
+	canvasState: CanvasState;
+	setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>;
+	handleHistory: {
+		changeObjects: RefObject<(HistoryRecord: HistoryRecord, useNewProp?: boolean) => void>;
+		historyHandleChanges: (record: HistoryRecord, waitForFinal?: boolean) => void;
+	};
+};
 
-export default function UseObjects({canvasState, setCanvasState, handleHistory}: Props) {
-    const [canvasObjects, setCanvasObjects] = useState<CanvasObject[]>([])
-    const {
-        changeObjects: historyChangeObjects,
-        historyHandleChanges,
-    } = handleHistory
+export default function UseObjects({ canvasState, setCanvasState, handleHistory }: Props) {
+	const [canvasObjects, setCanvasObjects] = useState<CanvasObject[]>([]);
+	const { changeObjects: historyChangeObjects, historyHandleChanges } = handleHistory;
 
-    historyChangeObjects.current = (historyRecord: HistoryRecord, redo: boolean = false) => {
-        let newObjects: CanvasObject[] = [...canvasObjects]
-        let newSelected: CanvasObject[] = []
-        let numOfDeleted = 0
-        const selectedMode = canvasState.mode === CanvasMode.Selected
-        
-        historyRecord.forEach( changeRecord => {
-            const nextProps: Partial<CanvasObject> = redo ? changeRecord.newProperties : changeRecord.oldProperties
-            const prevProps: Partial<CanvasObject> = redo ? changeRecord.oldProperties : changeRecord.newProperties
+	historyChangeObjects.current = createHistoryChangeObjects(
+		canvasObjects,
+		setCanvasObjects,
+		setCanvasState,
+		canvasState
+	);
 
-            if ( nextProps === null ){ // delete
-                numOfDeleted++
-                return 
-            } 
-            else if ( prevProps === null ) { // add
-                newObjects[nextProps.index] = nextProps as CanvasObject
-                return
-            }
+	function addNewObject(object: CanvasObject) {
+		object.index = canvasObjects.length;
 
-            const obj = canvasObjects.find(obj => obj.id === changeRecord.id)
+		setCanvasObjects([...canvasObjects, object]);
 
-            const newObj: CanvasObject = {
-                ...obj,
-                ...nextProps as any,
-            }
+		historyHandleChanges([creationChangeRecord(object)]);
+	}
 
-            newObjects[newObj.index] = newObj
-            if (selectedMode && canvasState.objects.findIndex(obj => obj.id === changeRecord.id) !== -1){
-                newSelected.push(newObj)
-            }
-        })
-    
-        newObjects = newObjects.slice(0, newObjects.length - numOfDeleted)
-        setCanvasObjects(newObjects)
+	function deleteSelectedObjects() {
+		if (canvasState.mode !== CanvasMode.Selected) return;
 
-        if ( selectedMode ){
-            if (newSelected.length === 0){
-                setCanvasState({
-                    mode: CanvasMode.None
-                })
-            }
-            else setCanvasState({
-                ...canvasState,
-                objects: newSelected,
-            })
-        }
-    }
-    
-    function addNewObject(object: CanvasObject){
-        object.index = canvasObjects.length
-    
-        setCanvasObjects([ 
-            ...canvasObjects,
-            object,
-        ])
+		let newIndex = 0;
+		const newHistoryRecord: HistoryRecord = [];
+		const newObjects = canvasObjects.filter((obj) => {
+			if (canvasState.objects.includes(obj)) {
+				newHistoryRecord.push(deletionChangeRecord(obj));
+				return false;
+			}
 
-        historyHandleChanges(
-            [{
-                id: object.id,
-                type: object.type,
-                oldProperties: null,
-                newProperties: object,
-            }],
-        )
-    }
+			if (obj.index !== newIndex) {
+				newHistoryRecord.push(modificationChangeRecord(obj, { index: newIndex }));
+				obj.index = newIndex;
+			}
 
-    function deleteSelectedObjects() {
-        if (canvasState.mode !== CanvasMode.Selected) return
+			newIndex++;
+			return true;
+		});
 
-        let newIndex = 0
-        let newHistoryRecord: HistoryRecord = []
-        const newObjects = canvasObjects.filter(obj => {
-            if (canvasState.objects.includes(obj)){
-                const changeRecord: ChangeRecord = {
-                    id: obj.id,
-                    type: obj.type,
-                    newProperties: null,
-                    oldProperties: obj,
-                }
-                newHistoryRecord.push(changeRecord)
-                return false
-            }
+		setCanvasObjects(newObjects);
+		setNoneMode(setCanvasState);
+		historyHandleChanges(newHistoryRecord);
+	}
 
-            if (obj.index !== newIndex) {
-                const changeRecord: ChangeRecord = {
-                    id: obj.id,
-                    type: obj.type,
-                    oldProperties: {index: obj.index},
-                    newProperties: {index: newIndex},
-                }
-                newHistoryRecord.push(changeRecord)
-                obj.index = newIndex
-            }
-            
-            newIndex++
-            return true
-        })
+	function moveSelectedObjects(moveBy: Point) {
+		if (canvasState.mode !== CanvasMode.Selected) return;
 
-        setCanvasObjects(newObjects)
-        setCanvasState({
-            mode: CanvasMode.None
-        })
-        historyHandleChanges(newHistoryRecord)
-    }
-    
-    function moveSelectedObjects(moveBy: Point) {
-        if (canvasState.mode !== CanvasMode.Selected) return
-    
-        let newObjects = [...canvasObjects]
-        let newSelected: CanvasObject[] = []
-        let newHistoryRecord: HistoryRecord = []
-    
-        canvasState.objects.forEach( obj => {
-            if (obj.index === undefined) return
-            
-            let newObject = {...obj}
-            let changeRecord: ChangeRecord = {
-                id: newObject.id,
-                type: newObject.type,
-                oldProperties: null,
-                newProperties: null
-            }
+		const newObjects = [...canvasObjects];
+		const newSelected: CanvasObject[] = [];
+		const newHistoryRecord: HistoryRecord = [];
 
-            if (newObject.type === CanvasObjectType.Line){
+		canvasState.objects.forEach((obj) => {
+			if (obj.index === undefined) return;
 
-                changeRecord.oldProperties= {points: newObject.points}
+			const newObject = { ...obj };
 
-                newObject.points = newObject.points.map((point, i) => {
-                    if (i % 2 === 0) return point + moveBy.x
-                    return point + moveBy.y
-                })
+			newHistoryRecord.push(moveObject(newObject, moveBy));
+			newObjects[obj.index] = newObject;
+			newSelected.push(newObject);
+		});
 
-                changeRecord.newProperties= {points: newObject.points}
-            } else{
-                changeRecord.oldProperties= {x: newObject.x, y: newObject.y}
+		moveSelectedMode(setCanvasState, newSelected, moveBy);
 
-                newObject.x += moveBy.x
-                newObject.y += moveBy.y
+		setCanvasObjects(newObjects);
+		historyHandleChanges(newHistoryRecord, true);
+	}
 
-                changeRecord.newProperties= {x: newObject.x, y: newObject.y}
-            }
-    
-            newObjects[obj.index] = newObject
-            newSelected.push(newObject)
-            newHistoryRecord.push(changeRecord)
-        })
-    
-        setCanvasState({
-            ...canvasState,
-            objects: newSelected,
-            movedBy: moveBy,
-        })
-    
-        setCanvasObjects(newObjects)
-        historyHandleChanges(newHistoryRecord, true)
-    }
+	function moveSelectedLinePoint(moveBy: Point, final = false) {
+		if (
+			canvasState.mode !== CanvasMode.Selected ||
+			canvasState.lineModification === undefined ||
+			canvasState.objects.length !== 1 // assumes that line is only one selected object
+		)
+			return;
 
-    function moveLinePoint(moveBy: Point, final = false) {
-        if (canvasState.mode !== CanvasMode.Selected || 
-            canvasState.lineModification === undefined ||
-            canvasState.objects.length !== 1 // assumes that line is only one selected object
-        ) return
-        
-        let line = canvasState.objects[0]
-        if (!line || line.index === undefined) return
-        
-        line = canvasObjects[line.index]
-        if (!line || line.index === undefined || line.type !== CanvasObjectType.Line) return
+		const lineIndex = canvasState.objects[0]?.index;
+		if (lineIndex === undefined) return;
 
-        let changeRecord: ChangeRecord= {
-            id: line.id,
-            type: line.type,
-            oldProperties: {points: line.points},
-            newProperties: null
-        }
-        
-        const xIndex = canvasState.lineModification.pointIndex * 2
-        let points = [...line.points]
-        points[xIndex] = points[xIndex] + moveBy.x
-        points[xIndex + 1] = points[xIndex + 1] + moveBy.y
+		const line = canvasObjects[lineIndex];
+		if (!line || line.index === undefined || line.type !== CanvasObjectType.Line) return;
 
-        let newObjects = [...canvasObjects]
-        newObjects[line.index] = {...line, points: points}
-        changeRecord.newProperties= {points: points}
+		const newLine = { ...line };
 
-        if (final) {
-            setCanvasState({
-                ...canvasState,
-                objects: [newObjects[line.index]],
-                lineModification: undefined,
-            })
-        } else{
-            setCanvasState({
-                ...canvasState,
-                objects: [newObjects[line.index]],
-            })
-        }
+		historyHandleChanges([moveLinePoint(newLine, moveBy, canvasState.lineModification)], true);
 
-        setCanvasObjects(newObjects)
+		const newObjects = [...canvasObjects];
+		newObjects[lineIndex] = newLine;
 
-        historyHandleChanges([changeRecord], true)
-    }
+		if (final) {
+			setSelectedMode(setCanvasState, [newObjects[line.index]]);
+		} else {
+			updateSelectedMode(setCanvasState, [newObjects[line.index]]);
+		}
 
-    function resizeSelectedObjects(currentPoint: Point, final = false) {
-        if (canvasState.mode !== CanvasMode.Selected || !canvasState.resizing) return
-        
-        const side = canvasState.resizing.side
-        const initialSelectedObjects = canvasState.resizing.initialSelectedObjects
-        const initialSelectionNet = canvasState.resizing.initialSelectionNet
-        const resizedByPercent = getResizedByPercent(side, currentPoint, initialSelectionNet)
+		setCanvasObjects(newObjects);
+	}
 
-        let newObjects = [...canvasObjects]
-        let newSelected: CanvasObject[] = []
-    
-        let historyRecord: HistoryRecord = []
-        canvasState.objects.forEach( (obj, i) => {
-            if (obj.index === undefined) return
-    
-            let changeRecord: ChangeRecord
-            let newObject = {...obj}
-            newObjects[obj.index] = newObject
-            newSelected.push(newObject)
-            switch (newObject.type) {
-                case CanvasObjectType.Line:
-                    if (initialSelectedObjects[i].type !== CanvasObjectType.Line) return
-                    changeRecord = resizeLine(newObject, resizedByPercent, currentPoint, initialSelectionNet, initialSelectedObjects[i], side)
-                    break
-                    
-                case CanvasObjectType.Rectangle:
-                    if (initialSelectedObjects[i].type !== CanvasObjectType.Rectangle) return
-                    changeRecord = resizeRectangle(newObject, resizedByPercent, currentPoint, initialSelectionNet, initialSelectedObjects[i], side)
-                    break
+	function resizeSelectedObjects(currentPoint: Point, final = false) {
+		if (canvasState.mode !== CanvasMode.Selected || !canvasState.resizing) return;
 
-                case CanvasObjectType.Ellipse:
-                    if (initialSelectedObjects[i].type !== CanvasObjectType.Ellipse) return
-                    changeRecord = resizeEllipse(newObject, resizedByPercent, currentPoint, initialSelectionNet, initialSelectedObjects[i], side)
-                    break
+		const side = canvasState.resizing.side;
+		const initialSelectedObjects = canvasState.resizing.initialSelectedObjects;
+		const initialSelectionNet = canvasState.resizing.initialSelectionNet;
+		const resizedByPercent = getResizedByPercent(side, currentPoint, initialSelectionNet);
 
-                // TODO
-                // case CanvasObjectType.Text:
-                //     if (initialSelectedObjects[i].type !== CanvasObjectType.Text) return
-                //     resizeText(newObject, resizedByPercent, currentPoint, initialSelectionNet, initialSelectedObjects[i], side)
-                //     break
+		const newObjects = [...canvasObjects];
+		const newSelected: CanvasObject[] = [];
 
-                default:
-                    return
-            }
-    
-            historyRecord.push(changeRecord)
-        })
-    
-        setCanvasObjects(newObjects)
+		const historyRecord: HistoryRecord = [];
+		canvasState.objects.forEach((obj, i) => {
+			if (obj.index === undefined) return;
 
-        if (final) {
-            setCanvasState({
-                ...canvasState,
-                objects: newSelected,
-                resizing: undefined,
-            })
-        } else{
-            setCanvasState({
-                ...canvasState,
-                objects: newSelected,
-            })
-        }
+			const newObject = { ...obj };
+			newObjects[obj.index] = newObject;
+			newSelected.push(newObject);
 
-        historyHandleChanges(historyRecord, true)
-    }
+			let resizeFunc: (
+				object: CanvasObject,
+				resizedByPercent: Point,
+				currentPoint: Point,
+				initialSelectionNet: XYWH,
+				initialObject: CanvasObject,
+				side: Side
+			) => ChangeRecord;
+			switch (newObject.type) {
+				case CanvasObjectType.Line:
+					if (initialSelectedObjects[i].type !== CanvasObjectType.Line) return;
+					resizeFunc = resizeLine;
+					break;
 
-    function changeProperty({propertyName,newValue}: ChangeObjectProperty) {
-        if (canvasState.mode !== CanvasMode.Selected) return
-        
-        let newObjects = [...canvasObjects]
-        let newSelected: CanvasObject[] = []
-        let newHistoryRecord: HistoryRecord = []
-        
-        canvasState.objects.forEach( obj => {
-            if ( obj.index === undefined ) return
-    
-            let newObject = { ...obj }
+				case CanvasObjectType.Rectangle:
+					if (initialSelectedObjects[i].type !== CanvasObjectType.Rectangle) return;
+					resizeFunc = resizeRectangle;
+					break;
 
-            if ( propertyName in obj ){
-                let newChangeRecord: ChangeRecord = {
-                    id: newObject.id,
-                    type: newObject.type,
-                    oldProperties: {[propertyName]: newObject[propertyName]},
-                    newProperties: null
-                }
+				case CanvasObjectType.Ellipse:
+					if (initialSelectedObjects[i].type !== CanvasObjectType.Ellipse) return;
+					resizeFunc = resizeEllipse;
+					break;
 
-                newObject = {
-                    ...newObject,
-                    [propertyName]: newValue,
-                }
+				// TODO
+				// case CanvasObjectType.Text:
+				//     if (initialSelectedObjects[i].type !== CanvasObjectType.Text) return;
+				//     resizeFunc = resizeText;
+				//     break
 
-                newChangeRecord.newProperties= {[propertyName]: newValue}
-                newHistoryRecord.push(newChangeRecord)
-            }
-            
+				default:
+					return;
+			}
 
-            newObjects[obj.index] = newObject
-            newSelected.push(newObject)
-        })
-    
-        setCanvasObjects(newObjects)
+			historyRecord.push(
+				resizeFunc(newObject, resizedByPercent, currentPoint, initialSelectionNet, initialSelectedObjects[i], side)
+			);
+		});
 
-        setCanvasState({
-            ...canvasState,
-            objects: newSelected,
-        })
+		setCanvasObjects(newObjects);
 
-        historyHandleChanges(newHistoryRecord)
-    }
+		if (final) {
+			setSelectedMode(setCanvasState, newSelected);
+		} else {
+			updateSelectedMode(setCanvasState, newSelected);
+		}
 
-    return { 
-        canvasObjects,
-        setCanvasObjects,
-        addNewObject, 
-        moveSelectedObjects,
-        moveLinePoint,
-        resizeSelectedObjects,
-        resourcesProperties: {
-            changeProperty,
-            deleteSelectedObjects
-        }
-    }
+		historyHandleChanges(historyRecord, true);
+	}
+
+	function changeProperty({ propertyName, newValue }: ObjectPropertyChange) {
+		if (canvasState.mode !== CanvasMode.Selected) return;
+
+		const newObjects = [...canvasObjects];
+		const newSelected: CanvasObject[] = [];
+		const newHistoryRecord: HistoryRecord = [];
+
+		canvasState.objects.forEach((obj) => {
+			if (obj.index === undefined) return;
+
+			let newObject = { ...obj };
+
+			if (propertyName in obj) {
+				newObject = {
+					...newObject,
+					[propertyName]: newValue,
+				};
+
+				newHistoryRecord.push(modificationChangeRecord(obj, { [propertyName]: newValue }));
+			}
+
+			newObjects[obj.index] = newObject;
+			newSelected.push(newObject);
+		});
+
+		setCanvasObjects(newObjects);
+
+		setSelectedMode(setCanvasState, newSelected);
+
+		historyHandleChanges(newHistoryRecord);
+	}
+
+	return {
+		canvasObjects,
+		setCanvasObjects,
+		addNewObject,
+		moveSelectedObjects,
+		moveSelectedLinePoint,
+		resizeSelectedObjects,
+		resourcesProperties: {
+			changeProperty,
+			deleteSelectedObjects,
+		},
+	};
 }

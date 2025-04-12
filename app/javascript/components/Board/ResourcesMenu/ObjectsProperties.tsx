@@ -2,7 +2,7 @@ import React from 'react'
 import { CanvasMode, CanvasState } from '../../../Types/Canvas'
 import { PaletteSVG, TrashSVG } from '../../svg/ResourcesSVG'
 import ColorPicker from '../../General/Inputs/ColorPicker/ColorPicker'
-import { ChangeObjectProperty } from '../../../hooks/Board/Canvas/Objects/UseObjects'
+import { ObjectPropertyChange } from '../../../Types/ObjectPropertyChange'
 import { CanvasObjectType, numOfObjectTypes } from '../../../Types/CanvasObjects'
 import Slider from '../../General/Inputs/Slider/Slider'
 import classes from '../../General/general.module.css'
@@ -12,7 +12,7 @@ type Props = {
   canvasState: CanvasState,
   setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
   resourcesProperties: {
-    changeProperty: (ChangeObjectProperty) => void,
+    changeProperty: (ObjectPropertyChange) => void,
     deleteSelectedObjects: () => void
   }
 }
@@ -30,9 +30,9 @@ function ObjectsProperties({canvasState, setCanvasState, resourcesProperties}: P
     deleteSelectedObjects
   } = resourcesProperties
 
-  const setProperty = <P extends ChangeObjectProperty["propertyName"]>(propertyName: P) => {
+  const setProperty = <P extends ObjectPropertyChange["propertyName"]>(propertyName: P) => {
     return (
-      value: Extract<ChangeObjectProperty, { propertyName: P }>["newValue"]
+      value: Extract<ObjectPropertyChange, { propertyName: P }>["newValue"]
     ) => {
       if (canvasState.mode === CanvasMode.Inserting) {
         setCanvasState({

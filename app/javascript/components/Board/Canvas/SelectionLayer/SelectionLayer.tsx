@@ -4,7 +4,7 @@ import { CanvasMode, CanvasState, Side } from '../../../../Types/Canvas'
 import { CanvasObject, CanvasObjectType, XYWH } from '../../../../Types/CanvasObjects'
 import LineSelectionLayer from './LineSelectionLayer'
 import ResizePoint from './ResizePoint'
-import { onMouseEnter, onMouseLeave } from '../generalObjectsEventsHandlers'
+import { onMouseEnter, onMouseLeave } from '../../../../scripts/moveStyleCursorEvents'
 
 const RESIZE_POINTS = [
   {

@@ -1,206 +1,189 @@
-import { useRef } from 'react'
-import { CanvasObjectType, Point } from '../../../../Types/CanvasObjects'
-import { KonvaEventObject } from 'konva/lib/Node'
-import { getCursorOnCanvas, isTooSmallDrag } from '../../../../scripts/canvasUtils'
-import getOverlappingObjects from '../../../../scripts/getOverlappingObjects'
-import { CanvasMode, CanvasState } from '../../../../Types/Canvas'
-import UseObjects from './UseObjects'
-import UseTemporaryObject from './UseTemporaryObject'
-
-
+import { useRef } from "react";
+import { CanvasObjectType, Point } from "../../../../Types/CanvasObjects";
+import { KonvaEventObject } from "konva/lib/Node";
+import { getCursorOnCanvas, isTooSmallDrag } from "../../../../scripts/canvasUtils";
+import getOverlappingObjects from "../../../../scripts/CanvasObjects/getOverlappingObjects";
+import { CanvasMode, CanvasState } from "../../../../Types/Canvas";
+import UseObjects from "./UseObjects";
+import UseTemporaryObject from "./UseTemporaryObject";
+import {
+	setNoneMode,
+	setSelectedMode,
+	setSelectionNetMode,
+	updateSelectionNetMode,
+} from "../../../../scripts/canvasStateUtils";
 
 type Props = {
-    blocked: boolean,
-    canvasState: CanvasState,
-    setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
-    stageScale: number,
-    handleHistory: any,
-}
+	blocked: boolean;
+	canvasState: CanvasState;
+	setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>;
+	stageScale: number;
+	handleHistory: {
+		removeAdditionalHistoryDelay: () => void;
+		changeObjects: React.RefObject<() => void>;
+		historyHandleChanges: () => void;
+	};
+};
 
-export default function UseObjectsInteraction({blocked, canvasState, setCanvasState, stageScale, handleHistory}: Props) {
-    const { 
-        canvasObjects,
-        setCanvasObjects,
-        addNewObject, 
-        moveSelectedObjects ,
-        moveLinePoint,
-        resizeSelectedObjects,
-        resourcesProperties
-    } = UseObjects({canvasState, setCanvasState, handleHistory})
-    const {
-        temporaryObject,
-        createTemporaryObject,
-        updateTemporaryObject,
-        deleteTemporaryObject,
-    } = UseTemporaryObject({canvasState})
-    const {
-        removeAdditionalHistoryDelay
-    } = handleHistory
+export default function UseObjectsInteraction({
+	blocked,
+	canvasState,
+	setCanvasState,
+	stageScale,
+	handleHistory,
+}: Props) {
+	const {
+		canvasObjects,
+		setCanvasObjects,
+		addNewObject,
+		moveSelectedObjects,
+		moveSelectedLinePoint,
+		resizeSelectedObjects,
+		resourcesProperties,
+	} = UseObjects({ canvasState, setCanvasState, handleHistory });
+	const { temporaryObject, createTemporaryObject, updateTemporaryObject, deleteTemporaryObject } = UseTemporaryObject({
+		canvasState,
+	});
+	const { removeAdditionalHistoryDelay } = handleHistory;
 
-    const startingPoint = useRef<Point>({x: 0, y: 0})
-    const mouseDown = useRef(false)
+	const startingPoint = useRef<Point>({ x: 0, y: 0 });
+	const mouseDown = useRef(false);
 
-    function onMouseDown(e: KonvaEventObject<MouseEvent>) {
-        if (e.evt.button !== 0 || blocked) return
+	function clickedOnStage(e: KonvaEventObject<MouseEvent>) {
+		return e.target.getType() === "Stage";
+	}
 
-        const cursorPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
-        if (!cursorPoint) return
-        startingPoint.current = cursorPoint
+	function onMouseDown(e: KonvaEventObject<MouseEvent>) {
+		if (e.evt.button !== 0 || blocked) return;
+		e.evt.preventDefault();
 
-        switch (canvasState.mode) {
-            case CanvasMode.None:
-                if (e.target.getType() !== 'Stage') break
+		const cursorPoint = getCursorOnCanvas(e.target.getStage(), stageScale);
+		if (!cursorPoint) return;
+		startingPoint.current = cursorPoint;
 
-                setCanvasState({
-                    mode: CanvasMode.SelectionNet,
-                    origin: cursorPoint,
-                    current: cursorPoint,
-                })
-                break
+		switch (canvasState.mode) {
+			case CanvasMode.None:
+				if (!clickedOnStage(e)) break;
 
-            case CanvasMode.Inserting:
-                createTemporaryObject(cursorPoint)
-                break
+				setSelectionNetMode(setCanvasState, cursorPoint);
+				break;
 
-            case CanvasMode.Selected:
-                if (e.target.getType() !== 'Stage') break
-                // if clicked directly on the stage
+			case CanvasMode.Inserting:
+				createTemporaryObject(cursorPoint);
+				break;
 
-                setCanvasState({
-                    mode: CanvasMode.SelectionNet,
-                    origin: cursorPoint,
-                    current: cursorPoint,
-                })
-                break
-        }
+			case CanvasMode.Selected:
+				if (!clickedOnStage(e)) break;
 
-        mouseDown.current = true
-    }
+				setSelectionNetMode(setCanvasState, cursorPoint);
+				break;
+		}
 
-    function onMouseMove(e: KonvaEventObject<MouseEvent>) {
-        if (!mouseDown.current || blocked) return
+		mouseDown.current = true;
+	}
 
-        e.evt.preventDefault()
-        
-        let currentPoint: Point | null
-        switch (canvasState.mode) {
-            case CanvasMode.SelectionNet:
-                currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
-                if (!currentPoint) return
+	function onMouseMove(e: KonvaEventObject<MouseEvent>) {
+		if (!mouseDown.current || blocked) return;
+		e.evt.preventDefault();
 
-                setCanvasState({
-                    ...canvasState,
-                    current: currentPoint,
-                })
-                break
-        
-            case CanvasMode.Inserting:
-                currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
-                if (!currentPoint) return
+		const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale);
+		if (!currentPoint) return;
+		switch (canvasState.mode) {
+			case CanvasMode.SelectionNet:
+				updateSelectionNetMode(setCanvasState, currentPoint);
+				break;
 
-                updateTemporaryObject(
-                    startingPoint.current, 
-                    currentPoint,
-                )
-                break
+			case CanvasMode.Inserting:
+				updateTemporaryObject(startingPoint.current, currentPoint);
+				break;
 
-            case CanvasMode.Selected:
-                currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
-                if (!currentPoint) break
+			case CanvasMode.Selected: {
+				if (canvasState.resizing) {
+					resizeSelectedObjects(currentPoint);
+					break;
+				}
 
-                if (canvasState.resizing) {
-                    resizeSelectedObjects(currentPoint)
-                    break
-                }
+				const movedBy = {
+					x: currentPoint.x - startingPoint.current.x,
+					y: currentPoint.y - startingPoint.current.y,
+				};
 
-                const movedBy = {
-                    x: currentPoint.x - startingPoint.current.x,
-                    y: currentPoint.y - startingPoint.current.y,
-                }
+				if (canvasState.lineModification) {
+					moveSelectedLinePoint(movedBy);
+				} else {
+					moveSelectedObjects(movedBy);
+				}
 
-                if (canvasState.lineModification) {
-                    moveLinePoint(movedBy)
-                } else {
-                    moveSelectedObjects(movedBy)
-                }
+				startingPoint.current = currentPoint;
+				break;
+			}
 
-                startingPoint.current = currentPoint
-                break
+			default:
+				break;
+		}
+	}
 
-            default:
-                break
-        }
-    }
+	function onMouseUp(e: KonvaEventObject<MouseEvent>) {
+		if (e.evt.button !== 0 || blocked) return;
+		e.evt.preventDefault();
 
-    function onMouseUp(e: KonvaEventObject<MouseEvent>) {
-        if (e.evt.button !== 0 || blocked) return
+		switch (canvasState.mode) {
+			case CanvasMode.Inserting: {
+				const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale);
+				if (!currentPoint || !startingPoint.current || !temporaryObject) break;
 
-        e.evt.preventDefault()
+				if (temporaryObject.type !== CanvasObjectType.Text && isTooSmallDrag(startingPoint.current, currentPoint))
+					break;
 
-        switch (canvasState.mode) {
-            case CanvasMode.Inserting:
-                const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
-                if( !currentPoint || 
-                    !startingPoint.current || 
-                    !temporaryObject ||
-                    (temporaryObject.type !== CanvasObjectType.Text && isTooSmallDrag(startingPoint.current, currentPoint))
-                ) break
+				addNewObject(temporaryObject);
 
-                addNewObject(temporaryObject)
+				setSelectedMode(setCanvasState, [temporaryObject]);
+				break;
+			}
 
-                setCanvasState({
-                    mode: CanvasMode.Selected,
-                    objects: [temporaryObject],
-                })
-                break
-                
-            case CanvasMode.SelectionNet:
-                const overlappingObjects = getOverlappingObjects(canvasObjects, canvasState.origin, canvasState.current)
+			case CanvasMode.SelectionNet: {
+				const overlappingObjects = getOverlappingObjects(canvasObjects, canvasState.origin, canvasState.current);
 
-                if (overlappingObjects.length === 0) {
-                    setCanvasState({
-                        mode: CanvasMode.None,
-                    })
-                    break
-                }
+				if (overlappingObjects.length === 0) {
+					setNoneMode(setCanvasState);
+					break;
+				}
 
-                setCanvasState({
-                    mode: CanvasMode.Selected,
-                    objects: overlappingObjects,
-                })
-                break
+				setSelectedMode(setCanvasState, overlappingObjects);
+				break;
+			}
 
-            case CanvasMode.Selected:
-                if (canvasState.lineModification) {
-                    moveLinePoint({x: 0, y: 0}, true)
-                    break
-                }
+			case CanvasMode.Selected:
+				if (canvasState.lineModification) {
+					moveSelectedLinePoint({ x: 0, y: 0 }, true);
+					break;
+				}
 
-                if (canvasState.resizing) {
-                    const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale)
-                    if (!currentPoint) break
-                    
-                    resizeSelectedObjects(currentPoint, true)
-                    break
-                }
-                break
-        }
+				if (canvasState.resizing) {
+					const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale);
+					if (!currentPoint) break;
 
-        deleteTemporaryObject()
-        mouseDown.current = false
+					resizeSelectedObjects(currentPoint, true);
+					break;
+				}
+				break;
+		}
 
-        removeAdditionalHistoryDelay() // for changes that happened while the mouse was down
-    }
+		deleteTemporaryObject();
+		mouseDown.current = false;
 
-    return { 
-        canvasObjects,
-        setCanvasObjects,
-        canvasUseObjectsInteraction: {
-            temporaryObject,
-            onMouseDown, 
-            onMouseMove, 
-            onMouseUp 
-        },
-        resourcesProperties
-    }
+		removeAdditionalHistoryDelay();
+	}
+
+	return {
+		canvasObjects,
+		setCanvasObjects,
+		canvasUseObjectsInteraction: {
+			temporaryObject,
+			onMouseDown,
+			onMouseMove,
+			onMouseUp,
+		},
+		resourcesProperties,
+	};
 }

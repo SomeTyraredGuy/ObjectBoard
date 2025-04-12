@@ -2,7 +2,7 @@ import React from 'react'
 import { Point, XYWH } from '../../../../Types/CanvasObjects'
 import { Circle } from 'react-konva'
 import { CanvasState, CanvasMode, Side } from '../../../../Types/Canvas'
-import { onMouseLeave } from '../generalObjectsEventsHandlers'
+import { onMouseLeave } from '../../../../scripts/moveStyleCursorEvents'
 import { KonvaEventObject } from 'konva/lib/Node'
 
 type Props = {

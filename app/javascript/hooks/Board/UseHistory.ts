@@ -1,167 +1,150 @@
-import { RefObject, useRef } from "react"
-import { CanvasObject, CanvasObjectType } from "../../Types/CanvasObjects"
-import useTimeout from "../UseTimeout"
-import UseCanvasContentMutation from "./Canvas/UseCanvasContentMutation"
-
-export type ChangeType = CanvasObjectType | "assignID"
-
-export type ChangeRecord = {
-    id: number,
-    type: ChangeType,
-    oldProperties: Partial<CanvasObject>,
-    newProperties: Partial<CanvasObject>,
-}
-
-export type HistoryRecord = ChangeRecord[]
+import { RefObject, useRef } from "react";
+import useTimeout from "../UseTimeout";
+import UseCanvasContentMutation from "./Canvas/UseCanvasContentMutation";
+import { HistoryRecord, ChangeRecord } from "../../Types/History";
 
 type Props = {
-    changeObjects: RefObject<(HistoryRecord: HistoryRecord, useNewProp?: boolean) => void>,
-    boardId: number,
-}
+	changeObjects: RefObject<(HistoryRecord: HistoryRecord, useNewProp?: boolean) => void>;
+};
 
-export default function UseHistory({changeObjects, boardId}: Props) {
-    const history = useRef<HistoryRecord[]>([])
-    const historyIndex = useRef<number>(0) // points to the index for new record
-    const delayedRecord = useRef<HistoryRecord>([])
-    const additionalDelay = useRef<boolean>(false)
-    function removeAdditionalDelay() {
-        additionalDelay.current = false
-    }
+export default function UseHistory({ changeObjects }: Props) {
+	const history = useRef<HistoryRecord[]>([]);
+	const historyIndex = useRef<number>(0); // points to the index for new record
+	const delayedRecord = useRef<HistoryRecord>([]);
+	const additionalDelay = useRef<boolean>(false);
+	function removeAdditionalDelay() {
+		additionalDelay.current = false;
+	}
 
-    const {
-        addChanges: addToMutation,
-        unsavedChanges,
-        isError: isContentMutationError,
-        error: contentMutationError
-    } = UseCanvasContentMutation({noChanges, changeObjects})
+	const {
+		addChanges: addToMutation,
+		unsavedChanges,
+		isError: isContentMutationError,
+		error: contentMutationError,
+	} = UseCanvasContentMutation({ noChanges, changeObjects });
 
-    const {startTimeout} = useTimeout({
-        delay: 200, 
-        callback: () => {
-            if(additionalDelay.current) {
-                startTimeout()
-                return
-            }
+	const { startTimeout } = useTimeout({
+		delay: 200,
+		callback: () => {
+			if (additionalDelay.current) {
+				startTimeout();
+				return;
+			}
 
-            saveInHistory(delayedRecord.current)
-            delayedRecord.current = []
-        }
-    })
+			saveInHistory(delayedRecord.current);
+			delayedRecord.current = [];
+		},
+	});
 
-    function historyHandleChanges(record: HistoryRecord, waitForFinal = false) {
-        if (delayedRecord.current.length === 0) delayedRecord.current = record
-        else {
-            let newChangeRecords: ChangeRecord[] = []
+	function historyHandleChanges(record: HistoryRecord, waitForFinal = false) {
+		if (delayedRecord.current.length === 0) delayedRecord.current = record;
+		else {
+			const newChangeRecords: ChangeRecord[] = [];
 
-            record.forEach(changeRecord => {
-                const index = delayedRecord.current.findIndex(change => change.id === changeRecord.id)
-                
-                if ( index === -1 ){
-                    newChangeRecords.push(changeRecord)
-                    return
-                }
+			record.forEach((changeRecord) => {
+				const index = delayedRecord.current.findIndex((change) => change.id === changeRecord.id);
 
-                delayedRecord.current[index] = {
-                    ...delayedRecord.current[index],
-                    newProperties: changeRecord.newProperties,
-                }
+				if (index === -1) {
+					newChangeRecords.push(changeRecord);
+					return;
+				}
 
-                if ( noChanges(delayedRecord.current[index]) ) {
-                    delayedRecord.current.splice(index, 1)
-                }
-            })
+				delayedRecord.current[index] = {
+					...delayedRecord.current[index],
+					newProperties: changeRecord.newProperties,
+				};
 
-            delayedRecord.current = [
-                ...delayedRecord.current,
-                ...newChangeRecords
-            ]
-        }
+				if (noChanges(delayedRecord.current[index])) {
+					delayedRecord.current.splice(index, 1);
+				}
+			});
 
-        additionalDelay.current = waitForFinal
-        startTimeout()
-    }
+			delayedRecord.current = [...delayedRecord.current, ...newChangeRecords];
+		}
 
-    function saveInHistory(record: HistoryRecord) {
-        history.current = history.current.slice(0, historyIndex.current)
-        history.current.push(
-            copyHistoryRecord(record)
-        )
+		additionalDelay.current = waitForFinal;
+		startTimeout();
+	}
 
-        historyIndex.current++
+	function saveInHistory(record: HistoryRecord) {
+		history.current = history.current.slice(0, historyIndex.current);
+		history.current.push(copyHistoryRecord(record));
 
-        addToMutation(record)
-    }
+		historyIndex.current++;
 
-    function canUndo() {
-        return historyIndex.current > 0
-    }
+		addToMutation(record);
+	}
 
-    function undo() {
-        if ( !canUndo() ) return
+	function canUndo() {
+		return historyIndex.current > 0;
+	}
 
-        historyIndex.current--
-        const record = copyHistoryRecord(history.current[historyIndex.current])
+	function undo() {
+		if (!canUndo()) return;
 
-        changeObjects.current(record)
+		historyIndex.current--;
+		const record = copyHistoryRecord(history.current[historyIndex.current]);
 
-        addToMutation(
-            record.map(change => ({
-                id: change.id,
-                type: change.type,
-                newProperties: change.oldProperties,
-                oldProperties: change.newProperties
-            }))
-        )
-    }
+		changeObjects.current(record);
 
-    function canRedo() {
-        return historyIndex.current < history.current.length
-    }
+		addToMutation(
+			record.map((change) => ({
+				id: change.id,
+				type: change.type,
+				newProperties: change.oldProperties,
+				oldProperties: change.newProperties,
+			}))
+		);
+	}
 
-    function redo() {
-        if ( !canRedo() ) return
+	function canRedo() {
+		return historyIndex.current < history.current.length;
+	}
 
-        const record = copyHistoryRecord(history.current[historyIndex.current])
-        historyIndex.current++
+	function redo() {
+		if (!canRedo()) return;
 
-        changeObjects.current(record, true)
+		const record = copyHistoryRecord(history.current[historyIndex.current]);
+		historyIndex.current++;
 
-        addToMutation(record)
-    }
+		changeObjects.current(record, true);
 
-    function noChanges(changeRecord: ChangeRecord): boolean {
-        if (changeRecord.oldProperties === null && changeRecord.newProperties === null) return true
-        if (changeRecord.oldProperties === null || changeRecord.newProperties === null) return false
+		addToMutation(record);
+	}
 
-        const oldKeys = Object.keys(changeRecord.oldProperties);
-        const newKeys = Object.keys(changeRecord.newProperties);
-    
-        if (oldKeys.length !== newKeys.length) {
-            return false;
-        }
-    
-        for (const key of oldKeys) {
-            if (changeRecord.oldProperties[key] !== changeRecord.newProperties[key]) {
-                return false;
-            }
-        }
-    
-        return true;
-    }
+	function noChanges(changeRecord: ChangeRecord): boolean {
+		if (changeRecord.oldProperties === null && changeRecord.newProperties === null) return true;
+		if (changeRecord.oldProperties === null || changeRecord.newProperties === null) return false;
 
-    function copyHistoryRecord(record: HistoryRecord) {
-        return record.map(change => ({...change}))
-    }
+		const oldKeys = Object.keys(changeRecord.oldProperties);
+		const newKeys = Object.keys(changeRecord.newProperties);
 
-    return {
-        historyHandleChanges,
-        undo,
-        canUndo,
-        redo,
-        canRedo,
-        removeAdditionalDelay,
-        unsavedChanges,
-        isContentMutationError,
-        contentMutationError
-    }
+		if (oldKeys.length !== newKeys.length) {
+			return false;
+		}
+
+		for (const key of oldKeys) {
+			if (changeRecord.oldProperties[key] !== changeRecord.newProperties[key]) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	function copyHistoryRecord(record: HistoryRecord) {
+		return record.map((change) => ({ ...change }));
+	}
+
+	return {
+		historyHandleChanges,
+		undo,
+		canUndo,
+		redo,
+		canRedo,
+		removeAdditionalDelay,
+		unsavedChanges,
+		isContentMutationError,
+		contentMutationError,
+	};
 }
