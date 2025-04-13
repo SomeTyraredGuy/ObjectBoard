@@ -4,53 +4,39 @@ import generalClasses from "../../General/general.module.css";
 import IconButton from "../../General/IconButton";
 import { UndoSVG } from "../../svg/ToolsSVG";
 import { Side } from "../../../Types/Canvas";
-import CheckSVG from "../../svg/CheckSVG";
+import SavingIcon from "../../General/SavingIcon";
 
 type Props = {
 	boardName: string;
-	isLoading?: boolean;
 	unsavedChanges: boolean;
 	showSaving: boolean;
 };
 
-function BoardMenu({ boardName, isLoading, unsavedChanges, showSaving }: Props) {
+function BoardMenu({ boardName, unsavedChanges, showSaving }: Props) {
 	return (
-		<table className={`m-2 position-fixed top-0 ${isLoading && "placeholder-wave"}`} style={{ width: "280px" }}>
-			{false ? (
-				<tbody className="placeholder col-12 bg-secondary"></tbody>
-			) : (
-				<tbody className="w-100">
-					<tr className="d-flex justify-content-end">
-						<th className={`${classes.leftBorder} ${classes.leftRounded} ${classes.background} p-2`}>
-							<IconButton icon={UndoSVG} label={"Exit board"} side={Side.Right} href="/boards" />
-						</th>
+		<table className="m-2 position-fixed top-0 " style={{ width: "280px" }}>
+			<tbody className="w-100">
+				<tr className="d-flex justify-content-end">
+					<th className={`${classes.leftBorder} ${classes.leftRounded} ${classes.background} p-2`}>
+						<IconButton icon={UndoSVG} label={"Exit board"} side={Side.Right} href="/boards" />
+					</th>
+					<th
+						className={`flex-grow-1 p-2 text-center align-content-center border-start-0 
+						${classes.ellipsis} ${classes.background} ${classes.border}
+						${showSaving ? "" : classes.rightRounded}`}
+					>
+						{boardName}
+					</th>
+					{showSaving && (
 						<th
-							className={`flex-grow-1 p-2 text-center align-content-center border-start-0 
-            ${classes.ellipsis} ${classes.background} ${classes.border}
-            ${showSaving ? "" : classes.rightRounded}
-            `}
+							className={`${classes.rightBorder} ${classes.rightRounded} ${classes.background} p-2 align-content-center ${generalClasses.hintWrapper}`}
+							role="status"
 						>
-							{boardName}
+							<SavingIcon unsavedChanges={unsavedChanges} />
 						</th>
-						{showSaving && (
-							<th
-								className={`${classes.rightBorder} ${classes.rightRounded} ${classes.background} p-2 align-content-center ${generalClasses.hintWrapper}`}
-								role="status"
-							>
-								<div
-									className={`${unsavedChanges && "spinner-border opacity-50"}`}
-									style={{ width: "26px", height: "26px" }}
-								>
-									<CheckSVG width={26} className={`${unsavedChanges && "visually-hidden"}`} />
-								</div>
-								<span className={`${generalClasses.hint} ${generalClasses.bottomHint}`}>
-									{unsavedChanges ? "Saving" : "Changes saved"}
-								</span>
-							</th>
-						)}
-					</tr>
-				</tbody>
-			)}
+					)}
+				</tr>
+			</tbody>
 		</table>
 	);
 }
