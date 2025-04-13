@@ -1,6 +1,6 @@
 import React from "react";
 import CheckSVG from "../svg/CheckSVG";
-import classes from "../../General/general.module.css";
+import classes from "./general.module.css";
 
 type Props = {
 	unsavedChanges: boolean;

@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import classes from "../board.module.css";
+import classes from "../../board.module.css";
 import MemberSettings from "../MemberSettings";
 import { CurrentMember } from "../../../../Types/Member";
 

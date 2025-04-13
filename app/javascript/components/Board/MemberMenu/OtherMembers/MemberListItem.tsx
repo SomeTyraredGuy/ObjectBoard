@@ -1,5 +1,5 @@
 import React from "react";
-import classes from "../board.module.css";
+import classes from "../../board.module.css";
 import { OtherMember } from "../../../../Types/Member";
 
 type Props = {

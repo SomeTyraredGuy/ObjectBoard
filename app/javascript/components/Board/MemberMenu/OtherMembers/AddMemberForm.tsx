@@ -1,6 +1,6 @@
 import React from "react";
 import CenterMenu from "../../../General/CenterMenu";
-import classes from "../board.module.css";
+import classes from "../../board.module.css";
 import TextInput from "../../../General/Inputs/TextInput/TextInput";
 import UseMemberMutation from "../../../../hooks/Board/Members/UseMemberMutation";
 import DefaultNotificationGroup from "../../../General/Notification/DefaultNotificationGroup.js";
