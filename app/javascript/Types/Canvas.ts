@@ -1,4 +1,4 @@
-import { CanvasObject, CanvasObjectType, Point, XYWH } from "./CanvasObjects";
+import { CanvasObject, Point, XYWH } from "./CanvasObjects";
 
 export enum Side {
 	Top = 1,
@@ -35,7 +35,6 @@ export type CanvasState =
 	  }
 	| {
 			mode: CanvasMode.Inserting;
-			objectType: CanvasObjectType;
 			startingProperties: CanvasObject;
 	  };
 

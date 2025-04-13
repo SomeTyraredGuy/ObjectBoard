@@ -5,6 +5,7 @@ import { CanvasObject, CanvasObjectType, XYWH } from '../../../../Types/CanvasOb
 import LineSelectionLayer from './LineSelectionLayer'
 import ResizePoint from './ResizePoint'
 import { onMouseEnter, onMouseLeave } from '../../../../scripts/moveStyleCursorEvents'
+import { CanvasStateUtils } from '../../../../Types/CanvasStateUtils'
 
 const RESIZE_POINTS = [
   {
@@ -176,11 +177,11 @@ function getXYWH(canvasState: CanvasState, currentXYWH: XYWH | null): XYWH | nul
 
 type Props = {
   canvasState: CanvasState,
-  setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
+  canvasStateUtils: CanvasStateUtils,
   scale: number
 }
 
-function SelectionLayer({canvasState, setCanvasState, scale} : Props) {
+function SelectionLayer({canvasState, canvasStateUtils, scale} : Props) {
   if (  canvasState.mode === CanvasMode.Selected && 
         canvasState.objects.length === 1 &&
         canvasState.objects[0].type === CanvasObjectType.Line
@@ -190,7 +191,7 @@ function SelectionLayer({canvasState, setCanvasState, scale} : Props) {
           line={canvasState.objects[0]}
           scale={scale}
           canvasState={canvasState}
-          setCanvasState={setCanvasState}
+          canvasStateUtils={canvasStateUtils}
         />
     )
   }
@@ -237,7 +238,7 @@ function SelectionLayer({canvasState, setCanvasState, scale} : Props) {
                     selectionNet={XYWH.current}
                     key={i}
                     canvasState={canvasState}
-                    setCanvasState={setCanvasState}
+                    canvasStateUtils={canvasStateUtils}
                   />
                 )
               })}

@@ -3,15 +3,16 @@ import { Line, Point } from '../../../../Types/CanvasObjects'
 import { Layer } from 'react-konva'
 import LinePoint from './LinePoint'
 import { CanvasState } from '../../../../Types/Canvas'
+import { CanvasStateUtils } from '../../../../Types/CanvasStateUtils'
 
 type Props = {
     line: Line,
     scale: number,
     canvasState: CanvasState,
-    setCanvasState,
+    canvasStateUtils: CanvasStateUtils,
 }
 
-function LineSelectionLayer({line, scale, canvasState, setCanvasState} : Props) {
+function LineSelectionLayer({line, scale, canvasState, canvasStateUtils} : Props) {
 
     let points: Point[] = []
     for (let i = 0; i < line.points.length; i += 2) {
@@ -31,7 +32,7 @@ function LineSelectionLayer({line, scale, canvasState, setCanvasState} : Props) 
                     pointIndex={i}
                     scale={scale}
                     canvasState={canvasState}
-                    setCanvasState={setCanvasState}
+                    canvasStateUtils={canvasStateUtils}
                 />
                 })
             }

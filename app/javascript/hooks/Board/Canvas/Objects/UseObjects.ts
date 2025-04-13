@@ -11,32 +11,27 @@ import {
 import { HistoryRecord, ChangeRecord } from "../../../../Types/History";
 import { ObjectPropertyChange } from "../../../../Types/ObjectPropertyChange";
 import createHistoryChangeObjects from "../../../../scripts/CanvasObjects/historyChangeObjects";
-import {
-	moveSelectedMode,
-	setNoneMode,
-	setSelectedMode,
-	updateSelectedMode,
-} from "../../../../scripts/canvasStateUtils";
 import { creationChangeRecord, deletionChangeRecord, modificationChangeRecord } from "../../../../scripts/historyUtils";
 import { moveLinePoint, moveObject } from "../../../../scripts/CanvasObjects/move";
+import { CanvasStateUtils } from "../../../../Types/CanvasStateUtils";
 
 type Props = {
 	canvasState: CanvasState;
-	setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>;
+	canvasStateUtils: CanvasStateUtils;
 	handleHistory: {
 		changeObjects: RefObject<(HistoryRecord: HistoryRecord, useNewProp?: boolean) => void>;
 		historyHandleChanges: (record: HistoryRecord, waitForFinal?: boolean) => void;
 	};
 };
 
-export default function UseObjects({ canvasState, setCanvasState, handleHistory }: Props) {
+export default function UseObjects({ canvasState, canvasStateUtils, handleHistory }: Props) {
 	const [canvasObjects, setCanvasObjects] = useState<CanvasObject[]>([]);
 	const { changeObjects: historyChangeObjects, historyHandleChanges } = handleHistory;
 
 	historyChangeObjects.current = createHistoryChangeObjects(
 		canvasObjects,
 		setCanvasObjects,
-		setCanvasState,
+		canvasStateUtils,
 		canvasState
 	);
 
@@ -69,7 +64,7 @@ export default function UseObjects({ canvasState, setCanvasState, handleHistory 
 		});
 
 		setCanvasObjects(newObjects);
-		setNoneMode(setCanvasState);
+		canvasStateUtils.None.set();
 		historyHandleChanges(newHistoryRecord);
 	}
 
@@ -90,7 +85,7 @@ export default function UseObjects({ canvasState, setCanvasState, handleHistory 
 			newSelected.push(newObject);
 		});
 
-		moveSelectedMode(setCanvasState, newSelected, moveBy);
+		canvasStateUtils.Selected.move(newSelected, moveBy);
 
 		setCanvasObjects(newObjects);
 		historyHandleChanges(newHistoryRecord, true);
@@ -118,9 +113,9 @@ export default function UseObjects({ canvasState, setCanvasState, handleHistory 
 		newObjects[lineIndex] = newLine;
 
 		if (final) {
-			setSelectedMode(setCanvasState, [newObjects[line.index]]);
+			canvasStateUtils.Selected.set([newObjects[line.index]]);
 		} else {
-			updateSelectedMode(setCanvasState, [newObjects[line.index]]);
+			canvasStateUtils.Selected.update([newObjects[line.index]]);
 		}
 
 		setCanvasObjects(newObjects);
@@ -187,9 +182,9 @@ export default function UseObjects({ canvasState, setCanvasState, handleHistory 
 		setCanvasObjects(newObjects);
 
 		if (final) {
-			setSelectedMode(setCanvasState, newSelected);
+			canvasStateUtils.Selected.set(newSelected);
 		} else {
-			updateSelectedMode(setCanvasState, newSelected);
+			canvasStateUtils.Selected.update(newSelected);
 		}
 
 		historyHandleChanges(historyRecord, true);
@@ -222,7 +217,7 @@ export default function UseObjects({ canvasState, setCanvasState, handleHistory 
 
 		setCanvasObjects(newObjects);
 
-		setSelectedMode(setCanvasState, newSelected);
+		canvasStateUtils.Selected.set(newSelected);
 
 		historyHandleChanges(newHistoryRecord);
 	}

@@ -14,11 +14,13 @@ import UseStageScaleAndPosition from '../../hooks/Board/Canvas/UseStageScaleAndP
 import UseHistory from '../../hooks/Board/UseHistory.js'
 import UseCanvasContentQuery from '../../hooks/Board/Canvas/UseCanvasContentQuery.js'
 import Loader from '../General/Loader/Loader.js'
+import createCanvasStateUtils from '../../scripts/canvasStateUtils/createCanvasStateUtils.js'
 
 function Index({db}: {db: any}) {
   const [canvasState, setCanvasState] = useState<CanvasState>({
     mode: CanvasMode.None
-  })  
+  })
+  const canvasStateUtils = createCanvasStateUtils(setCanvasState)
 
   const {
     data: currentUser,
@@ -69,7 +71,7 @@ function Index({db}: {db: any}) {
   } = UseObjectsInteraction({
     blocked: !currentUser?.role?.can_edit,
     canvasState, 
-    setCanvasState, 
+    canvasStateUtils, 
     stageScale, 
     handleHistory: {
       changeObjects,
@@ -82,7 +84,7 @@ function Index({db}: {db: any}) {
     isLoading: contentIsLoading,
     error: contentQueryError,
     isError: isContentQueryError,
-  } = UseCanvasContentQuery({setCanvasState, setCanvasObjects, isContentMutationError})
+  } = UseCanvasContentQuery({canvasStateUtils, setCanvasObjects, isContentMutationError})
 
   const notifications = [
     {
@@ -113,7 +115,7 @@ function Index({db}: {db: any}) {
       <Canvas
         objectsBlocked={!currentUser?.role?.can_edit}
         canvasState={canvasState}
-        setCanvasState={setCanvasState}
+        canvasStateUtils={canvasStateUtils}
         canvasObjects={canvasObjects}
         canvasUseObjects={canvasUseObjectsInteraction}
         canvasStageScaleAndPosition={useStageScaleAndPosition}
@@ -129,7 +131,7 @@ function Index({db}: {db: any}) {
       <>
         <ToolBar 
           canvasState={canvasState}
-          setCanvasState={setCanvasState}
+          canvasStateUtils={canvasStateUtils}
           undo={undo}
           redo={redo}
           canUndo={canUndo()}
@@ -137,7 +139,7 @@ function Index({db}: {db: any}) {
         />
         <ResourcesMenu
           canvasState={canvasState}
-          setCanvasState={setCanvasState}
+          canvasStateUtils={canvasStateUtils}
           resourcesProperties={resourcesProperties}
         />
       </>

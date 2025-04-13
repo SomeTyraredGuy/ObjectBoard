@@ -1,12 +1,12 @@
 import { CanvasMode, CanvasState } from "../../Types/Canvas";
 import { CanvasObject, Ellipse, Rectangle, Text, Line, CanvasObjectType } from "../../Types/CanvasObjects";
+import { CanvasStateUtils } from "../../Types/CanvasStateUtils";
 import { HistoryRecord } from "../../Types/History";
-import { setNoneMode, setSelectedMode } from "../canvasStateUtils";
 
 export default function createHistoryChangeObjects(
 	canvasObjects: CanvasObject[],
 	setCanvasObjects: React.Dispatch<React.SetStateAction<CanvasObject[]>>,
-	setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
+	canvasStateUtils: CanvasStateUtils,
 	canvasState: CanvasState
 ) {
 	return (historyRecord: HistoryRecord, redo: boolean = false) => {
@@ -68,8 +68,8 @@ export default function createHistoryChangeObjects(
 		setCanvasObjects(newObjects);
 
 		if (selectedMode) {
-			if (newSelected.length === 0) setNoneMode(setCanvasState);
-			else setSelectedMode(setCanvasState, newSelected);
+			if (newSelected.length === 0) canvasStateUtils.None.set();
+			else canvasStateUtils.Selected.set(newSelected);
 		}
 	};
 }

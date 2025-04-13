@@ -6,6 +6,7 @@ import { FolderSVG, PaletteSVG } from '../../svg/ResourcesSVG'
 import ObjectsProperties from './ObjectsProperties'
 import ObjectsGroups from './ObjectsGroups'
 import { CanvasState } from '../../../Types/Canvas'
+import { CanvasStateUtils } from '../../../Types/CanvasStateUtils'
 
 enum State {
   Properties = "Properties",
@@ -14,11 +15,11 @@ enum State {
 
 type Props = {
   canvasState: CanvasState,
-  setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
+  canvasStateUtils: CanvasStateUtils,
   resourcesProperties
 }
 
-function ResourcesMenu({canvasState, setCanvasState, resourcesProperties}: Props) {
+function ResourcesMenu({canvasState, canvasStateUtils, resourcesProperties}: Props) {
   const [state, setState] = useState(State.Properties)
 
   const stateButtons = [
@@ -57,14 +58,14 @@ function ResourcesMenu({canvasState, setCanvasState, resourcesProperties}: Props
           {state === State.Properties && 
             <ObjectsProperties 
               canvasState={canvasState} 
-              setCanvasState={setCanvasState}
+              canvasStateUtils={canvasStateUtils}
               resourcesProperties={resourcesProperties}
             />
           }
           {state === State.Groups && 
             <ObjectsGroups 
               canvasState={canvasState} 
-              setCanvasState={setCanvasState}
+              canvasStateUtils={canvasStateUtils}
             />
           }
         </td>

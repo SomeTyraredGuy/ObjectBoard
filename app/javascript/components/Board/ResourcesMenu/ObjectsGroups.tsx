@@ -1,9 +1,10 @@
 import React from 'react'
 import { CanvasState } from '../../../Types/Canvas'
+import { CanvasStateUtils } from '../../../Types/CanvasStateUtils'
 
 type Props = {
   canvasState: CanvasState,
-  setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>
+  canvasStateUtils: CanvasStateUtils
 }
 
 function ObjectsGroups({}: Props) {

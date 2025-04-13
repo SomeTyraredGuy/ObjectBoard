@@ -7,17 +7,18 @@ import { CanvasObjectType, numOfObjectTypes } from '../../../Types/CanvasObjects
 import Slider from '../../General/Inputs/Slider/Slider'
 import classes from '../../General/general.module.css'
 import IconButton from '../../General/IconButton'
+import { CanvasStateUtils } from '../../../Types/CanvasStateUtils'
 
 type Props = {
   canvasState: CanvasState,
-  setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
+  canvasStateUtils: CanvasStateUtils,
   resourcesProperties: {
     changeProperty: (ObjectPropertyChange) => void,
     deleteSelectedObjects: () => void
   }
 }
 
-function ObjectsProperties({canvasState, setCanvasState, resourcesProperties}: Props) {
+function ObjectsProperties({canvasState, canvasStateUtils, resourcesProperties}: Props) {
   if (canvasState.mode !== CanvasMode.Selected && canvasState.mode !== CanvasMode.Inserting) return (
     <div className='p-5'>
       <PaletteSVG/>
@@ -35,13 +36,7 @@ function ObjectsProperties({canvasState, setCanvasState, resourcesProperties}: P
       value: Extract<ObjectPropertyChange, { propertyName: P }>["newValue"]
     ) => {
       if (canvasState.mode === CanvasMode.Inserting) {
-        setCanvasState({
-          ...canvasState,
-          startingProperties: {
-            ...canvasState.startingProperties,
-            [propertyName]: value
-          }
-        })
+        canvasStateUtils.Inserting.updateProperty(propertyName, value)
       }
       if (canvasState.mode === CanvasMode.Selected) {
         changeProperty({

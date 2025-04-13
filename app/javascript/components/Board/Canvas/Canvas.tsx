@@ -5,11 +5,12 @@ import Objects from './Objects'
 import SelectionLayer from './SelectionLayer/SelectionLayer'
 import { CanvasMode, CanvasState } from '../../../Types/Canvas'
 import { CanvasObject, Point } from '../../../Types/CanvasObjects'
+import { CanvasStateUtils } from '../../../Types/CanvasStateUtils'
 
 type Props = {
   objectsBlocked: boolean,
   canvasState: CanvasState,
-  setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
+  canvasStateUtils: CanvasStateUtils,
   canvasObjects: CanvasObject[],
   canvasUseObjects: {
     temporaryObject: CanvasObject | null,
@@ -28,7 +29,7 @@ type Props = {
   }
 }
 
-function Canvas({objectsBlocked, canvasState, setCanvasState, canvasObjects, canvasUseObjects, canvasStageScaleAndPosition}: Props) {
+function Canvas({objectsBlocked, canvasState, canvasStateUtils, canvasObjects, canvasUseObjects, canvasStageScaleAndPosition}: Props) {
 
   const {
     temporaryObject,
@@ -65,7 +66,7 @@ function Canvas({objectsBlocked, canvasState, setCanvasState, canvasObjects, can
           objectsBlocked={objectsBlocked}
           canvasObjects={canvasObjects} 
           temporaryObject={temporaryObject}
-          setCanvasState={setCanvasState}
+          canvasStateUtils={canvasStateUtils}
           canvasState={canvasState}
         />
       </Layer>
@@ -73,7 +74,7 @@ function Canvas({objectsBlocked, canvasState, setCanvasState, canvasObjects, can
       { (canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.Selected) &&
         <SelectionLayer 
           canvasState={canvasState}
-          setCanvasState={setCanvasState}
+          canvasStateUtils={canvasStateUtils}
           scale={stageScale}
         />
       }

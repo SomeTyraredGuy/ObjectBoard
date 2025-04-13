@@ -3,16 +3,17 @@ import { CanvasObject, CanvasObjectType } from '../../../Types/CanvasObjects'
 import { Ellipse, Rect, Text, Line } from 'react-konva'
 import { CanvasMode, CanvasState } from '../../../Types/Canvas'
 import { KonvaEventObject } from 'konva/lib/Node'
+import { CanvasStateUtils } from '../../../Types/CanvasStateUtils'
 
 type Props = {
   objectsBlocked: boolean,
   canvasObjects: CanvasObject[],
   temporaryObject: CanvasObject | null,
-  setCanvasState: React.Dispatch<React.SetStateAction<any>>,
+  canvasStateUtils: CanvasStateUtils,
   canvasState: CanvasState
 }
 
-function Objects({objectsBlocked, canvasObjects, temporaryObject, setCanvasState, canvasState}: Props) {
+function Objects({objectsBlocked, canvasObjects, temporaryObject, canvasStateUtils, canvasState}: Props) {
 
   function onMouseEnter(e: KonvaEventObject<MouseEvent>) {
     if (objectsBlocked) return
@@ -30,24 +31,18 @@ function Objects({objectsBlocked, canvasObjects, temporaryObject, setCanvasState
     stage.container().style.cursor = "default";
   }
   
-  function onMouseDown(e: KonvaEventObject<MouseEvent>, setCanvasState, canvasState, object: CanvasObject) {
+  function onMouseDown(e: KonvaEventObject<MouseEvent>, canvasStateUtils: CanvasStateUtils, canvasState, object: CanvasObject) {
     if (objectsBlocked) return
     if (canvasState.mode !== CanvasMode.Selected && canvasState.mode !== CanvasMode.None) return
   
     e.evt.preventDefault()
   
     if (canvasState.mode === CanvasMode.Selected && e.evt.ctrlKey) {
-        setCanvasState({
-            ...canvasState,
-            objects: [ ...canvasState.objects, object ],
-        })
-        return
+      canvasStateUtils.Selected.add(object);
+      return
     }
   
-    setCanvasState({
-        mode: CanvasMode.Selected,
-        objects: [object],
-    })
+    canvasStateUtils.Selected.set([object]);
   }
 
   function renderObject(object: CanvasObject, i?: number) {
@@ -60,7 +55,7 @@ function Objects({objectsBlocked, canvasObjects, temporaryObject, setCanvasState
       onMouseEnter: onMouseEnter,
       onMouseLeave: onMouseLeave,
 
-      onMouseDown: (e) => onMouseDown(e, setCanvasState, canvasState, object),
+      onMouseDown: (e) => onMouseDown(e, canvasStateUtils, canvasState, object),
     }
 
     switch (object.type) {

@@ -5,17 +5,18 @@ import IconButton from '../../General/IconButton'
 import { CanvasMode, CanvasState, Side } from '../../../Types/Canvas'
 import { CanvasObjectType } from '../../../Types/CanvasObjects'
 import UseDefaultObjects from '../../../hooks/Board/Canvas/Objects/UseDefaultObjects'
+import { CanvasStateUtils } from '../../../Types/CanvasStateUtils'
 
 interface ToolBarProps {
   canvasState: CanvasState,
-  setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
+  canvasStateUtils: CanvasStateUtils,
   undo: () => void,
   redo: () => void,
   canUndo: boolean,
   canRedo: boolean,
 }
 
-function ToolBar({canvasState, setCanvasState, undo, redo, canUndo, canRedo} : ToolBarProps) {
+function ToolBar({canvasState, canvasStateUtils, undo, redo, canUndo, canRedo} : ToolBarProps) {
   const { 
     defaultRectangle, 
     defaultEllipse, 
@@ -26,58 +27,42 @@ function ToolBar({canvasState, setCanvasState, undo, redo, canUndo, canRedo} : T
   const switchButtons = [
     {
       icon: SelectSVG,
-      onClick: () => {setCanvasState({mode: CanvasMode.None})},
+      onClick: () => {canvasStateUtils.None.set()},
       label: "Select",
       isDisabled: false,
       isActive: canvasState.mode !== CanvasMode.Inserting
     },
     {
       icon: TextSVG,
-      onClick: () => {setCanvasState({
-        mode: CanvasMode.Inserting, 
-        objectType: CanvasObjectType.Text,
-        startingProperties: defaultText()
-      })},
+      onClick: () => { canvasStateUtils.Inserting.set(defaultText()) },
       label: "Text",
       isDisabled: false,
       isActive: canvasState.mode === CanvasMode.Inserting &&
-                canvasState.objectType === CanvasObjectType.Text
+                canvasState.startingProperties.type === CanvasObjectType.Text
     },
     {
       icon: RectangleSVG,
-      onClick: () => {setCanvasState({
-        mode: CanvasMode.Inserting, 
-        objectType: CanvasObjectType.Rectangle,
-        startingProperties: defaultRectangle()
-      })},
+      onClick: () => { canvasStateUtils.Inserting.set(defaultRectangle()) },
       label: "Rectangle",
       isDisabled: false,
       isActive: canvasState.mode === CanvasMode.Inserting &&
-                canvasState.objectType === CanvasObjectType.Rectangle
+                canvasState.startingProperties.type === CanvasObjectType.Rectangle
     },
     {
       icon: CircleSVG,
-      onClick: () => {setCanvasState({
-        mode: CanvasMode.Inserting, 
-        objectType: CanvasObjectType.Ellipse,
-        startingProperties: defaultEllipse()
-      })},
+      onClick: () => { canvasStateUtils.Inserting.set(defaultEllipse()) },
       label: "Ellipse",
       isDisabled: false,
       isActive: canvasState.mode === CanvasMode.Inserting &&
-                canvasState.objectType === CanvasObjectType.Ellipse
+                canvasState.startingProperties.type === CanvasObjectType.Ellipse
     },
     {
       icon: ArrowSVG,
-      onClick: () => {setCanvasState({
-        mode: CanvasMode.Inserting, 
-        objectType: CanvasObjectType.Line,
-        startingProperties: defaultLine()
-      })},
+      onClick: () => { canvasStateUtils.Inserting.set(defaultLine()) },
       label: "Line",
       isDisabled: false,
       isActive: canvasState.mode === CanvasMode.Inserting &&
-                canvasState.objectType === CanvasObjectType.Line
+                canvasState.startingProperties.type === CanvasObjectType.Line
     }
   ]
   

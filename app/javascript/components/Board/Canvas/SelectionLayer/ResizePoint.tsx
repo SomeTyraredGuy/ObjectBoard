@@ -4,6 +4,7 @@ import { Circle } from 'react-konva'
 import { CanvasState, CanvasMode, Side } from '../../../../Types/Canvas'
 import { onMouseLeave } from '../../../../scripts/moveStyleCursorEvents'
 import { KonvaEventObject } from 'konva/lib/Node'
+import { CanvasStateUtils } from '../../../../Types/CanvasStateUtils'
 
 type Props = {
     point: Point,
@@ -11,10 +12,10 @@ type Props = {
     side: Side,
     selectionNet: XYWH,
     canvasState: CanvasState,
-    setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
+    canvasStateUtils: CanvasStateUtils,
 }
 
-function ResizePoint({point, scale, side, selectionNet, canvasState, setCanvasState} : Props) {
+function ResizePoint({point, scale, side, selectionNet, canvasState, canvasStateUtils} : Props) {
     let cursor: string
 
     switch (side) {
@@ -56,13 +57,10 @@ function ResizePoint({point, scale, side, selectionNet, canvasState, setCanvasSt
         e.evt.preventDefault()
         if (canvasState.mode !== CanvasMode.Selected) return
 
-        setCanvasState({
-            ...canvasState,
-            resizing: {
-                side: side,
-                initialSelectionNet: selectionNet,
-                initialSelectedObjects: canvasState.objects,
-            },
+        canvasStateUtils.Selected.resize({
+            side: side,
+            initialSelectionNet: selectionNet,
+            initialSelectedObjects: canvasState.objects,
         })
     }
 

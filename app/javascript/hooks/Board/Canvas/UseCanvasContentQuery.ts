@@ -1,17 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { getBaseURL } from "../../../scripts/requestUtils";
 import { CanvasObject } from "../../../Types/CanvasObjects";
-import { CanvasState } from "../../../Types/Canvas";
 import { useEffect } from "react";
-import { setNoneMode } from "../../../scripts/canvasStateUtils";
+import { CanvasStateUtils } from "../../../Types/CanvasStateUtils";
 
 type Props = {
-	setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>;
+	canvasStateUtils: CanvasStateUtils;
 	setCanvasObjects: React.Dispatch<React.SetStateAction<CanvasObject[]>>;
 	isContentMutationError: boolean;
 };
 
-export default function UseCanvasContentQuery({ setCanvasState, setCanvasObjects, isContentMutationError }: Props) {
+export default function UseCanvasContentQuery({ canvasStateUtils, setCanvasObjects, isContentMutationError }: Props) {
 	const {
 		data: canvasContent,
 		isLoading,
@@ -41,7 +40,7 @@ export default function UseCanvasContentQuery({ setCanvasState, setCanvasObjects
 
 	useEffect(() => {
 		if (canvasContent) {
-			setNoneMode(setCanvasState);
+			canvasStateUtils.None.set();
 			if (canvasContent.objects) setCanvasObjects(canvasContent.objects.toSorted((a, b) => a.id - b.id));
 		}
 	}, [canvasContent]);

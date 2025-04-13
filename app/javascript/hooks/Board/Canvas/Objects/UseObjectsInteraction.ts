@@ -6,17 +6,12 @@ import getOverlappingObjects from "../../../../scripts/CanvasObjects/getOverlapp
 import { CanvasMode, CanvasState } from "../../../../Types/Canvas";
 import UseObjects from "./UseObjects";
 import UseTemporaryObject from "./UseTemporaryObject";
-import {
-	setNoneMode,
-	setSelectedMode,
-	setSelectionNetMode,
-	updateSelectionNetMode,
-} from "../../../../scripts/canvasStateUtils";
+import { CanvasStateUtils } from "../../../../Types/CanvasStateUtils";
 
 type Props = {
 	blocked: boolean;
 	canvasState: CanvasState;
-	setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>;
+	canvasStateUtils: CanvasStateUtils;
 	stageScale: number;
 	handleHistory: {
 		removeAdditionalHistoryDelay: () => void;
@@ -28,7 +23,7 @@ type Props = {
 export default function UseObjectsInteraction({
 	blocked,
 	canvasState,
-	setCanvasState,
+	canvasStateUtils,
 	stageScale,
 	handleHistory,
 }: Props) {
@@ -40,7 +35,7 @@ export default function UseObjectsInteraction({
 		moveSelectedLinePoint,
 		resizeSelectedObjects,
 		resourcesProperties,
-	} = UseObjects({ canvasState, setCanvasState, handleHistory });
+	} = UseObjects({ canvasState, canvasStateUtils, handleHistory });
 	const { temporaryObject, createTemporaryObject, updateTemporaryObject, deleteTemporaryObject } = UseTemporaryObject({
 		canvasState,
 	});
@@ -65,7 +60,7 @@ export default function UseObjectsInteraction({
 			case CanvasMode.None:
 				if (!clickedOnStage(e)) break;
 
-				setSelectionNetMode(setCanvasState, cursorPoint);
+				canvasStateUtils.SelectionNet.set(cursorPoint);
 				break;
 
 			case CanvasMode.Inserting:
@@ -75,7 +70,7 @@ export default function UseObjectsInteraction({
 			case CanvasMode.Selected:
 				if (!clickedOnStage(e)) break;
 
-				setSelectionNetMode(setCanvasState, cursorPoint);
+				canvasStateUtils.SelectionNet.set(cursorPoint);
 				break;
 		}
 
@@ -90,7 +85,7 @@ export default function UseObjectsInteraction({
 		if (!currentPoint) return;
 		switch (canvasState.mode) {
 			case CanvasMode.SelectionNet:
-				updateSelectionNetMode(setCanvasState, currentPoint);
+				canvasStateUtils.SelectionNet.update(currentPoint);
 				break;
 
 			case CanvasMode.Inserting:
@@ -137,7 +132,7 @@ export default function UseObjectsInteraction({
 
 				addNewObject(temporaryObject);
 
-				setSelectedMode(setCanvasState, [temporaryObject]);
+				canvasStateUtils.Selected.set([temporaryObject]);
 				break;
 			}
 
@@ -145,11 +140,11 @@ export default function UseObjectsInteraction({
 				const overlappingObjects = getOverlappingObjects(canvasObjects, canvasState.origin, canvasState.current);
 
 				if (overlappingObjects.length === 0) {
-					setNoneMode(setCanvasState);
+					canvasStateUtils.None.set();
 					break;
 				}
 
-				setSelectedMode(setCanvasState, overlappingObjects);
+				canvasStateUtils.Selected.set(overlappingObjects);
 				break;
 			}
 
