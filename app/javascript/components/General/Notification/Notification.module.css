@@ -1,126 +1,125 @@
 .tooltip {
-    cursor: pointer;
-    position: fixed;
-    top: 0;
-    left: 50vw;
-    transform: translateX(-50%); 
-    background-color: #d1d1d1;
-    color: #1a1a1a;
-    opacity: 0.9;
-    padding: 0.8em 2em;
-    font-size: 1.2em;
-    border-radius: 1em;
-    z-index: 101;
+	cursor: pointer;
+	position: fixed;
+	top: 0;
+	left: 50vw;
+	transform: translateX(-50%);
+	background-color: #d1d1d1;
+	color: #1a1a1a;
+	opacity: 0.9;
+	padding: 0.8em 2em;
+	font-size: 1.2em;
+	border-radius: 1em;
+	z-index: 101;
 
-    animation: slideInFromAbove 0.3s ease-out;
-  }
-  
-  .tooltip .tooltiptext {
-    visibility: hidden;
-    min-width: 300px;
-    max-width: 50vw;
-    background-color: #282828;
-    color: #1a1a1a;
-    opacity: 0.7;
-    text-align: center;
-    word-wrap: break-word;
-    border-radius: 5px;
-    padding: 10px;
-    position: absolute;
-    z-index: 1;
-    top: 115%;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-  }
-  
-  .tooltip:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
-  }
-  
-  .tooltip .tooltiptext::after {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    border-width: 8px;
-    border-style: solid;
-    border-color: #28282810 transparent transparent transparent;
-    transform: translateX(-50%);
-    transform: rotate(180deg);
-  }
-  
+	animation: slideInFromAbove 0.3s ease-out;
+}
 
-  .error {
-    background-color: #dd2c2c;
-    color: #f1f1f1;
-  }
+.tooltip .tooltiptext {
+	visibility: hidden;
+	min-width: 300px;
+	max-width: 50vw;
+	background-color: #282828;
+	color: #1a1a1a;
+	opacity: 0.7;
+	text-align: center;
+	word-wrap: break-word;
+	border-radius: 5px;
+	padding: 10px;
+	position: absolute;
+	z-index: 1;
+	top: 115%;
+	left: 50%;
+	transform: translateX(-50%);
+	opacity: 0;
+	transition: opacity 0.5s ease, visibility 0.5s ease;
+}
 
-  .error .tooltiptext {
-    background-color: #dd2c2c;
-    color: #f1f1f1;
-  }
+.tooltip:hover .tooltiptext {
+	visibility: visible;
+	opacity: 1;
+}
 
-  .error .tooltiptext::after {
-    border-color: #dd2c2c transparent transparent transparent;
-  }
+.tooltip .tooltiptext::after {
+	content: "";
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	border-width: 8px;
+	border-style: solid;
+	border-color: #28282810 transparent transparent transparent;
+	transform: translateX(-50%);
+	transform: rotate(180deg);
+}
 
-  .warning {
-    background-color: #ebb82a;
-    color: #1a1a1a;
-  }
+.error {
+	background-color: #dd2c2c;
+	color: #f1f1f1;
+}
 
-  .warning .tooltiptext {
-    background-color: #ebb82c;
-    color: #1a1a1a;
-  }
+.error .tooltiptext {
+	background-color: #dd2c2c;
+	color: #f1f1f1;
+}
 
-  .warning .tooltiptext::after {
-    border-color: #ebb82c transparent transparent transparent;
-  }
+.error .tooltiptext::after {
+	border-color: #dd2c2c transparent transparent transparent;
+}
 
-  .success {
-    background-color: #78df34;
-    color: #1a1a1a;
-  }
+.warning {
+	background-color: #ebb82a;
+	color: #1a1a1a;
+}
 
-  .success .tooltiptext {
-    background-color: #78df34;
-    color: #1a1a1a;
-  }
+.warning .tooltiptext {
+	background-color: #ebb82c;
+	color: #1a1a1a;
+}
 
-  .success .tooltiptext::after {
-    border-color: #78df34 transparent transparent transparent;
-  }
+.warning .tooltiptext::after {
+	border-color: #ebb82c transparent transparent transparent;
+}
 
-  @keyframes slideInFromAbove {
-    from {
-      transform: translate(-50%, -100%);
-      opacity: 0;
-    }
-    80% {
-      transform: translate(-50%, 0);
-      opacity: 0.5;
-    }
-    to {
-      transform: translate(-50%, 0);
-      opacity: 1;
-    }
-  }
+.success {
+	background-color: #78df34;
+	color: #1a1a1a;
+}
 
-  @keyframes slideOutToAbove {
-    from {
-      transform: translate(-50%, 0);
-      opacity: 1;
-    }
-    to {
-      transform: translate(-50%, -100%);
-      opacity: 0;
-    }
-  }
+.success .tooltiptext {
+	background-color: #78df34;
+	color: #1a1a1a;
+}
 
-  .slideOut {
-    animation: slideOutToAbove 0.6s ease-out;
-  }
+.success .tooltiptext::after {
+	border-color: #78df34 transparent transparent transparent;
+}
+
+@keyframes slideInFromAbove {
+	from {
+		transform: translate(-50%, -100%);
+		opacity: 0;
+	}
+	80% {
+		transform: translate(-50%, 0);
+		opacity: 0.5;
+	}
+	to {
+		transform: translate(-50%, 0);
+		opacity: 1;
+	}
+}
+
+@keyframes slideOutToAbove {
+	from {
+		transform: translate(-50%, 0);
+		opacity: 1;
+	}
+	to {
+		transform: translate(-50%, -100%);
+		opacity: 0;
+	}
+}
+
+.slideOut {
+	animation: slideOutToAbove 0.6s ease-out;
+}
