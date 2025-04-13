@@ -3,10 +3,10 @@ name: Lint
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-  scan_ruby:
+  brakeman:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +22,22 @@ jobs:
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
 
-  scan_js:
+  rubocop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Run rubocop
+        run: bin/rubocop -c .rubocop.yml -f github
+
+  importmap_audit:
     runs-on: ubuntu-latest
 
     steps:
@@ -38,8 +53,9 @@ jobs:
       - name: Scan for security vulnerabilities in JavaScript dependencies
         run: bin/importmap audit
 
-  rubocop:
+  eslint:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -50,5 +66,14 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Run rubocop
-        run: bin/rubocop -c .rubocop.yml -f github
+      - name: Install Yarn
+        run: |
+          curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+          echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+          sudo apt-get update && sudo apt-get install -y yarn
+
+      - name: Install Yarn dependencies
+        run: yarn install
+
+      - name: Run ESLint
+        run: yarn eslint app/javascript
