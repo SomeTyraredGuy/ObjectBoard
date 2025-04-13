@@ -1,19 +1,15 @@
 import { getCSRFToken, getBaseURL } from "../../../scripts/requestUtils.js";
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
 
 type Props = {
 	path: string;
 	refetchFn: () => void;
-	defaultValue: unknown;
 	method: string;
 };
 
-export default function UseMemberMutation({ path, refetchFn, defaultValue, method }: Props) {
-	const [value, setValue] = useState(defaultValue);
-
+export default function UseMemberMutation({ path, refetchFn, method }: Props) {
 	const { mutate, error, isError, isSuccess } = useMutation({
-		mutationFn: async () => {
+		mutationFn: async (value: unknown) => {
 			const response = await fetch(`${getBaseURL()}/member/${path}`, {
 				method: method,
 				headers: {
@@ -39,7 +35,5 @@ export default function UseMemberMutation({ path, refetchFn, defaultValue, metho
 		error,
 		isError,
 		isSuccess,
-		value,
-		setValue,
 	};
 }

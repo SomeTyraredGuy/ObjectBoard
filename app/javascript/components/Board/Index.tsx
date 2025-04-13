@@ -1,168 +1,144 @@
-import React, { useRef } from 'react'
-import MemberMenu from './MemberMenu/MemberMenu.js'
-import { getBaseURL } from '../../scripts/requestUtils.js'
-import { useQuery } from '@tanstack/react-query'
-import Notification from '../General/Notification/Notification.jsx'
-import ToolBar from './ToolBar/ToolBar.jsx'
-import BoardMenu from './BoardMenu/BoardMenu.jsx'
-import ResourcesMenu from './ResourcesMenu/ResourcesMenu.jsx'
-import {useState} from 'react'
-import {CanvasMode, CanvasState} from '../../Types/Canvas'
-import Canvas from './Canvas/Canvas.js'
-import UseObjectsInteraction from '../../hooks/Board/Canvas/Objects/UseObjectsInteraction.js'
-import UseStageScaleAndPosition from '../../hooks/Board/Canvas/UseStageScaleAndPosition.js'
-import UseHistory from '../../hooks/Board/UseHistory.js'
-import UseCanvasContentQuery from '../../hooks/Board/Canvas/UseCanvasContentQuery.js'
-import Loader from '../General/Loader/Loader.js'
-import createCanvasStateUtils from '../../scripts/canvasStateUtils/createCanvasStateUtils.js'
+import React, { useRef } from "react";
+import MemberMenu from "./MemberMenu/MemberMenu.js";
+import Notification from "../General/Notification/Notification.jsx";
+import ToolBar from "./ToolBar/ToolBar.jsx";
+import BoardMenu from "./BoardMenu/BoardMenu.jsx";
+import ResourcesMenu from "./ResourcesMenu/ResourcesMenu.jsx";
+import { useState } from "react";
+import { CanvasMode, CanvasState } from "../../Types/Canvas";
+import Canvas from "./Canvas/Canvas.js";
+import UseObjectsInteraction from "../../hooks/Board/Canvas/Objects/UseObjectsInteraction.js";
+import UseStageScaleAndPosition from "../../hooks/Board/Canvas/UseStageScaleAndPosition.js";
+import UseHistory from "../../hooks/Board/UseHistory.js";
+import UseCanvasContentQuery from "../../hooks/Board/Canvas/UseCanvasContentQuery.js";
+import Loader from "../General/Loader/Loader.js";
+import createCanvasStateUtils from "../../scripts/canvasStateUtils/createCanvasStateUtils.js";
+import UseCurrentMemberQuery from "../../hooks/Board/Members/UseCurrentMemberQuery.js";
 
-function Index({db}: {db: any}) {
-  const [canvasState, setCanvasState] = useState<CanvasState>({
-    mode: CanvasMode.None
-  })
-  const canvasStateUtils = createCanvasStateUtils(setCanvasState)
+export type IndexProps = {
+	db: {
+		boardName: string;
+	};
+};
 
-  const {
-    data: currentUser,
-    isLoading: isUserLoading,
-    error: currentUserError,
-    isError: isCurrentUserError
-  } = useQuery({
-    queryKey: ['user', db.currentMemberId],
-    queryFn: async () => {
-        const JSON = await fetch(`${ getBaseURL() }/member/current`)
-        const response = await JSON.json()
-            
-        if (!JSON.ok) {
-          if (response.error) throw new Error(response.error)
-          throw new Error()
-        }
-            
-        return response
-    },
-  })
+function Index({ db }: IndexProps) {
+	const [canvasState, setCanvasState] = useState<CanvasState>({
+		mode: CanvasMode.None,
+	});
+	const canvasStateUtils = createCanvasStateUtils(setCanvasState);
 
-  const useStageScaleAndPosition = UseStageScaleAndPosition()
-  const {
-    stageScale
-  } = useStageScaleAndPosition
+	const {
+		currentMember,
+		refetch: refetchCurrentMember,
+		isLoading: isMemberLoading,
+		error: currentMemberError,
+		isError: isCurrentMemberError,
+	} = UseCurrentMemberQuery();
 
-  const changeObjects = useRef(() => {})
+	const useStageScaleAndPosition = UseStageScaleAndPosition();
+	const { stageScale } = useStageScaleAndPosition;
 
-  const {
-    historyHandleChanges,
-    undo,
-    canUndo,
-    redo,
-    canRedo,
-    removeAdditionalDelay: removeAdditionalHistoryDelay,
-    unsavedChanges,
-    isContentMutationError,
-    contentMutationError
-  } = UseHistory({
-    changeObjects,
-  })
+	const changeObjects = useRef(() => {});
 
-  const { 
-      canvasObjects,
-      setCanvasObjects,
-      canvasUseObjectsInteraction,
-      resourcesProperties
-  } = UseObjectsInteraction({
-    blocked: !currentUser?.role?.can_edit,
-    canvasState, 
-    canvasStateUtils, 
-    stageScale, 
-    handleHistory: {
-      changeObjects,
-      historyHandleChanges,
-      removeAdditionalHistoryDelay
-    }
-  })
+	const {
+		historyHandleChanges,
+		undo,
+		canUndo,
+		redo,
+		canRedo,
+		removeAdditionalDelay: removeAdditionalHistoryDelay,
+		unsavedChanges,
+		isContentMutationError,
+		contentMutationError,
+	} = UseHistory({
+		changeObjects,
+	});
 
-  const {
-    isLoading: contentIsLoading,
-    error: contentQueryError,
-    isError: isContentQueryError,
-  } = UseCanvasContentQuery({canvasStateUtils, setCanvasObjects, isContentMutationError})
+	const { canvasObjects, setCanvasObjects, canvasUseObjectsInteraction, resourcesProperties } = UseObjectsInteraction({
+		blocked: !currentMember?.role?.can_edit,
+		canvasState,
+		canvasStateUtils,
+		stageScale,
+		handleHistory: {
+			changeObjects,
+			historyHandleChanges,
+			removeAdditionalHistoryDelay,
+		},
+	});
 
-  const notifications = [
-    {
-      trigger: isCurrentUserError,
-      message: currentUserError?.message,
-      title: "Error loading user",
-    },
-    {
-      trigger: isContentQueryError,
-      message: contentQueryError?.message,
-      title: "Error loading content",
-    },
-    {
-      trigger: isContentMutationError,
-      message: contentMutationError?.message,
-      title: "Error saving content",
-    }
-  ]
+	const {
+		isLoading: contentIsLoading,
+		error: contentQueryError,
+		isError: isContentQueryError,
+	} = UseCanvasContentQuery({ canvasStateUtils, setCanvasObjects, isContentMutationError });
 
-  if( contentIsLoading || isUserLoading || !currentUser){
-    return (
-      <Loader/>
-    )
-  }
-  
-  return (
-    <>
-      <Canvas
-        objectsBlocked={!currentUser?.role?.can_edit}
-        canvasState={canvasState}
-        canvasStateUtils={canvasStateUtils}
-        canvasObjects={canvasObjects}
-        canvasUseObjects={canvasUseObjectsInteraction}
-        canvasStageScaleAndPosition={useStageScaleAndPosition}
-      />
+	const notifications = [
+		{
+			trigger: isCurrentMemberError,
+			message: currentMemberError?.message,
+			title: "Error loading user",
+		},
+		{
+			trigger: isContentQueryError,
+			message: contentQueryError?.message,
+			title: "Error loading content",
+		},
+		{
+			trigger: isContentMutationError,
+			message: contentMutationError?.message,
+			title: "Error saving content",
+		},
+	];
 
-      <BoardMenu
-        showSaving={currentUser?.role?.can_edit}
-        board={db.board} 
-        unsavedChanges={unsavedChanges}
-      />
+	if (contentIsLoading || isMemberLoading || !currentMember) {
+		return <Loader />;
+	}
 
-      {currentUser?.role?.can_edit && 
-      <>
-        <ToolBar 
-          canvasState={canvasState}
-          canvasStateUtils={canvasStateUtils}
-          undo={undo}
-          redo={redo}
-          canUndo={canUndo()}
-          canRedo={canRedo()}
-        />
-        <ResourcesMenu
-          canvasState={canvasState}
-          canvasStateUtils={canvasStateUtils}
-          resourcesProperties={resourcesProperties}
-        />
-      </>
-      }
+	return (
+		<>
+			<Canvas
+				objectsBlocked={!currentMember?.role?.can_edit}
+				canvasState={canvasState}
+				canvasStateUtils={canvasStateUtils}
+				canvasObjects={canvasObjects}
+				canvasUseObjects={canvasUseObjectsInteraction}
+				canvasStageScaleAndPosition={useStageScaleAndPosition}
+			/>
 
-      <MemberMenu 
-        currentUser={currentUser} 
-      />
+			<BoardMenu showSaving={currentMember?.role?.can_edit} boardName={db.boardName} unsavedChanges={unsavedChanges} />
 
-      {
-        notifications.map((notification, index) => (
-          <Notification
-            key={index}
-            trigger={notification.trigger}
-            title={notification.title}
-            message={notification.message}
-            type={"error"}
-            reloadPage={true}
-          />
-        ))
-      }
-    </>
-  )
+			{currentMember?.role?.can_edit && (
+				<>
+					<ToolBar
+						canvasState={canvasState}
+						canvasStateUtils={canvasStateUtils}
+						undo={undo}
+						redo={redo}
+						canUndo={canUndo()}
+						canRedo={canRedo()}
+					/>
+					<ResourcesMenu
+						canvasState={canvasState}
+						canvasStateUtils={canvasStateUtils}
+						resourcesProperties={resourcesProperties}
+					/>
+				</>
+			)}
+
+			<MemberMenu currentMember={currentMember} refetchCurrentMember={refetchCurrentMember} />
+
+			{notifications.map((notification, index) => (
+				<Notification
+					key={index}
+					trigger={notification.trigger}
+					title={notification.title}
+					message={notification.message}
+					type={"error"}
+					reloadPage={true}
+				/>
+			))}
+		</>
+	);
 }
 
-export default Index
+export default Index;

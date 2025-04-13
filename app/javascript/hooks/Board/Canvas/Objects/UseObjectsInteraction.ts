@@ -7,6 +7,7 @@ import { CanvasMode, CanvasState } from "../../../../Types/Canvas";
 import UseObjects from "./UseObjects";
 import UseTemporaryObject from "./UseTemporaryObject";
 import { CanvasStateUtils } from "../../../../Types/CanvasStateUtils";
+import { HistoryRecord } from "../../../../Types/History";
 
 type Props = {
 	blocked: boolean;
@@ -16,7 +17,7 @@ type Props = {
 	handleHistory: {
 		removeAdditionalHistoryDelay: () => void;
 		changeObjects: React.RefObject<() => void>;
-		historyHandleChanges: () => void;
+		historyHandleChanges: (record: HistoryRecord, waitForFinal?: boolean) => void;
 	};
 };
 

@@ -45,67 +45,62 @@ function Objects({objectsBlocked, canvasObjects, temporaryObject, canvasStateUti
     canvasStateUtils.Selected.set([object]);
   }
 
-  function renderObject(object: CanvasObject, i?: number) {
-    const commonProps = {
-      key: object.id ? object.id : i,
-      stroke: object.stroke ? object.stroke : "none",
-      strokeWidth: object.strokeWidth,
-      opacity: object.opacity,
+	function renderObject(object: CanvasObject, i?: number) {
+		const commonProps = {
+			key: object.id ? object.id : i,
+			stroke: object.stroke ? object.stroke : "none",
+			strokeWidth: object.strokeWidth,
+			opacity: object.opacity,
 
-      onMouseEnter: onMouseEnter,
-      onMouseLeave: onMouseLeave,
+			onMouseEnter: onMouseEnter,
+			onMouseLeave: onMouseLeave,
 
       onMouseDown: (e) => onMouseDown(e, canvasStateUtils, canvasState, object),
     }
 
-    switch (object.type) {
-      case CanvasObjectType.Rectangle:
-        return <Rect 
-          {...commonProps} 
-          x={object.x}
-          y={object.y}
-          width={object.width} 
-          height={object.height} 
-          fill={object.fill}
-          cornerRadius={ object.width * object.cornerRadius}
-        />
+		switch (object.type) {
+			case CanvasObjectType.Rectangle:
+				return (
+					<Rect
+						{...commonProps}
+						x={object.x}
+						y={object.y}
+						width={object.width}
+						height={object.height}
+						fill={object.fill}
+						cornerRadius={object.width * object.cornerRadius}
+					/>
+				);
 
-      case CanvasObjectType.Ellipse:
-        return <Ellipse 
-          {...commonProps} 
-          x={object.x}
-          y={object.y}
-          radiusX={object.radiusX} 
-          radiusY={object.radiusY} 
-          fill={object.fill}
-        />
+			case CanvasObjectType.Ellipse:
+				return (
+					<Ellipse
+						{...commonProps}
+						x={object.x}
+						y={object.y}
+						radiusX={object.radiusX}
+						radiusY={object.radiusY}
+						fill={object.fill}
+					/>
+				);
 
-      case CanvasObjectType.Text:
-        return <Text
-          {...commonProps} 
-          x={object.x}
-          y={object.y}
-          text={object.text} 
-          fill={object.fill}
-        />
+			case CanvasObjectType.Text:
+				return <Text {...commonProps} x={object.x} y={object.y} text={object.text} fill={object.fill} />;
 
-      case CanvasObjectType.Line:
-        return <Line  
-          {...commonProps} 
-          points={object.points} 
-        />
-    }
-  }
+			case CanvasObjectType.Line:
+				return <Line {...commonProps} points={object.points} />;
+		}
+	}
 
-  return (
-    <>
-      {canvasObjects.map((object, i) => {
-        return renderObject(object, i)
-      })}
+	return (
+		<>
+			{canvasObjects.map((object, i) => {
+				return renderObject(object, i);
+			})}
 
-      { temporaryObject && renderObject(temporaryObject, -1) }
-    </>
-  )
+			{temporaryObject && renderObject(temporaryObject, -1)}
+		</>
+	);
 }
 
-export default Objects
+export default Objects;
