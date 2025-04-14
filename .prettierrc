@@ -1,0 +1,13 @@
+{
+    "plugins": ["prettier-plugin-tailwindcss"],
+    "printWidth": 120,
+    "overrides": [
+        {
+            "files": ["*.tsx", "*.ts", "*.jsx", "*.js"],
+            "options": {
+                "tabWidth": 4,
+                "useTabs": true
+            }
+        }
+    ]
+}
