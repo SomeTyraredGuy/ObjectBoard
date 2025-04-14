@@ -75,3 +75,7 @@ gem "rubocop-rails", "~> 2.27", require: false
 gem "rubocop-performance", "~> 1.23", require: false
 
 gem "fasterer", "~> 0.11.0", require: false
+
+gem "tailwindcss-ruby", "~> 4.1"
+
+gem "tailwindcss-rails", "~> 4.2"

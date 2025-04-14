@@ -41,5 +41,9 @@
         "editor.tabSize": 4,
         "editor.insertSpaces": false
     },
-    "prettier.printWidth": 120
+    "prettier.printWidth": 120,
+    "tailwindCSS.experimental.classRegex": [
+        "\\b(?:class|className):\\s*'([^']*)'",
+        "\\b(?:class|className):\\s*\"([^\"]*)\""
+    ],
 }
