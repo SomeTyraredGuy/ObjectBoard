@@ -95,7 +95,7 @@ function Index({ db }: IndexProps) {
 	}
 
 	return (
-		<>
+		<div data-theme="light">
 			<Canvas
 				objectsBlocked={!currentMember?.role?.can_edit}
 				canvasState={canvasState}
@@ -137,7 +137,7 @@ function Index({ db }: IndexProps) {
 					reloadPage={true}
 				/>
 			))}
-		</>
+		</div>
 	);
 }
 
