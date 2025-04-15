@@ -22,9 +22,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "incremental": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./app/javascript/*"]
+    }
   },
   "include": [
-    "./**/*"
-  ]
+    "./app/javascript/**/*"
+  ],
 }
