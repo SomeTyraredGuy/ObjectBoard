@@ -2,13 +2,12 @@ import React from "react";
 import SVG from "./SVG";
 
 type Props = {
-	width?: number;
-	height?: number;
+	className?: string;
 };
 
-function PaletteSVG({ width, height = width }: Props) {
+function PaletteSVG({ className }: Props) {
 	return (
-		<SVG width={width} height={height}>
+		<SVG className={className}>
 			<>
 				<circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
 				<circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
@@ -20,18 +19,18 @@ function PaletteSVG({ width, height = width }: Props) {
 	);
 }
 
-function FolderSVG({ width, height = width }: Props) {
+function FolderSVG({ className }: Props) {
 	return (
-		<SVG width={width} height={height}>
+		<SVG className={className}>
 			<path d="M20 17a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3.9a2 2 0 0 1-1.69-.9l-.81-1.2a2 2 0 0 0-1.67-.9H8a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2Z" />
 			<path d="M2 8v11a2 2 0 0 0 2 2h14" />
 		</SVG>
 	);
 }
 
-function TrashSVG({ width, height = width }: Props) {
+function TrashSVG({ className }: Props) {
 	return (
-		<SVG width={width} height={height}>
+		<SVG className={className}>
 			<path d="M3 6h18" />
 			<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
 			<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
