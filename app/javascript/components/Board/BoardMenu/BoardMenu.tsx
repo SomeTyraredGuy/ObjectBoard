@@ -1,58 +1,46 @@
-import React from 'react'
-import classes from '../board.module.css'
-import generalClasses from '../../General/general.module.css'
-import IconButton from '../../General/IconButton'
-import { UndoSVG } from '../../svg/ToolsSVG'
-import { Side } from '../../../Types/Canvas'
-import CheckSVG from '../../svg/CheckSVG'
+import React from "react";
+import { UndoSVG } from "../../svg/ToolsSVG";
+import SavingIcon from "../../General/SavingIcon";
+import Hint from "@/components/General/Hint/Hint";
 
 type Props = {
-  board: {
-    id: number,
-    name: string,
-    description: string,
-  },
-  isLoading?: boolean,
-  unsavedChanges: boolean,
-  showSaving: boolean
+	boardName: string;
+	unsavedChanges: boolean;
+	showSaving: boolean;
+};
+
+function BoardMenu({ boardName, unsavedChanges, showSaving }: Props) {
+	return (
+		<table className="w-2xs fixed top-0 m-2">
+			<tbody className="w-100">
+				<tr className="flex h-16 justify-end">
+					<th className="bg-background hover:bg-primary border-standard flex items-center rounded-l-2xl !border-r-0 p-0">
+						<Hint
+							title="Exit board"
+							side="bottom"
+							href="/boards"
+							className="hover:text-secondary flex h-full w-12 items-center justify-center"
+						>
+							<UndoSVG className="h-6 w-6" />
+						</Hint>
+					</th>
+					<th
+						className={`flex-grow-1 border-standard bg-background w-48 content-center truncate border-s-0 p-2 text-center ${showSaving ? "" : "rounded-r-2xl"}`}
+					>
+						{boardName}
+					</th>
+					{showSaving && (
+						<th
+							className="border-standard bg-background content-center rounded-r-2xl !border-l-0 p-2"
+							role="status"
+						>
+							<SavingIcon unsavedChanges={unsavedChanges} />
+						</th>
+					)}
+				</tr>
+			</tbody>
+		</table>
+	);
 }
 
-function BoardMenu({board, isLoading, unsavedChanges, showSaving} : Props) {
-  return (
-    <table className={`m-2 position-fixed top-0 ${isLoading && "placeholder-wave"}`} style={{width: "280px"}}>
-      {false ?
-      <tbody className='placeholder col-12 bg-secondary'></tbody>
-      :
-      <tbody className='w-100'>
-        <tr className='d-flex justify-content-end'>
-          <th className={`${classes.leftBorder} ${classes.leftRounded} ${classes.background} p-2`}>
-            <IconButton 
-              icon={UndoSVG} 
-              label={"Exit board"}
-              side={Side.Right}
-              href='/boards'
-            />
-          </th>
-          <th 
-            className={`flex-grow-1 p-2 text-center align-content-center border-start-0 
-            ${classes.ellipsis} ${classes.background} ${classes.border}
-            ${showSaving ? "" : classes.rightRounded}
-            `}
-          >
-            {board.name}
-          </th>
-          {showSaving && <th className={`${classes.rightBorder} ${classes.rightRounded} ${classes.background} p-2 align-content-center ${generalClasses.hintWrapper}`} role="status">
-            <div className={`${unsavedChanges && "spinner-border opacity-50"}`} style={{width: "26px", height: "26px"}}>
-              <CheckSVG width={26} className={`${unsavedChanges && "visually-hidden"}`}/>
-            </div>
-            <span className={`${generalClasses.hint} ${generalClasses.bottomHint}`}>
-                {unsavedChanges ? "Saving" : "Changes saved"}
-              </span>
-          </th>}
-        </tr>
-      </tbody>}
-    </table>
-  )
-}
-
-export default BoardMenu
+export default BoardMenu;

@@ -1,69 +1,67 @@
-import React from 'react'
-import SVG from './SVG'
+import React from "react";
+import SVG from "./SVG";
 
 type Props = {
-    width: number,
-    height?: number
+	className?: string;
+};
+
+function SelectSVG({ className }: Props) {
+	return (
+		<SVG className={className}>
+			<path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z" />
+		</SVG>
+	);
 }
 
-function SelectSVG({width, height = width}: Props) {
-  return (
-    <SVG width={width} height={height}>
-        <path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z"/>
-    </SVG>
-  )
+function UndoSVG({ className }: Props) {
+	return (
+		<SVG className={className}>
+			<path d="M9 14 4 9l5-5" />
+			<path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11" />
+		</SVG>
+	);
 }
 
-function UndoSVG({width, height = width}: Props) {
-  return (
-    <SVG width={width} height={height}>
-      <path d="M9 14 4 9l5-5"/>
-      <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/>
-    </SVG>
-  )
+function RedoSVG({ className }: Props) {
+	return (
+		<SVG className={className}>
+			<path d="m15 14 5-5-5-5" />
+			<path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13" />
+		</SVG>
+	);
 }
 
-function RedoSVG({width, height = width}: Props) {
-  return (
-    <SVG width={width} height={height}>
-      <path d="m15 14 5-5-5-5"/>
-      <path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13"/>
-      </SVG>
-  )
+function TextSVG({ className }: Props) {
+	return (
+		<SVG className={className}>
+			<path d="M14 16.5a.5.5 0 0 0 .5.5h.5a2 2 0 0 1 0 4H9a2 2 0 0 1 0-4h.5a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5V8a2 2 0 0 1-4 0V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3a2 2 0 0 1-4 0v-.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5Z" />
+		</SVG>
+	);
 }
 
-function TextSVG({width, height = width}: Props) {
-  return (
-    <SVG width={width} height={height}>
-      <path d="M14 16.5a.5.5 0 0 0 .5.5h.5a2 2 0 0 1 0 4H9a2 2 0 0 1 0-4h.5a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5V8a2 2 0 0 1-4 0V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3a2 2 0 0 1-4 0v-.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5Z"/>
-    </SVG>
-  )
+function RectangleSVG({ className }: Props) {
+	return (
+		<SVG className={className}>
+			<rect width="18" height="18" x="3" y="3" rx="2" />
+		</SVG>
+	);
 }
 
-function RectangleSVG({width, height = width}: Props) {
-  return (
-    <SVG width={width} height={height}>
-      <rect width="18" height="18" x="3" y="3" rx="2"/>
-    </SVG>
-  )
+function CircleSVG({ className }: Props) {
+	return (
+		<SVG className={className}>
+			<circle cx="12" cy="12" r="10" />
+		</SVG>
+	);
 }
 
-function CircleSVG({width, height = width}: Props) {
-  return (
-    <SVG width={width} height={height}>
-      <circle cx="12" cy="12" r="10"/>
-    </SVG>
-    )
+function ArrowSVG({ className }: Props) {
+	return (
+		<SVG className={className}>
+			<path d="M13 5H19V11" />
+			<path d="M19 5L5 19" />
+		</SVG>
+	);
 }
 
-function ArrowSVG({width, height = width}: Props) {
-  return (
-    <SVG width={width} height={height}>
-      <path d="M13 5H19V11"/>
-      <path d="M19 5L5 19"/>
-    </SVG>
-  )
-}
-
-
-export {SelectSVG, UndoSVG, RedoSVG, TextSVG, RectangleSVG, CircleSVG, ArrowSVG}
+export { SelectSVG, UndoSVG, RedoSVG, TextSVG, RectangleSVG, CircleSVG, ArrowSVG };

@@ -33,7 +33,17 @@
         "hotwired",
         "importmap",
         "Konva",
+        "shadcn",
         "stylesheet",
         "XYWH"
-    ]
+    ],
+    "[typescript]": {
+        "editor.detectIndentation": false,
+        "editor.tabSize": 4,
+        "editor.insertSpaces": false
+    },
+    "tailwindCSS.experimental.classRegex": [
+        "\\b(?:class|className):\\s*'([^']*)'",
+        "\\b(?:class|className):\\s*\"([^\"]*)\""
+    ],
 }

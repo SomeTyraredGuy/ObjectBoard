@@ -1,134 +1,123 @@
-import React from 'react'
-import classes from './toolBar.module.css'
-import {SelectSVG, UndoSVG, RedoSVG, TextSVG, RectangleSVG, CircleSVG, ArrowSVG} from '../../svg/ToolsSVG'
-import IconButton from '../../General/IconButton'
-import { CanvasMode, CanvasState, Side } from '../../../Types/Canvas'
-import { CanvasObjectType } from '../../../Types/CanvasObjects'
-import UseDefaultObjects from '../Canvas/scripts/hooks/canvasObjectsHooks/UseDefaultObjects'
+import React from "react";
+import { SelectSVG, UndoSVG, RedoSVG, TextSVG, RectangleSVG, CircleSVG, ArrowSVG } from "../../svg/ToolsSVG";
+import IconButton from "../../General/IconButton";
+import { CanvasMode, CanvasState } from "../../../Types/Canvas";
+import { CanvasObjectType } from "../../../Types/CanvasObjects";
+import UseDefaultObjects from "../../../hooks/Board/Canvas/Objects/UseDefaultObjects";
+import { CanvasStateUtils } from "../../../Types/CanvasStateUtils";
 
-interface ToolBarProps {
-  canvasState: CanvasState,
-  setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
-  undo: () => void,
-  redo: () => void,
-  canUndo: boolean,
-  canRedo: boolean,
+type Props = {
+	canvasState: CanvasState;
+	canvasStateUtils: CanvasStateUtils;
+	undo: () => void;
+	redo: () => void;
+	canUndo: boolean;
+	canRedo: boolean;
+};
+
+function ToolBar({ canvasState, canvasStateUtils, undo, redo, canUndo, canRedo }: Props) {
+	const { defaultRectangle, defaultEllipse, defaultText, defaultLine } = UseDefaultObjects();
+
+	const switchButtons = [
+		{
+			icon: SelectSVG,
+			onClick: () => {
+				canvasStateUtils.None.set();
+			},
+			label: "Select",
+			isActive: canvasState.mode !== CanvasMode.Inserting,
+		},
+		{
+			icon: TextSVG,
+			onClick: () => {
+				canvasStateUtils.Inserting.set(defaultText());
+			},
+			label: "Text",
+			isActive:
+				canvasState.mode === CanvasMode.Inserting &&
+				canvasState.startingProperties.type === CanvasObjectType.Text,
+		},
+		{
+			icon: RectangleSVG,
+			onClick: () => {
+				canvasStateUtils.Inserting.set(defaultRectangle());
+			},
+			label: "Rectangle",
+			isActive:
+				canvasState.mode === CanvasMode.Inserting &&
+				canvasState.startingProperties.type === CanvasObjectType.Rectangle,
+		},
+		{
+			icon: CircleSVG,
+			onClick: () => {
+				canvasStateUtils.Inserting.set(defaultEllipse());
+			},
+			label: "Ellipse",
+			isActive:
+				canvasState.mode === CanvasMode.Inserting &&
+				canvasState.startingProperties.type === CanvasObjectType.Ellipse,
+		},
+		{
+			icon: ArrowSVG,
+			onClick: () => {
+				canvasStateUtils.Inserting.set(defaultLine());
+			},
+			label: "Line",
+			isActive:
+				canvasState.mode === CanvasMode.Inserting &&
+				canvasState.startingProperties.type === CanvasObjectType.Line,
+		},
+	];
+
+	const actionButtons = [
+		{
+			icon: UndoSVG,
+			onClick: undo,
+			label: "Undo",
+			isDisabled: !canUndo,
+		},
+		{
+			icon: RedoSVG,
+			onClick: redo,
+			label: "Redo",
+			isDisabled: !canRedo,
+		},
+	];
+
+	const sectionClassName =
+		"bg-background border-standard my-2.5 flex w-14 flex-col items-center self-center rounded-r-2xl px-1 py-2";
+
+	return (
+		<div className="fixed left-0 top-1/2 -translate-y-1/2">
+			<div className={sectionClassName}>
+				{switchButtons.map((button, i) => (
+					<IconButton
+						key={i}
+						icon={button.icon}
+						onClick={button.onClick}
+						label={button.label}
+						isActive={button.isActive}
+						side="right"
+						className="my-1 h-10 w-10"
+					/>
+				))}
+			</div>
+
+			<div className={sectionClassName}>
+				{actionButtons.map((button, i) => (
+					<IconButton
+						key={i}
+						icon={button.icon}
+						onClick={button.onClick}
+						label={button.label}
+						isDisabled={button.isDisabled}
+						side="right"
+						className="my-1 h-10 w-10"
+					/>
+				))}
+			</div>
+		</div>
+	);
 }
 
-function ToolBar({canvasState, setCanvasState, undo, redo, canUndo, canRedo} : ToolBarProps) {
-  const { 
-    defaultRectangle, 
-    defaultEllipse, 
-    defaultText, 
-    defaultLine 
-  } = UseDefaultObjects()
-
-  const switchButtons = [
-    {
-      icon: SelectSVG,
-      onClick: () => {setCanvasState({mode: CanvasMode.None})},
-      label: "Select",
-      isDisabled: false,
-      isActive: canvasState.mode !== CanvasMode.Inserting
-    },
-    {
-      icon: TextSVG,
-      onClick: () => {setCanvasState({
-        mode: CanvasMode.Inserting, 
-        objectType: CanvasObjectType.Text,
-        startingProperties: defaultText()
-      })},
-      label: "Text",
-      isDisabled: false,
-      isActive: canvasState.mode === CanvasMode.Inserting &&
-                canvasState.objectType === CanvasObjectType.Text
-    },
-    {
-      icon: RectangleSVG,
-      onClick: () => {setCanvasState({
-        mode: CanvasMode.Inserting, 
-        objectType: CanvasObjectType.Rectangle,
-        startingProperties: defaultRectangle()
-      })},
-      label: "Rectangle",
-      isDisabled: false,
-      isActive: canvasState.mode === CanvasMode.Inserting &&
-                canvasState.objectType === CanvasObjectType.Rectangle
-    },
-    {
-      icon: CircleSVG,
-      onClick: () => {setCanvasState({
-        mode: CanvasMode.Inserting, 
-        objectType: CanvasObjectType.Ellipse,
-        startingProperties: defaultEllipse()
-      })},
-      label: "Ellipse",
-      isDisabled: false,
-      isActive: canvasState.mode === CanvasMode.Inserting &&
-                canvasState.objectType === CanvasObjectType.Ellipse
-    },
-    {
-      icon: ArrowSVG,
-      onClick: () => {setCanvasState({
-        mode: CanvasMode.Inserting, 
-        objectType: CanvasObjectType.Line,
-        startingProperties: defaultLine()
-      })},
-      label: "Line",
-      isDisabled: false,
-      isActive: canvasState.mode === CanvasMode.Inserting &&
-                canvasState.objectType === CanvasObjectType.Line
-    }
-  ]
-  
-  const actionButtons = [
-    {
-      icon: UndoSVG,
-      onClick: undo,
-      label: "Undo",
-      isDisabled: !canUndo
-    },
-    {
-      icon: RedoSVG,
-      onClick: redo,
-      label: "Redo",
-      isDisabled: !canRedo
-    },
-  ]
-
-  return (
-    <div className={`${classes.wrapper}`} role="group" aria-label="Vertical radio toggle button group">
-
-      <div className={`${classes.section}`}>
-          {switchButtons.map((button, i) => (
-            <IconButton key={i} 
-              icon={button.icon}
-              onClick={button.onClick}
-              label={button.label}
-              isDisabled={button.isDisabled}
-              isActive={button.isActive}
-              href={null}
-              side={Side.Right}
-            />
-          ))}
-      </div>
-
-      <div className={`${classes.section}`}>
-          {actionButtons.map((button, i) => (
-            <IconButton key={i} 
-            icon={button.icon}
-            onClick={button.onClick}
-            label={button.label}
-            isDisabled={button.isDisabled}
-            isActive={null}
-            href={null}
-            side={Side.Right}
-          />
-          ))}
-      </div>
-
-    </div>
-  )
-}
-
-export default ToolBar
+export default ToolBar;

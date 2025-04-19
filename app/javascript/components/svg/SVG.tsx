@@ -1,18 +1,24 @@
-import React from 'react'
+import React from "react";
 
 type Props = {
-    width: number,
-    height: number,
-    children: React.ReactNode,
-    className?: string
+	children: React.ReactNode;
+	className?: string;
+};
+
+function SVG({ children, className }: Props) {
+	return (
+		<svg
+			className={className}
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		>
+			{children}
+		</svg>
+	);
 }
 
-function SVG({width, height, children, className} : Props) {
-  return (
-    <svg width={width} height={height} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        {children}
-    </svg>
-  )
-}
-
-export default SVG
+export default SVG;
