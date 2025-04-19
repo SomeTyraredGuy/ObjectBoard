@@ -18,7 +18,7 @@ function ColorCircle({ color, onClick, selected }: Props) {
 			data-bs-toggle="tooltip"
 			data-bs-placement="top"
 			data-bs-title="Tooltip on top"
-			className={`border-foreground border-1 h-6 w-6 cursor-pointer rounded-full transition-none ${color === "transparent" && transparentClassName} ${
+			className={`border-foreground border-1 h-6 w-6 cursor-pointer rounded-full transition-none ${color === "transparent" ? transparentClassName : ""} ${
 				selected && "border-secondary shadow-[0_0_0_2px_black] !transition-shadow"
 			}`}
 			onClick={onClick}

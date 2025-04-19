@@ -18,7 +18,7 @@ function IconButton({ icon: Icon, onClick, label, isDisabled, isActive, side, cl
 			<Button
 				variant="outline"
 				size="icon"
-				className={`hover:bg-primary hover:text-secondary ${isActive && "bg-primary text-secondary"} ${className}`}
+				className={`hover:bg-primary hover:text-secondary ${isActive ? "bg-primary text-secondary" : ""} ${className}`}
 				onClick={onClick}
 				disabled={isDisabled}
 			>

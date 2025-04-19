@@ -40,7 +40,7 @@ function ColorPicker({ label, setColor, value }: Props) {
 				<div className="border-foreground/40 border-l-1 h-8"></div>
 
 				<div
-					className={`border-1 border-foreground h-6 w-6 rounded-full ${selected === colors.length && "border-secondary shadow-[0_0_0_2px_black] !transition-shadow"}`}
+					className={`border-1 border-foreground h-6 w-6 rounded-full ${selected === colors.length ? "border-secondary shadow-[0_0_0_2px_black] !transition-shadow" : ""}`}
 					style={{ backgroundColor: colorPickerValue }}
 				>
 					<input

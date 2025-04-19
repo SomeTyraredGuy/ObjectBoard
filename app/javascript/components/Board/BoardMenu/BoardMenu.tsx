@@ -25,7 +25,7 @@ function BoardMenu({ boardName, unsavedChanges, showSaving }: Props) {
 						</Hint>
 					</th>
 					<th
-						className={`flex-grow-1 border-standard bg-background w-48 content-center truncate border-s-0 p-2 text-center ${!showSaving && "rounded-r-2xl"}`}
+						className={`flex-grow-1 border-standard bg-background w-48 content-center truncate border-s-0 p-2 text-center ${showSaving ? "" : "rounded-r-2xl"}`}
 					>
 						{boardName}
 					</th>
