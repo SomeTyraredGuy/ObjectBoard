@@ -24,7 +24,6 @@ export default function UseCanvasContentQuery({ canvasStateUtils, setCanvasObjec
 			const response = await JSON.json();
 
 			if (!JSON.ok) {
-				console.log(response);
 				if (response.error) throw new Error(response.error);
 				throw new Error();
 			}
