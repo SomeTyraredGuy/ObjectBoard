@@ -1,17 +1,25 @@
-import React from "react";
-import CenterMenu from "../../../General/CenterMenu";
-import classes from "../../board.module.css";
-import TextInput from "../../../General/Inputs/TextInput/TextInput";
-import UseMemberMutation from "../../../../hooks/Board/Members/UseMemberMutation";
-import DefaultNotificationGroup from "../../../General/Notification/DefaultNotificationGroup.js";
+import React, { useState } from "react";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from "@/shadcn/components/ui/dialog";
+import { Button } from "@/shadcn/components/ui/button";
+import UseMemberMutation from "@/hooks/Board/Members/UseMemberMutation";
+import { Input } from "@/shadcn/components/ui/input";
+import useNotification from "@/hooks/useNotification";
 
 type Props = {
-	closeFn: () => void;
 	refetchFn: () => void;
+	closeFn: () => void;
+	open: boolean;
 };
 
-function AddMemberForm({ closeFn, refetchFn }: Props) {
-	const [name, setName] = React.useState("");
+function AddMemberForm({ refetchFn, closeFn, open }: Props) {
+	const [name, setName] = useState("");
 	const {
 		mutate: add,
 		error,
@@ -23,17 +31,38 @@ function AddMemberForm({ closeFn, refetchFn }: Props) {
 		method: "POST",
 	});
 
-	const buttons = [
-		{ name: "Close", onClick: closeFn },
-		{ name: "Add", onClick: () => add(name), disabled: name === "" },
-	];
+	useNotification({
+		isError,
+		error,
+		isSuccess,
+		successMessage: `${name} has been added!`,
+	});
 
 	return (
-		<CenterMenu closeFn={closeFn} buttons={buttons} className={`${classes.maxwidthSmall} align-items-center`}>
-			<h2 className="text-center m-3">Add new member</h2>
-			<TextInput name="Name" className="w-100" onChange={(event) => setName(event.target.value)} />
-			<DefaultNotificationGroup isError={isError} error={error} isSuccess={isSuccess} />
-		</CenterMenu>
+		<Dialog open={open}>
+			<DialogContent
+				closeFn={() => {
+					closeFn();
+					setName("");
+				}}
+			>
+				<DialogHeader>
+					<DialogTitle className="text-center text-2xl">Add new member</DialogTitle>
+					<DialogDescription></DialogDescription>
+				</DialogHeader>
+				<Input
+					type="text"
+					placeholder="New member nickname"
+					onChange={(event) => setName(event.target.value)}
+					className="justify-self-center-safe w-2/3"
+				/>
+				<DialogFooter className="!justify-center">
+					<Button className="w-26" onClick={() => add(name)} disabled={name === ""}>
+						Add
+					</Button>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
 	);
 }
 

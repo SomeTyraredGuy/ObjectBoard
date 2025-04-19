@@ -1,8 +1,7 @@
 import React from "react";
-import classes from "./toolBar.module.css";
 import { SelectSVG, UndoSVG, RedoSVG, TextSVG, RectangleSVG, CircleSVG, ArrowSVG } from "../../svg/ToolsSVG";
 import IconButton from "../../General/IconButton";
-import { CanvasMode, CanvasState, Side } from "../../../Types/Canvas";
+import { CanvasMode, CanvasState } from "../../../Types/Canvas";
 import { CanvasObjectType } from "../../../Types/CanvasObjects";
 import UseDefaultObjects from "../../../hooks/Board/Canvas/Objects/UseDefaultObjects";
 import { CanvasStateUtils } from "../../../Types/CanvasStateUtils";
@@ -35,7 +34,8 @@ function ToolBar({ canvasState, canvasStateUtils, undo, redo, canUndo, canRedo }
 			},
 			label: "Text",
 			isActive:
-				canvasState.mode === CanvasMode.Inserting && canvasState.startingProperties.type === CanvasObjectType.Text,
+				canvasState.mode === CanvasMode.Inserting &&
+				canvasState.startingProperties.type === CanvasObjectType.Text,
 		},
 		{
 			icon: RectangleSVG,
@@ -44,7 +44,8 @@ function ToolBar({ canvasState, canvasStateUtils, undo, redo, canUndo, canRedo }
 			},
 			label: "Rectangle",
 			isActive:
-				canvasState.mode === CanvasMode.Inserting && canvasState.startingProperties.type === CanvasObjectType.Rectangle,
+				canvasState.mode === CanvasMode.Inserting &&
+				canvasState.startingProperties.type === CanvasObjectType.Rectangle,
 		},
 		{
 			icon: CircleSVG,
@@ -53,7 +54,8 @@ function ToolBar({ canvasState, canvasStateUtils, undo, redo, canUndo, canRedo }
 			},
 			label: "Ellipse",
 			isActive:
-				canvasState.mode === CanvasMode.Inserting && canvasState.startingProperties.type === CanvasObjectType.Ellipse,
+				canvasState.mode === CanvasMode.Inserting &&
+				canvasState.startingProperties.type === CanvasObjectType.Ellipse,
 		},
 		{
 			icon: ArrowSVG,
@@ -62,7 +64,8 @@ function ToolBar({ canvasState, canvasStateUtils, undo, redo, canUndo, canRedo }
 			},
 			label: "Line",
 			isActive:
-				canvasState.mode === CanvasMode.Inserting && canvasState.startingProperties.type === CanvasObjectType.Line,
+				canvasState.mode === CanvasMode.Inserting &&
+				canvasState.startingProperties.type === CanvasObjectType.Line,
 		},
 	];
 
@@ -81,24 +84,26 @@ function ToolBar({ canvasState, canvasStateUtils, undo, redo, canUndo, canRedo }
 		},
 	];
 
+	const sectionClassName =
+		"bg-background border-standard my-2.5 flex w-14 flex-col items-center self-center rounded-r-2xl px-1 py-2";
+
 	return (
-		<div className={`${classes.wrapper}`} role="group" aria-label="Vertical radio toggle button group">
-			<div className={`${classes.section}`}>
+		<div className="fixed left-0 top-1/2 -translate-y-1/2">
+			<div className={sectionClassName}>
 				{switchButtons.map((button, i) => (
 					<IconButton
 						key={i}
 						icon={button.icon}
 						onClick={button.onClick}
 						label={button.label}
-						isDisabled={false}
 						isActive={button.isActive}
-						href={null}
-						side={Side.Right}
+						side="right"
+						className="my-1 h-10 w-10"
 					/>
 				))}
 			</div>
 
-			<div className={`${classes.section}`}>
+			<div className={sectionClassName}>
 				{actionButtons.map((button, i) => (
 					<IconButton
 						key={i}
@@ -106,9 +111,8 @@ function ToolBar({ canvasState, canvasStateUtils, undo, redo, canUndo, canRedo }
 						onClick={button.onClick}
 						label={button.label}
 						isDisabled={button.isDisabled}
-						isActive={null}
-						href={null}
-						side={Side.Right}
+						side="right"
+						className="my-1 h-10 w-10"
 					/>
 				))}
 			</div>

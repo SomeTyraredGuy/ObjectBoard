@@ -1,47 +1,25 @@
 import React from "react";
-import { useState } from "react";
-import classes from "../../board.module.css";
-import MemberSettings from "../MemberSettings";
 import { CurrentMember } from "../../../../Types/Member";
 
 type Props = {
 	currentMember: CurrentMember;
-	refetchCurrentMember: () => void;
+	toggleMemberMenu: (member: CurrentMember | null) => void;
 };
 
-function CurrentMemberButton({ currentMember, refetchCurrentMember }: Props) {
-	const [showMenu, setShowMenu] = useState(false);
-
-	function toggleMenu() {
-		setShowMenu(!showMenu);
-	}
-
+function CurrentMemberButton({ currentMember, toggleMemberMenu }: Props) {
 	return (
 		<div>
 			<button
-				onClick={toggleMenu}
-				className={`p-2 d-flex flex-row border-0 align-items-center w-100 ${classes.leftRounded} ${classes.buttonHover}`}
+				onClick={() => toggleMemberMenu(currentMember)}
+				className="flex w-full flex-row items-center rounded-l-2xl border-0 p-2"
 			>
-				<img
-					className="rounded-circle"
-					src={`${currentMember.avatar}`}
-					alt="Current user avatar"
-					style={{ width: "42px", height: "42px" }}
-				/>
-				<span className={`text-start mx-2 ${classes.ellipsis}`}>
-					<strong>{currentMember.name}</strong>
+				<img className="h-12 w-12 rounded-full" src={currentMember.avatar} alt="Current user avatar" />
+				<span className="mx-2 truncate text-start">
+					{currentMember.name}
 					<br />
 					Role: {currentMember.role.name}
 				</span>
 			</button>
-			{showMenu && (
-				<MemberSettings
-					currentMember={currentMember}
-					member={currentMember}
-					closeFn={toggleMenu}
-					refetchFn={refetchCurrentMember}
-				/>
-			)}
 		</div>
 	);
 }

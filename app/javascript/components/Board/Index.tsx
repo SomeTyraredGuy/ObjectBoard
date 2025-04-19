@@ -1,6 +1,5 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import MemberMenu from "./MemberMenu/MemberMenu.js";
-import Notification from "../General/Notification/Notification.jsx";
 import ToolBar from "./ToolBar/ToolBar.jsx";
 import BoardMenu from "./BoardMenu/BoardMenu.jsx";
 import ResourcesMenu from "./ResourcesMenu/ResourcesMenu.jsx";
@@ -11,9 +10,11 @@ import UseObjectsInteraction from "../../hooks/Board/Canvas/Objects/UseObjectsIn
 import UseStageScaleAndPosition from "../../hooks/Board/Canvas/UseStageScaleAndPosition.js";
 import UseHistory from "../../hooks/Board/UseHistory.js";
 import UseCanvasContentQuery from "../../hooks/Board/Canvas/UseCanvasContentQuery.js";
-import Loader from "../General/Loader/Loader.js";
+import Loader from "../General/Loader.js";
 import createCanvasStateUtils from "../../scripts/canvasStateUtils/createCanvasStateUtils.js";
 import UseCurrentMemberQuery from "../../hooks/Board/Members/UseCurrentMemberQuery.js";
+import { Toaster } from "@/shadcn/components/ui/sonner.js";
+import CriticalError from "../General/CriticalError.js";
 
 export type IndexProps = {
 	db: {
@@ -54,17 +55,19 @@ function Index({ db }: IndexProps) {
 		changeObjects,
 	});
 
-	const { canvasObjects, setCanvasObjects, canvasUseObjectsInteraction, resourcesProperties } = UseObjectsInteraction({
-		blocked: !currentMember?.role?.can_edit,
-		canvasState,
-		canvasStateUtils,
-		stageScale,
-		handleHistory: {
-			changeObjects,
-			historyHandleChanges,
-			removeAdditionalHistoryDelay,
+	const { canvasObjects, setCanvasObjects, canvasUseObjectsInteraction, resourcesProperties } = UseObjectsInteraction(
+		{
+			blocked: !currentMember?.role?.can_edit,
+			canvasState,
+			canvasStateUtils,
+			stageScale,
+			handleHistory: {
+				changeObjects,
+				historyHandleChanges,
+				removeAdditionalHistoryDelay,
+			},
 		},
-	});
+	);
 
 	const {
 		isLoading: contentIsLoading,
@@ -72,30 +75,35 @@ function Index({ db }: IndexProps) {
 		isError: isContentQueryError,
 	} = UseCanvasContentQuery({ canvasStateUtils, setCanvasObjects, isContentMutationError });
 
-	const notifications = [
-		{
-			trigger: isCurrentMemberError,
-			message: currentMemberError?.message,
-			title: "Error loading user",
-		},
-		{
-			trigger: isContentQueryError,
-			message: contentQueryError?.message,
-			title: "Error loading content",
-		},
-		{
-			trigger: isContentMutationError,
-			message: contentMutationError?.message,
-			title: "Error saving content",
-		},
-	];
+	const [criticalError, setCriticalError] = useState<null | {
+		message: string;
+		title: string;
+	}>(null);
+	useEffect(() => {
+		if (isCurrentMemberError) {
+			setCriticalError({
+				message: currentMemberError?.message,
+				title: "Error loading user",
+			});
+		} else if (isContentQueryError) {
+			setCriticalError({
+				message: contentQueryError?.message,
+				title: "Error loading content",
+			});
+		} else if (isContentMutationError) {
+			setCriticalError({
+				message: contentMutationError?.message,
+				title: "Error saving content",
+			});
+		}
+	}, [isCurrentMemberError, isContentQueryError, isContentMutationError]);
 
 	if (contentIsLoading || isMemberLoading || !currentMember) {
 		return <Loader />;
 	}
 
 	return (
-		<div data-theme="light">
+		<div>
 			<Canvas
 				objectsBlocked={!currentMember?.role?.can_edit}
 				canvasState={canvasState}
@@ -105,7 +113,11 @@ function Index({ db }: IndexProps) {
 				canvasStageScaleAndPosition={useStageScaleAndPosition}
 			/>
 
-			<BoardMenu showSaving={currentMember?.role?.can_edit} boardName={db.boardName} unsavedChanges={unsavedChanges} />
+			<BoardMenu
+				showSaving={currentMember?.role?.can_edit}
+				boardName={db.boardName}
+				unsavedChanges={unsavedChanges}
+			/>
 
 			{currentMember?.role?.can_edit && (
 				<>
@@ -127,16 +139,9 @@ function Index({ db }: IndexProps) {
 
 			<MemberMenu currentMember={currentMember} refetchCurrentMember={refetchCurrentMember} />
 
-			{notifications.map((notification, index) => (
-				<Notification
-					key={index}
-					trigger={notification.trigger}
-					title={notification.title}
-					message={notification.message}
-					type={"error"}
-					reloadPage={true}
-				/>
-			))}
+			<Toaster expand position="top-center" richColors theme="light" />
+
+			{criticalError && <CriticalError title={criticalError.title} message={criticalError.message} />}
 		</div>
 	);
 }

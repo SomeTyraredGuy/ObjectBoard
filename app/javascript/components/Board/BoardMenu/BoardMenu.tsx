@@ -1,10 +1,7 @@
 import React from "react";
-import classes from "../board.module.css";
-import generalClasses from "../../General/general.module.css";
-import IconButton from "../../General/IconButton";
 import { UndoSVG } from "../../svg/ToolsSVG";
-import { Side } from "../../../Types/Canvas";
 import SavingIcon from "../../General/SavingIcon";
+import Hint from "@/components/General/Hint/Hint";
 
 type Props = {
 	boardName: string;
@@ -14,22 +11,27 @@ type Props = {
 
 function BoardMenu({ boardName, unsavedChanges, showSaving }: Props) {
 	return (
-		<table className="m-2 position-fixed top-0 " style={{ width: "280px" }}>
+		<table className="w-2xs fixed top-0 m-2">
 			<tbody className="w-100">
-				<tr className="d-flex justify-content-end">
-					<th className={`${classes.leftBorder} ${classes.leftRounded} ${classes.background} p-2`}>
-						<IconButton icon={UndoSVG} label={"Exit board"} side={Side.Right} href="/boards" />
+				<tr className="flex h-16 justify-end">
+					<th className="bg-background hover:bg-primary border-standard flex items-center rounded-l-2xl !border-r-0 p-0">
+						<Hint
+							title="Exit board"
+							side="bottom"
+							href="/boards"
+							className="hover:text-secondary flex h-full w-12 items-center justify-center"
+						>
+							<UndoSVG className="h-6 w-6" />
+						</Hint>
 					</th>
 					<th
-						className={`flex-grow-1 p-2 text-center align-content-center border-start-0 
-						${classes.ellipsis} ${classes.background} ${classes.border}
-						${showSaving ? "" : classes.rightRounded}`}
+						className={`flex-grow-1 border-standard bg-background w-48 content-center truncate border-s-0 p-2 text-center ${!showSaving && "rounded-r-2xl"}`}
 					>
 						{boardName}
 					</th>
 					{showSaving && (
 						<th
-							className={`${classes.rightBorder} ${classes.rightRounded} ${classes.background} p-2 align-content-center ${generalClasses.hintWrapper}`}
+							className="border-standard bg-background content-center rounded-r-2xl !border-l-0 p-2"
 							role="status"
 						>
 							<SavingIcon unsavedChanges={unsavedChanges} />
