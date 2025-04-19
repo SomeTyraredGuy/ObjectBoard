@@ -1,6 +1,6 @@
 import React from "react";
 import CheckSVG from "../svg/CheckSVG";
-import classes from "./general.module.css";
+import Hint from "./Hint/Hint";
 
 type Props = {
 	unsavedChanges: boolean;
@@ -8,12 +8,13 @@ type Props = {
 
 function SavingIcon({ unsavedChanges }: Props) {
 	return (
-		<>
-			<div className={`${unsavedChanges && "spinner-border opacity-50"}`} style={{ width: "26px", height: "26px" }}>
-				<CheckSVG width={26} className={`${unsavedChanges && "visually-hidden"}`} />
-			</div>
-			<span className={`${classes.hint} ${classes.bottomHint}`}>{unsavedChanges ? "Saving" : "Changes saved"}</span>
-		</>
+		<Hint description={unsavedChanges ? "Saving..." : "Saved"} side="bottom">
+			{unsavedChanges ? (
+				<div className="border-t-primary h-8 w-8 animate-spin rounded-full border-4 border-gray-300"></div>
+			) : (
+				<CheckSVG className="size-8" />
+			)}
+		</Hint>
 	);
 }
 

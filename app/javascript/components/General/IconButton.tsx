@@ -1,6 +1,6 @@
 import React from "react";
-import classes from "./general.module.css";
-import { Side } from "../../Types/Canvas";
+import Hint from "./Hint/Hint";
+import { Button } from "@/shadcn/components/ui/button";
 
 type Props = {
 	icon: React.ElementType;
@@ -8,49 +8,23 @@ type Props = {
 	label?: string;
 	isDisabled?: boolean;
 	isActive?: boolean;
-	href?: string;
-	side: Side;
+	side: "top" | "bottom" | "left" | "right";
+	className?: string;
 };
 
-function IconButton({ icon: Icon, onClick, label, isDisabled, isActive, href, side }: Props) {
-	const button = onClick ? (
-		<button
-			onClick={onClick}
-			disabled={isDisabled}
-			className={`btn btn-outline-primary shadow-none p-2 ${isActive ? "active" : ""}`}
-		>
-			<Icon width="24" />
-		</button>
-	) : (
-		<a href={href} className={`btn btn-outline-primary shadow-none p-2 ${isActive ? "active" : ""}`}>
-			<Icon width="24" />
-		</a>
-	);
-
-	let sideClass;
-	switch (side) {
-		case Side.Top:
-			sideClass = classes.topHint;
-			break;
-
-		case Side.Bottom:
-			sideClass = classes.bottomHint;
-			break;
-
-		case Side.Left:
-			sideClass = classes.leftHint;
-			break;
-
-		case Side.Right:
-			sideClass = classes.rightHint;
-			break;
-	}
-
+function IconButton({ icon: Icon, onClick, label, isDisabled, isActive, side, className }: Props) {
 	return (
-		<div className={classes.hintWrapper}>
-			{button}
-			{label && <span className={`${classes.hint} ${sideClass}`}>{label}</span>}
-		</div>
+		<Hint side={side} title={label}>
+			<Button
+				variant="outline"
+				size="icon"
+				className={`hover:bg-primary hover:text-secondary ${isActive && "bg-primary text-secondary"} ${className}`}
+				onClick={onClick}
+				disabled={isDisabled}
+			>
+				<Icon className="size-3/5" />
+			</Button>
+		</Hint>
 	);
 }
 
