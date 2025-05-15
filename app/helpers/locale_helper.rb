@@ -18,6 +18,7 @@ module LocaleHelper
   end
 
   def link_to_locale(name, locale)
-    link_to name, "#{request.path}?#{request.query_parameters.merge(locale: locale).to_query}", class: "dropdown-item"
+    new_path = url_for(request.params.merge(locale: locale))
+    link_to name, new_path, class: "dropdown-item"
   end
 end

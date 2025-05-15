@@ -1,21 +1,22 @@
 Rails.application.routes.draw do
-  root "pages#home"
-  devise_for :user
-  get "pricing" => "pages#pricing"
+  scope "(:locale)", locale: /en|uk/ do
+    root "pages#home"
+    devise_for :user
+    get "pricing" => "pages#pricing"
 
-  resources :boards do
-    member do
-      scope constraints: { action: :show } do
-        get "member/current" => "members#current"
-        get "member/others" => "members#others"
-        patch "member/update_role/:member_id" => "members#update_role", as: "member_update_role"
-        post "member/add_to_board" => "members#add_to_board"
-        get "content/get" => "board_content#get", as: "content_get"
-        post "content/save" => "board_content#save", as: "content_save"
+    resources :boards do
+      member do
+        scope constraints: { action: :show } do
+          get "member/current" => "members#current"
+          get "member/others" => "members#others"
+          patch "member/update_role/:member_id" => "members#update_role", as: "member_update_role"
+          post "member/add_to_board" => "members#add_to_board"
+          get "content/get" => "board_content#get", as: "content_get"
+          post "content/save" => "board_content#save", as: "content_save"
+        end
       end
     end
   end
-
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
