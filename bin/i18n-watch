@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+root=`pwd`
+
+watchman watch-del "$root"
+watchman watch-project "$root"
+watchman trigger-del "$root" i18n
+
+watchman -j <<-JSON
+[
+  "trigger",
+  "$root",
+  {
+    "name": "i18n",
+    "expression": [
+      "anyof",
+      ["match", "config/locales/**/*.yml", "wholename"],
+      ["match", "config/i18n.yml", "wholename"]
+    ],
+    "command": ["i18n", "export"]
+  }
+]
+JSON
+
+# If you're running this through Foreman,
+# then uncomment the following lines:
+while true; do
+  sleep 1
+done

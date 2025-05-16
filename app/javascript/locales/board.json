@@ -1,0 +1,64 @@
+{
+  "en": {
+    "translation": {
+      "board": {
+        "board_menu": {
+          "exit": "Exit board",
+          "saved": "Saved",
+          "saving": "Saving..."
+        },
+        "resources_menu": {
+          "properties": {
+            "no_objects": "No object to be edited"
+          }
+        },
+        "toolbar": {
+          "ellipse": "Ellipse",
+          "line": "Line",
+          "rectangle": "Rectangle",
+          "redo": "Redo",
+          "select": "Select",
+          "text": "Text",
+          "undo": "Undo"
+        }
+      },
+      "common": {
+        "locales": {
+          "en": "English",
+          "uk": "Ukrainian"
+        }
+      }
+    }
+  },
+  "uk": {
+    "translation": {
+      "board": {
+        "board_menu": {
+          "exit": "Вийти з дошки",
+          "saved": "Збережено",
+          "saving": "Зберігається..."
+        },
+        "resources_menu": {
+          "properties": {
+            "no_objects": "Немає об'єктів для редагування"
+          }
+        },
+        "toolbar": {
+          "ellipse": "Еліпс",
+          "line": "Лінія",
+          "rectangle": "Прямокутник",
+          "redo": "Повторити",
+          "select": "Вибрати",
+          "text": "Текст",
+          "undo": "Скасувати"
+        }
+      },
+      "common": {
+        "locales": {
+          "en": "Англійська",
+          "uk": "Українська"
+        }
+      }
+    }
+  }
+}

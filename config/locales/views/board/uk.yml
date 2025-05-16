@@ -1,0 +1,21 @@
+uk:
+  translation:
+    board:
+      board_menu:
+        exit: "Вийти з дошки"
+        saving: "Зберігається..."
+        saved: "Збережено"
+
+      toolbar:
+        select: "Вибрати"
+        text: "Текст"
+        rectangle: "Прямокутник"
+        ellipse: "Еліпс"
+        line: "Лінія"
+
+        undo: "Скасувати"
+        redo: "Повторити"
+
+      resources_menu:
+        properties:
+          no_objects: Немає об'єктів для редагування

@@ -1,0 +1,26 @@
+---
+# translations:
+#   - file: app/javascript/locales/locales.json
+#     patterns:
+#       - "*"
+#       - "!*.activerecord.*"
+#       - "!*.errors.*"
+#       - "!*.number.nth"
+
+translations:
+  - file: app/javascript/locales/board.json
+    patterns:
+      - "*.translation.board.*"
+      - "*.translation.common.*"
+      - "!*.activerecord.*"
+      - "!*.errors.*"
+      - "!*.number.nth"
+
+translations:
+  - file: app/javascript/locales/boards/:locale.json
+    patterns:
+      - "*.translation.board.*"
+      - "*.translation.common.*"
+      - "!*.activerecord.*"
+      - "!*.errors.*"
+      - "!*.number.nth"

@@ -1,0 +1,33 @@
+{
+  "en": {
+    "translation": {
+      "board": {
+        "board_menu": {
+          "exit": "Exit board",
+          "saved": "Saved",
+          "saving": "Saving..."
+        },
+        "resources_menu": {
+          "properties": {
+            "no_objects": "No object to be edited"
+          }
+        },
+        "toolbar": {
+          "ellipse": "Ellipse",
+          "line": "Line",
+          "rectangle": "Rectangle",
+          "redo": "Redo",
+          "select": "Select",
+          "text": "Text",
+          "undo": "Undo"
+        }
+      },
+      "common": {
+        "locales": {
+          "en": "English",
+          "uk": "Ukrainian"
+        }
+      }
+    }
+  }
+}

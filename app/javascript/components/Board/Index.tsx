@@ -16,6 +16,8 @@ import UseCurrentMemberQuery from "../../hooks/Board/Members/UseCurrentMemberQue
 import { Toaster } from "@/shadcn/components/ui/sonner.js";
 import CriticalError from "../General/CriticalError.js";
 
+import "../General/I18n.js";
+
 export type IndexProps = {
 	db: {
 		boardName: string;

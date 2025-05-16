@@ -1,4 +1,6 @@
 uk:
-  locales:
-    en: "Англійська"
-    uk: "Українська"
+  translation:
+    common:
+      locales:
+        en: "Англійська"
+        uk: "Українська"

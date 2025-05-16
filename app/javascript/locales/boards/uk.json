@@ -1,0 +1,33 @@
+{
+  "uk": {
+    "translation": {
+      "board": {
+        "board_menu": {
+          "exit": "Вийти з дошки",
+          "saved": "Збережено",
+          "saving": "Зберігається..."
+        },
+        "resources_menu": {
+          "properties": {
+            "no_objects": "Немає об'єктів для редагування"
+          }
+        },
+        "toolbar": {
+          "ellipse": "Еліпс",
+          "line": "Лінія",
+          "rectangle": "Прямокутник",
+          "redo": "Повторити",
+          "select": "Вибрати",
+          "text": "Текст",
+          "undo": "Скасувати"
+        }
+      },
+      "common": {
+        "locales": {
+          "en": "Англійська",
+          "uk": "Українська"
+        }
+      }
+    }
+  }
+}

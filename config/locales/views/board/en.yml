@@ -1,0 +1,21 @@
+en:
+  translation:
+    board:
+      board_menu:
+        exit: "Exit board"
+        saving: "Saving..."
+        saved: "Saved"
+
+      toolbar:
+        select: "Select"
+        text: "Text"
+        rectangle: "Rectangle"
+        ellipse: "Ellipse"
+        line: "Line"
+
+        undo: "Undo"
+        redo: "Redo"
+
+      resources_menu:
+        properties:
+          no_objects: No object to be edited

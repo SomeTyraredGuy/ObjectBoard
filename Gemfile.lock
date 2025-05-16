@@ -127,6 +127,7 @@ GEM
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
+    glob (0.4.1)
     globalid (1.2.1)
       activesupport (>= 6.1)
     hotwire-livereload (1.4.1)
@@ -135,6 +136,9 @@ GEM
       railties (>= 6.0.0)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
+    i18n-js (4.2.3)
+      glob (>= 0.4.0)
+      i18n
     importmap-rails (2.1.0)
       actionpack (>= 6.0.0)
       activesupport (>= 6.0.0)
@@ -412,6 +416,7 @@ DEPENDENCIES
   devise
   fasterer (~> 0.11.0)
   hotwire-livereload (~> 1.4)
+  i18n-js (~> 4.2)
   importmap-rails
   jbuilder
   jsbundling-rails (~> 1.3)
