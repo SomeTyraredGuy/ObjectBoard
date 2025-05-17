@@ -10,7 +10,7 @@ class MembersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get current" do
-    get member_current_board_path @board
+    get member_current_board_path I18n.locale, @board
     assert_response :success
 
     current = response.parsed_body
@@ -18,7 +18,7 @@ class MembersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get others" do
-    get member_others_board_path @board
+    get member_others_board_path I18n.locale, @board
     assert_response :success
 
     current = response.parsed_body
@@ -27,7 +27,7 @@ class MembersControllerTest < ActionDispatch::IntegrationTest
 
   test "should update role" do
     role = roles(:Editor)
-    patch member_update_role_board_path(@board, members(:b1Viewer)), params: { value: {
+    patch member_update_role_board_path(I18n.locale, @board, members(:b1Viewer)), params: { value: {
       name: role.name,
       can_edit: role.can_edit,
       can_change_roles: role.can_change_roles,
@@ -40,7 +40,7 @@ class MembersControllerTest < ActionDispatch::IntegrationTest
 
   test "should add to board" do
     assert_difference("Member.count") do
-      post member_add_to_board_board_path(@board), params: { value: users(:NonMember).name }
+      post member_add_to_board_board_path(I18n.locale, @board), params: { value: users(:NonMember).name }
     end
 
     assert_response :success
@@ -48,7 +48,7 @@ class MembersControllerTest < ActionDispatch::IntegrationTest
 
   test "shouldn't add to board twice" do
     assert_no_difference("Member.count") do
-      post member_add_to_board_board_path(@board), params: { value: @user.name }
+      post member_add_to_board_board_path(I18n.locale, @board), params: { value: @user.name }
     end
   end
 end
