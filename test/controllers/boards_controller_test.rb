@@ -36,14 +36,14 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should show board" do
-    get board_url(@board)
+    get board_url(I18n.locale, @board)
     assert_response :success
   end
 
   class DestroyTest < BoardsControllerTest
     test "owner should destroy board" do
       assert_difference("Board.count", -1) do
-        delete board_url(@board)
+        delete board_url(I18n.locale, @board)
       end
 
       assert_redirected_to boards_url(locale: I18n.locale)
@@ -56,28 +56,28 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
 
       assert_cant_delete_board users(:AdminFull)
 
-      get board_url(@board)
+      get board_url(I18n.locale, @board)
       assert_response :success
     end
 
     test "editors can't destroy board" do
       assert_cant_delete_board users(:Editor)
 
-      get board_url(@board)
+      get board_url(I18n.locale, @board)
       assert_response :success
     end
 
     test "viewers can't destroy board" do
       assert_cant_delete_board users(:Viewer)
 
-      get board_url(@board)
+      get board_url(I18n.locale, @board)
       assert_response :success
     end
   end
 
   class EditTest < BoardsControllerTest
     test "should get edit" do
-      get edit_board_url(@board)
+      get edit_board_url(I18n.locale, @board)
       assert_response :success
     end
 
@@ -100,7 +100,7 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
 
   class UpdateTest < BoardsControllerTest
     test "should update board" do
-      patch board_url(@board), params: { board: { description: @board.description, name: @board.name } }
+      patch board_url(I18n.locale, @board), params: { board: { description: @board.description, name: @board.name } }
       assert_redirected_to board_url(@board, locale: I18n.locale)
     end
 
@@ -130,19 +130,19 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
     get new_board_url
     assert_redirected_to_login_page
 
-    get edit_board_url(@board)
+    get edit_board_url(I18n.locale, @board)
     assert_redirected_to_login_page
 
-    get board_url(@board)
+    get board_url(I18n.locale, @board)
     assert_redirected_to_login_page
 
     post boards_url, params: { board: { description: @board.description, name: @board.name } }
     assert_redirected_to_login_page
 
-    patch board_url(@board), params: { board: { description: @board.description, name: @board.name } }
+    patch board_url(I18n.locale, @board), params: { board: { description: @board.description, name: @board.name } }
     assert_redirected_to_login_page
 
-    delete board_url(@board)
+    delete board_url(I18n.locale, @board)
     assert_redirected_to_login_page
   end
 
@@ -151,19 +151,19 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
   def assert_cant_delete_board(user)
     sign_in user
     assert_no_difference("Board.count") do
-      delete board_url(@board)
+      delete board_url(I18n.locale, @board)
     end
   end
 
   def assert_cant_open_edit_board_page(user)
     sign_in user
-    get edit_board_url(@board)
+    get edit_board_url(I18n.locale, @board)
     assert_redirected_to root_url(locale: I18n.locale)
   end
 
   def assert_cant_update_board(user)
     sign_in user
-    patch board_url(@board), params: { board: { description: @board.name } }
+    patch board_url(I18n.locale, @board), params: { board: { description: @board.name } }
     assert_redirected_to root_url(locale: I18n.locale)
     assert_not_equal @board.name, @board.description
   end

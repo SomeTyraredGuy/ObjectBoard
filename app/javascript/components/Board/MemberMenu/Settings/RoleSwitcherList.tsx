@@ -5,6 +5,7 @@ import { Separator } from "@/shadcn/components/ui/separator";
 import { Switch } from "@/shadcn/components/ui/switch";
 import { fullRoleType } from "@/Types/Member";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
 	newRole: fullRoleType;
@@ -13,31 +14,32 @@ type Props = {
 };
 
 function RoleSwitcherList({ newRole, setNewRole, adminChangesIsDisabled }: Props) {
+	const { t } = useTranslation("translation", { keyPrefix: "board.members_menu.role.settings" });
 	const switchers = [
 		{
-			label: "Can Edit",
-			description: "Allows the user to edit the board.",
+			label: t("can_edit.label"),
+			description: t("can_edit.description"),
 			checked: newRole.can_edit,
 			setValue: (value: boolean) => setNewRole({ ...newRole, can_edit: value }),
 			disabled: true,
 		},
 		{
-			label: "Can ignore rules",
-			description: "Allows the user to ignore rules.",
+			label: t("can_ignore_rules.label"),
+			description: t("can_ignore_rules.description"),
 			checked: newRole.can_ignore_rules,
 			setValue: (value: boolean) => setNewRole({ ...newRole, can_ignore_rules: value }),
 			disabled: true,
 		},
 		{
-			label: "Can change roles",
-			description: "Allows the user to change general roles.",
+			label: t("can_change_roles.label"),
+			description: t("can_change_roles.description"),
 			checked: newRole.can_change_roles,
 			setValue: (value: boolean) => setNewRole({ ...newRole, can_change_roles: value }),
 			disabled: adminChangesIsDisabled,
 		},
 		{
-			label: "Can assign admin",
-			description: "Allows the user to assign admin roles.",
+			label: t("can_assign_admin.label"),
+			description: t("can_assign_admin.description"),
 			checked: newRole.can_assign_admin,
 			setValue: (value: boolean) => setNewRole({ ...newRole, can_assign_admin: value }),
 			disabled: adminChangesIsDisabled,

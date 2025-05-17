@@ -5,6 +5,8 @@ import { CanvasMode, CanvasState } from "../../../Types/Canvas";
 import { CanvasObjectType } from "../../../Types/CanvasObjects";
 import UseDefaultObjects from "../../../hooks/Board/Canvas/Objects/UseDefaultObjects";
 import { CanvasStateUtils } from "../../../Types/CanvasStateUtils";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "@/components/General/LanguageSwitcher";
 
 type Props = {
 	canvasState: CanvasState;
@@ -17,6 +19,7 @@ type Props = {
 
 function ToolBar({ canvasState, canvasStateUtils, undo, redo, canUndo, canRedo }: Props) {
 	const { defaultRectangle, defaultEllipse, defaultText, defaultLine } = UseDefaultObjects();
+	const { t } = useTranslation("translation", { keyPrefix: "board.toolbar" });
 
 	const switchButtons = [
 		{
@@ -24,7 +27,7 @@ function ToolBar({ canvasState, canvasStateUtils, undo, redo, canUndo, canRedo }
 			onClick: () => {
 				canvasStateUtils.None.set();
 			},
-			label: "Select",
+			label: t("select"),
 			isActive: canvasState.mode !== CanvasMode.Inserting,
 		},
 		{
@@ -32,7 +35,7 @@ function ToolBar({ canvasState, canvasStateUtils, undo, redo, canUndo, canRedo }
 			onClick: () => {
 				canvasStateUtils.Inserting.set(defaultText());
 			},
-			label: "Text",
+			label: t("text"),
 			isActive:
 				canvasState.mode === CanvasMode.Inserting &&
 				canvasState.startingProperties.type === CanvasObjectType.Text,
@@ -42,7 +45,7 @@ function ToolBar({ canvasState, canvasStateUtils, undo, redo, canUndo, canRedo }
 			onClick: () => {
 				canvasStateUtils.Inserting.set(defaultRectangle());
 			},
-			label: "Rectangle",
+			label: t("rectangle"),
 			isActive:
 				canvasState.mode === CanvasMode.Inserting &&
 				canvasState.startingProperties.type === CanvasObjectType.Rectangle,
@@ -52,7 +55,7 @@ function ToolBar({ canvasState, canvasStateUtils, undo, redo, canUndo, canRedo }
 			onClick: () => {
 				canvasStateUtils.Inserting.set(defaultEllipse());
 			},
-			label: "Ellipse",
+			label: t("ellipse"),
 			isActive:
 				canvasState.mode === CanvasMode.Inserting &&
 				canvasState.startingProperties.type === CanvasObjectType.Ellipse,
@@ -62,7 +65,7 @@ function ToolBar({ canvasState, canvasStateUtils, undo, redo, canUndo, canRedo }
 			onClick: () => {
 				canvasStateUtils.Inserting.set(defaultLine());
 			},
-			label: "Line",
+			label: t("line"),
 			isActive:
 				canvasState.mode === CanvasMode.Inserting &&
 				canvasState.startingProperties.type === CanvasObjectType.Line,
@@ -73,13 +76,13 @@ function ToolBar({ canvasState, canvasStateUtils, undo, redo, canUndo, canRedo }
 		{
 			icon: UndoSVG,
 			onClick: undo,
-			label: "Undo",
+			label: t("undo"),
 			isDisabled: !canUndo,
 		},
 		{
 			icon: RedoSVG,
 			onClick: redo,
-			label: "Redo",
+			label: t("redo"),
 			isDisabled: !canRedo,
 		},
 	];
@@ -115,6 +118,10 @@ function ToolBar({ canvasState, canvasStateUtils, undo, redo, canUndo, canRedo }
 						className="my-1 h-10 w-10"
 					/>
 				))}
+			</div>
+
+			<div className={sectionClassName}>
+				<LanguageSwitcher side="right" className="my-1 h-10 w-10" />
 			</div>
 		</div>
 	);

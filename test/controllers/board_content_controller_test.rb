@@ -12,7 +12,7 @@ class BoardContentControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get all content in board" do
-    get content_get_board_path @board
+    get content_get_board_path I18n.locale, @board
 
     resp = response.parsed_body
     assert_response :success
@@ -23,7 +23,7 @@ class BoardContentControllerTest < ActionDispatch::IntegrationTest
     setup_new_rectangle
 
     assert_difference("CanvasObject.count") do
-      post content_save_board_path(@board), params: {
+      post content_save_board_path(I18n.locale, @board), params: {
         record: {
           create: [
             @new_rectangle
@@ -40,7 +40,7 @@ class BoardContentControllerTest < ActionDispatch::IntegrationTest
   test "should respond with assigned indexes to new objects" do
     setup_new_rectangle
 
-    post content_save_board_path(@board), params: {
+    post content_save_board_path(I18n.locale, @board), params: {
       record: {
         create: [
           @new_rectangle
@@ -60,7 +60,7 @@ class BoardContentControllerTest < ActionDispatch::IntegrationTest
 
   test "should delete object" do
     assert_difference("CanvasObject.count", -1) do
-      post content_save_board_path(@board), params: {
+      post content_save_board_path(I18n.locale, @board), params: {
         record: {
           create: [],
           delete: [
@@ -75,7 +75,7 @@ class BoardContentControllerTest < ActionDispatch::IntegrationTest
   test "should update object" do
     new_width = @rectangle.width * 2
 
-    post content_save_board_path(@board), params: {
+    post content_save_board_path(I18n.locale, @board), params: {
       record: {
         create: [],
         delete: [],

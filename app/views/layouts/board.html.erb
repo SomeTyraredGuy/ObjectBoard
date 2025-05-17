@@ -6,8 +6,13 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="url-with-path" content="<%= request.base_url + request.path %>">
+    <meta name="locale" content="<%= I18n.locale %>">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <script type="text/javascript">
+      window.frontendTranslations = <%= raw frontend_translations_json(controller_name) %>;
+      window.currentLocale = "<%= I18n.locale %>";
+    </script>
 
     <%= yield :head %>
 

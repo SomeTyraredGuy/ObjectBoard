@@ -79,3 +79,7 @@ gem "fasterer", "~> 0.11.0", require: false
 gem "tailwindcss-ruby", "~> 4.1"
 
 gem "tailwindcss-rails", "~> 4.2"
+
+gem "rack-contrib", "~> 2.5"
+
+gem "i18n-js", "~> 4.2"

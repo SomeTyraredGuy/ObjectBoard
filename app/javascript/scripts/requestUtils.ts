@@ -1,11 +1,11 @@
+import getMeta from "./getMeta";
+
 function getCSRFToken() {
-	const metaTag = document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement | null;
-	return metaTag ? metaTag.content : null;
-};
+	return getMeta("csrf-token");
+}
 
 function getBaseURL() {
-	const metaTag = document.querySelector('meta[name="url-with-path"]') as HTMLMetaElement | null;
-	return metaTag ? metaTag.content : null;
-};
+	return getMeta("url-with-path");
+}
 
-export { getCSRFToken, getBaseURL }
+export { getCSRFToken, getBaseURL };

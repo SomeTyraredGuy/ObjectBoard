@@ -1,4 +1,18 @@
 uk:
-  locales:
-    en: "Англійська"
-    uk: "Українська"
+  translation:
+    common:
+      locales:
+        en: Англійська
+        uk: Українська
+
+      actions:
+        label: Дії
+        save: Зберегти
+        delete: Видалити
+        add: Додати
+
+      notification:
+        error: Помилка!
+        success: Успіх!
+
+      loading: Завантаження...

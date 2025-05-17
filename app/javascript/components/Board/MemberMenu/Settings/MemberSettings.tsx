@@ -13,6 +13,7 @@ import UseMemberMutation from "@/hooks/Board/Members/UseMemberMutation";
 import SelectRole from "./SelectRole";
 import RoleSwitcherList from "./RoleSwitcherList";
 import useNotification from "@/hooks/useNotification";
+import { useTranslation } from "react-i18next";
 
 const roleDefaults = [
 	{ name: "Admin", can_edit: true, can_change_roles: true, can_assign_admin: false, can_ignore_rules: true },
@@ -28,6 +29,7 @@ type Props = {
 };
 
 function MemberSettings({ currentMember, member, refetchFn, closeFn }: Props) {
+	const { t } = useTranslation();
 	const [newRole, setNewRole] = React.useState<fullRoleType>(member.role as fullRoleType);
 	const {
 		mutate: save,
@@ -44,7 +46,7 @@ function MemberSettings({ currentMember, member, refetchFn, closeFn }: Props) {
 		isError,
 		error,
 		isSuccess,
-		successMessage: `${member.name}'s role has been updated!`,
+		successMessage: t("board.members_menu.role.settings.success_message", { nickname: member.name }),
 	});
 
 	function setNewRoleByName(newName) {
@@ -68,7 +70,7 @@ function MemberSettings({ currentMember, member, refetchFn, closeFn }: Props) {
 			<DialogContent closeFn={closeFn}>
 				<DialogHeader>
 					<DialogTitle className="text-center text-2xl">{member.name}</DialogTitle>
-					<DialogDescription>{`Change ${member.name}'s role`}</DialogDescription>
+					<DialogDescription>{t("board.members_menu.role.settings.label")}</DialogDescription>
 				</DialogHeader>
 
 				<SelectRole
@@ -86,7 +88,7 @@ function MemberSettings({ currentMember, member, refetchFn, closeFn }: Props) {
 
 				<DialogFooter className="!justify-center">
 					<Button className="w-26" onClick={() => save(newRole)} disabled={changesIsDisabled()}>
-						Save
+						{t("common.actions.save")}
 					</Button>
 				</DialogFooter>
 			</DialogContent>

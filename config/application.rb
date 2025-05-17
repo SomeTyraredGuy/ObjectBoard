@@ -25,6 +25,9 @@ module ObjectBoard
     # config.eager_load_paths << Rails.root.join("extras")
     
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
-    I18n.available_locales = %i[en uk]
+    config.i18n.available_locales = %i[en uk]
+    config.i18n.default_locale = :en
+
+    config.middleware.use Rack::Locale
   end
 end

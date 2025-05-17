@@ -30,10 +30,12 @@
         }
     ],
     "cSpell.words": [
+        "activerecord",
         "hotwired",
         "importmap",
         "Konva",
         "shadcn",
+        "sonner",
         "stylesheet",
         "XYWH"
     ],
