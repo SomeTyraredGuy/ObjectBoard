@@ -12,6 +12,7 @@ import MemberListItem from "./MemberListItem";
 import { ScrollArea } from "@/shadcn/components/ui/scroll-area";
 import { CurrentMember, OtherMember } from "@/Types/Member";
 import AddMemberButton from "./AddMemberButton";
+import { useTranslation } from "react-i18next";
 
 type Props = {
 	currentMember: CurrentMember;
@@ -21,6 +22,7 @@ type Props = {
 };
 
 function OtherMembersDropdown({ currentMember, otherMembers, toggleMemberMenu, toggleAddMemberMenu }: Props) {
+	const { t } = useTranslation("translation", { keyPrefix: "board.members_menu.other" });
 	if (otherMembers.length === 0)
 		return <AddMemberButton toggleAddMemberMenu={toggleAddMemberMenu} className="h-full" />;
 
@@ -32,7 +34,7 @@ function OtherMembersDropdown({ currentMember, otherMembers, toggleMemberMenu, t
 				)}
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-sm bg-background">
-				<DropdownMenuLabel className="text-center text-lg">Other members</DropdownMenuLabel>
+				<DropdownMenuLabel className="text-center text-lg">{t("label")}</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<ScrollArea>
 					<div className="max-h-120 w-full pr-2">

@@ -11,6 +11,7 @@ import { Button } from "@/shadcn/components/ui/button";
 import UseMemberMutation from "@/hooks/Board/Members/UseMemberMutation";
 import { Input } from "@/shadcn/components/ui/input";
 import useNotification from "@/hooks/useNotification";
+import { useTranslation } from "react-i18next";
 
 type Props = {
 	refetchFn: () => void;
@@ -19,6 +20,7 @@ type Props = {
 };
 
 function AddMemberForm({ refetchFn, closeFn, open }: Props) {
+	const { t } = useTranslation();
 	const [name, setName] = useState("");
 	const {
 		mutate: add,
@@ -35,7 +37,7 @@ function AddMemberForm({ refetchFn, closeFn, open }: Props) {
 		isError,
 		error,
 		isSuccess,
-		successMessage: `${name} has been added!`,
+		successMessage: t("board.members_menu.add.success_message", { nickname: name }),
 	});
 
 	return (
@@ -47,18 +49,18 @@ function AddMemberForm({ refetchFn, closeFn, open }: Props) {
 				}}
 			>
 				<DialogHeader>
-					<DialogTitle className="text-center text-2xl">Add new member</DialogTitle>
+					<DialogTitle className="text-center text-2xl">{t("board.members_menu.add.label")}</DialogTitle>
 					<DialogDescription></DialogDescription>
 				</DialogHeader>
 				<Input
 					type="text"
-					placeholder="New member nickname"
+					placeholder={t("board.members_menu.add.placeholder")}
 					onChange={(event) => setName(event.target.value)}
 					className="justify-self-center-safe w-2/3"
 				/>
 				<DialogFooter className="!justify-center">
 					<Button className="w-26" onClick={() => add(name)} disabled={name === ""}>
-						Add
+						{t("common.actions.add")}
 					</Button>
 				</DialogFooter>
 			</DialogContent>

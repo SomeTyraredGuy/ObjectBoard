@@ -1,5 +1,6 @@
 import React from "react";
 import { CurrentMember } from "../../../../Types/Member";
+import { useTranslation } from "react-i18next";
 
 type Props = {
 	currentMember: CurrentMember;
@@ -7,6 +8,7 @@ type Props = {
 };
 
 function CurrentMemberButton({ currentMember, toggleMemberMenu }: Props) {
+	const { t } = useTranslation("translation", { keyPrefix: "board.members_menu.role" });
 	return (
 		<div>
 			<button
@@ -17,7 +19,8 @@ function CurrentMemberButton({ currentMember, toggleMemberMenu }: Props) {
 				<span className="mx-2 truncate text-start">
 					{currentMember.name}
 					<br />
-					Role: {currentMember.role.name}
+					{t("label")}
+					{t(currentMember.role.name)}
 				</span>
 			</button>
 		</div>
