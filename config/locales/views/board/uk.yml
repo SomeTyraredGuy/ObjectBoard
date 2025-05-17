@@ -2,20 +2,70 @@ uk:
   translation:
     board:
       board_menu:
-        exit: "Вийти з дошки"
-        saving: "Зберігається..."
-        saved: "Збережено"
+        exit: Вийти з дошки
+        saving: Зберігається...
+        saved: Збережено
 
       toolbar:
-        select: "Вибрати"
-        text: "Текст"
-        rectangle: "Прямокутник"
-        ellipse: "Еліпс"
-        line: "Лінія"
+        select: Вибрати
+        text: Текст
+        rectangle: Прямокутник
+        ellipse: Еліпс
+        line: Лінія
 
-        undo: "Скасувати"
-        redo: "Повторити"
+        undo: Скасувати
+        redo: Повторити
 
       resources_menu:
+        states:
+          properties: Властивості
+          groups: Групи
+
         properties:
+          label: Властивості
           no_objects: Немає об'єктів для редагування
+          fill_color: Колір заливки
+          stroke_color: Колір обведення
+          stroke_width: Ширина обведення
+          opacity: Непрозорість
+          corner_radius: Радіус закруглення
+
+      members_menu:
+        other:
+          label: Інші учасники
+
+        add:
+          label: Додати нового учасника
+          placeholder: Нікнейм нового учасника
+          success_message: "{{nickname}} успішно додано"
+
+        role:
+          label: "Роль: "
+          Owner: Власник
+          Admin: Адмін
+          Editor: Редактор
+          Viewer: Глядач
+          settings:
+            label: Змінити роль
+            can_edit:
+              label: Може редагувати
+              description: Дозволяє користувачу редагувати дошку
+            can_ignore_rules:
+              label: Може ігнорувати правила
+              description: Дозволяє користувачу ігнорувати правила
+            can_change_roles:
+              label: Може змінювати ролі
+              description: Дозволяє користувачу змінювати загальні ролі
+            can_assign_admin:
+              label: Може призначати адміністратора
+              description: Дозволяє користувачу призначати та змінювати ролі адміністратора
+            success_message: "Роль {{nickname}} успішно змінено"
+
+      critical_error:
+        title: Критична помилка!
+        when:
+          loading_content: Під час завантаження вмісту дошки
+          loading_user: Під час завантаження поточного користувача
+          saving_content: Під час збереження вмісту дошки
+        message: "Опис: {{message}}"
+        reload_message: Сторінка буде перезавантажена через 10 секунд. Якщо це не відбувається, будь ласка, оновіть сторінку вручну

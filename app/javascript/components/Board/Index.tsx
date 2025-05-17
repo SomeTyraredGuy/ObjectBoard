@@ -15,8 +15,8 @@ import createCanvasStateUtils from "../../scripts/canvasStateUtils/createCanvasS
 import UseCurrentMemberQuery from "../../hooks/Board/Members/UseCurrentMemberQuery.js";
 import { Toaster } from "@/shadcn/components/ui/sonner.js";
 import CriticalError from "../General/CriticalError.js";
-
-import "../General/I18n.js";
+import "../../scripts/I18n.js";
+import { useTranslation } from "react-i18next";
 
 export type IndexProps = {
 	db: {

@@ -2,20 +2,69 @@ en:
   translation:
     board:
       board_menu:
-        exit: "Exit board"
-        saving: "Saving..."
-        saved: "Saved"
+        exit: Exit board
+        saving: Saving...
+        saved: Saved
 
       toolbar:
-        select: "Select"
-        text: "Text"
-        rectangle: "Rectangle"
-        ellipse: "Ellipse"
-        line: "Line"
+        select: Select
+        text: Text
+        rectangle: Rectangle
+        ellipse: Ellipse
+        line: Line
 
-        undo: "Undo"
-        redo: "Redo"
+        undo: Undo
+        redo: Redo
 
       resources_menu:
+        states:
+          properties: Properties
+          groups: Groups
+
         properties:
           no_objects: No object to be edited
+          fill_color: Fill color
+          stroke_color: Stroke color
+          stroke_width: Stroke width
+          opacity: Opacity
+          corner_radius: Corner radius
+
+      members_menu:
+        other:
+          label: Other members
+
+        add:
+          label: Add new member
+          placeholder: New member nickname
+          success_message: "{{nickname}} added successfully"
+
+        role:
+          label: "Role: "
+          Owner: Owner
+          Admin: Admin
+          Editor: Editor
+          Viewer: Viewer
+          settings:
+            label: Change role
+            can_edit:
+              label: Can edit
+              description: Allows the user to edit the board
+            can_ignore_rules:
+              label: Can ignore rules
+              description: Allows the user to ignore rules
+            can_change_roles:
+              label: Can change roles
+              description: Allows the user to change general roles
+            can_assign_admin:
+              label: Can assign admin
+              description: Allows the user to assign and change admin roles
+            success_message: "{{nickname}} role changed successfully"
+
+      critical_error:
+        title: Critical Error!
+        when:
+          loading_content: While loading board content
+          loading_user: While loading current user
+          saving_content: While saving board content
+        message: "Description: {{message}}"
+        reload_message: The page will be reloaded in a 10 seconds. If it doesn't, please refresh the page manually

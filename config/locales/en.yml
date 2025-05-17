@@ -2,5 +2,17 @@ en:
   translation:
     common:
       locales:
-        en: "English"
-        uk: "Ukrainian"
+        en: English
+        uk: Ukrainian
+
+      actions:
+        label: Actions
+        save: Save
+        delete: Delete
+        add: Add
+
+      notification:
+        error: Error!
+        success: Success!
+
+      loading: Loading...
