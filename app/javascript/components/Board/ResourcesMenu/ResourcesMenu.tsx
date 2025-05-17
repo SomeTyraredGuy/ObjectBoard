@@ -5,6 +5,7 @@ import ObjectsProperties from "./Properties/ObjectsProperties";
 import ObjectsGroups from "./ObjectsGroups";
 import { CanvasState } from "../../../Types/Canvas";
 import { CanvasStateUtils } from "../../../Types/CanvasStateUtils";
+import { useTranslation } from "react-i18next";
 
 enum State {
 	Properties = "Properties",
@@ -19,18 +20,19 @@ type Props = {
 
 function ResourcesMenu({ canvasState, canvasStateUtils, resourcesProperties }: Props) {
 	const [state, setState] = useState(State.Properties);
+	const { t } = useTranslation("translation", { keyPrefix: "board.resources_menu.states" });
 
 	const stateButtons = [
 		{
 			icon: PaletteSVG,
 			onClick: () => setState(State.Properties),
-			label: "Properties",
+			label: t("properties"),
 			isActive: state === State.Properties,
 		},
 		{
 			icon: FolderSVG,
 			onClick: () => setState(State.Groups),
-			label: "Groups",
+			label: t("groups"),
 			isActive: state === State.Groups,
 		},
 	];

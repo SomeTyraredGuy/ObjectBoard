@@ -7,6 +7,7 @@ import { CanvasObject, CanvasObjectType, numOfObjectTypes } from "../../../../Ty
 import Slider from "./Slider";
 import { CanvasStateUtils } from "../../../../Types/CanvasStateUtils";
 import Actions from "./Actions";
+import { useTranslation } from "react-i18next";
 
 function getDefaultProperties(canvasState: CanvasState): Partial<CanvasObject> {
 	if (canvasState.mode === CanvasMode.Inserting) {
@@ -44,11 +45,13 @@ type Props = {
 };
 
 function ObjectsProperties({ canvasState, canvasStateUtils, resourcesProperties }: Props) {
+	const { t } = useTranslation("translation", { keyPrefix: "board.resources_menu.properties" });
+
 	if (canvasState.mode !== CanvasMode.Selected && canvasState.mode !== CanvasMode.Inserting)
 		return (
 			<div className="flex h-full flex-col items-center justify-center p-5">
 				<PaletteSVG className="w-5/6" />
-				<p className="p-2 text-center text-2xl">No object to be edit</p>
+				<p className="p-2 text-center text-2xl">{t("no_objects")}</p>
 			</div>
 		);
 
@@ -72,19 +75,19 @@ function ObjectsProperties({ canvasState, canvasStateUtils, resourcesProperties 
 
 	const colorPickers = [
 		"fill" in defaultProperties && {
-			label: "Fill color:",
+			label: t("fill_color"),
 			value: defaultProperties.fill,
 			setColor: setProperty("fill"),
 		},
 		"stroke" in defaultProperties && {
-			label: "Stroke color:",
+			label: t("stroke_color"),
 			value: defaultProperties.stroke,
 			setColor: setProperty("stroke"),
 		},
 	];
 	const sliders = [
 		"strokeWidth" in defaultProperties && {
-			label: "Stroke Width:",
+			label: t("stroke_width"),
 			value: defaultProperties.strokeWidth,
 			min: 0,
 			max: 50,
@@ -94,7 +97,7 @@ function ObjectsProperties({ canvasState, canvasStateUtils, resourcesProperties 
 			onChange: setProperty("strokeWidth"),
 		},
 		"opacity" in defaultProperties && {
-			label: "Opacity:",
+			label: t("opacity"),
 			value: defaultProperties.opacity,
 			min: 0.1,
 			max: 1,
@@ -104,7 +107,7 @@ function ObjectsProperties({ canvasState, canvasStateUtils, resourcesProperties 
 			onChange: setProperty("opacity"),
 		},
 		"cornerRadius" in defaultProperties && {
-			label: "Corner Radius:",
+			label: t("corner_radius"),
 			value: defaultProperties.cornerRadius,
 			min: 0,
 			max: 0.5,
