@@ -1,13 +1,15 @@
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/shadcn/components/ui/dialog";
 import { Separator } from "@/shadcn/components/ui/separator";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
-	title: string;
+	when: string;
 	message: string;
 };
 
-function CriticalError({ title, message }: Props) {
+function CriticalError({ when, message }: Props) {
+	const { t } = useTranslation("translation", { keyPrefix: "board.critical_error" });
 	setTimeout(() => {
 		window.location.reload();
 	}, 10000);
@@ -16,14 +18,13 @@ function CriticalError({ title, message }: Props) {
 		<Dialog open={true}>
 			<DialogContent showXButton={false}>
 				<DialogTitle className="text-destructive text-center text-2xl font-bold">
-					Critical Error: {title}
+					{t("title")}
+					<p className="text-lg font-medium opacity-65">{when}</p>
 				</DialogTitle>
 				<DialogDescription className="mt-2 text-center text-sm">
-					<p className="mb-4 text-lg font-medium">Description: {message}</p>
+					<p className="mb-4 text-lg font-medium">{t("message", { message })}</p>
 					<Separator />
-					<p className="text-muted-foreground text-sm">
-						The page will be reloaded in a 10 seconds. If it doesn&apos;t, please refresh the page manually.
-					</p>
+					<p className="text-muted-foreground text-sm">{t("reload_message")}</p>
 				</DialogDescription>
 			</DialogContent>
 		</Dialog>

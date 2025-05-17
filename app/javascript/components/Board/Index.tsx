@@ -25,6 +25,7 @@ export type IndexProps = {
 };
 
 function Index({ db }: IndexProps) {
+	const { t } = useTranslation();
 	const [canvasState, setCanvasState] = useState<CanvasState>({
 		mode: CanvasMode.None,
 	});
@@ -79,23 +80,23 @@ function Index({ db }: IndexProps) {
 
 	const [criticalError, setCriticalError] = useState<null | {
 		message: string;
-		title: string;
+		when: string;
 	}>(null);
 	useEffect(() => {
 		if (isCurrentMemberError) {
 			setCriticalError({
 				message: currentMemberError?.message,
-				title: "Error loading user",
+				when: t("board.critical_error.when.loading_member"),
 			});
 		} else if (isContentQueryError) {
 			setCriticalError({
 				message: contentQueryError?.message,
-				title: "Error loading content",
+				when: t("board.critical_error.when.loading_content"),
 			});
 		} else if (isContentMutationError) {
 			setCriticalError({
 				message: contentMutationError?.message,
-				title: "Error saving content",
+				when: t("board.critical_error.when.saving_content"),
 			});
 		}
 	}, [isCurrentMemberError, isContentQueryError, isContentMutationError]);
@@ -143,7 +144,7 @@ function Index({ db }: IndexProps) {
 
 			<Toaster expand position="top-center" richColors theme="light" />
 
-			{criticalError && <CriticalError title={criticalError.title} message={criticalError.message} />}
+			{criticalError && <CriticalError when={criticalError.when} message={criticalError.message} />}
 		</div>
 	);
 }
