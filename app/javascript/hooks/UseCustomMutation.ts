@@ -1,4 +1,4 @@
-import { getCSRFToken, getBaseURL } from "../../../scripts/requestUtils.js";
+import { getCSRFToken, getBaseURL } from "../scripts/requestUtils.js";
 import { useMutation } from "@tanstack/react-query";
 
 type Props = {
@@ -7,10 +7,10 @@ type Props = {
 	method: string;
 };
 
-export default function UseMemberMutation({ path, refetchFn, method }: Props) {
+export default function UseCustomMutation({ path, refetchFn, method }: Props) {
 	const { mutate, error, isError, isSuccess } = useMutation({
 		mutationFn: async (value: unknown) => {
-			const response = await fetch(`${getBaseURL()}/member/${path}`, {
+			const response = await fetch(getBaseURL() + path, {
 				method: method,
 				headers: {
 					"Content-Type": "application/json",

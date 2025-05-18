@@ -8,7 +8,7 @@ import {
 	DialogTitle,
 } from "@/shadcn/components/ui/dialog";
 import { Button } from "@/shadcn/components/ui/button";
-import UseMemberMutation from "@/hooks/Board/Members/UseMemberMutation";
+import UseCustomMutation from "@/hooks/UseCustomMutation";
 import { Input } from "@/shadcn/components/ui/input";
 import useNotification from "@/hooks/useNotification";
 import { useTranslation } from "react-i18next";
@@ -27,8 +27,8 @@ function AddMemberForm({ refetchFn, closeFn, open }: Props) {
 		error,
 		isError,
 		isSuccess,
-	} = UseMemberMutation({
-		path: "add_to_board",
+	} = UseCustomMutation({
+		path: "/member/add_to_board",
 		refetchFn: refetchFn,
 		method: "POST",
 	});

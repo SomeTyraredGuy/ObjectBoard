@@ -5,6 +5,10 @@ en:
         exit: Exit board
         saving: Saving...
         saved: Saved
+        description_label: "Description:"
+        name_placeholder: "Board must have a name"
+        description_placeholder: "Add some description..."
+        edit_success_message: "Board updated successfully"
 
       toolbar:
         select: Select
@@ -66,5 +70,6 @@ en:
           loading_content: While loading board content
           loading_user: While loading current user
           saving_content: While saving board content
+          loading_board: While loading board
         message: "Description: {{message}}"
         reload_message: The page will be reloaded in a 10 seconds. If it doesn't, please refresh the page manually

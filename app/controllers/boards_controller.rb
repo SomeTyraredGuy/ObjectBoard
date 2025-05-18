@@ -6,14 +6,17 @@ class BoardsController < ApplicationController
     @boards = policy_scope(Board)
   end
 
+  def get
+    board = {
+      name: @board.name,
+      description: @board.description
+    }
+    render json: board
+  end
+
   # GET /boards/new
   def new
     @board = Board.new
-  end
-
-  # GET /boards/1/edit
-  def edit
-    authorize @board
   end
 
   # POST /boards or /boards.json
@@ -32,11 +35,6 @@ class BoardsController < ApplicationController
     authorize @board
 
     update_board!
-
-    respond_to do |format|
-      format.html { redirect_to @board, notice: "Board was successfully updated." }
-      format.json { render :show, status: :ok, location: @board }
-    end
   end
 
   # DELETE /boards/1 or /boards/1.json
@@ -54,7 +52,7 @@ class BoardsController < ApplicationController
   private
 
   def board_params
-    params.expect(board: %i[name description])
+    params.expect(value: %i[name description])
   end
 
   def create_owner

@@ -10,6 +10,7 @@ en:
         save: Save
         delete: Delete
         add: Add
+        reset: Reset
 
       notification:
         error: Error!

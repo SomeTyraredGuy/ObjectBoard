@@ -9,7 +9,7 @@ import {
 } from "@/shadcn/components/ui/dialog";
 import { CurrentMember, fullRoleType, OtherMember } from "@/Types/Member";
 import { Button } from "@/shadcn/components/ui/button";
-import UseMemberMutation from "@/hooks/Board/Members/UseMemberMutation";
+import UseCustomMutation from "@/hooks/UseCustomMutation";
 import SelectRole from "./SelectRole";
 import RoleSwitcherList from "./RoleSwitcherList";
 import useNotification from "@/hooks/useNotification";
@@ -36,8 +36,8 @@ function MemberSettings({ currentMember, member, refetchFn, closeFn }: Props) {
 		error,
 		isError,
 		isSuccess,
-	} = UseMemberMutation({
-		path: `update_role/${member.member_id}`,
+	} = UseCustomMutation({
+		path: `/member/update_role/${member.member_id}`,
 		refetchFn: refetchFn,
 		method: "PATCH",
 	});

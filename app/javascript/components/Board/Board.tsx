@@ -16,8 +16,17 @@ import UseCurrentMemberQuery from "../../hooks/Board/Members/UseCurrentMemberQue
 import { Toaster } from "@/shadcn/components/ui/sonner.js";
 import CriticalError from "../General/CriticalError.js";
 import { useTranslation } from "react-i18next";
+import UseBoardQuery from "@/hooks/Board/Board/UseBoardQuery.js";
 
 function Board() {
+	const {
+		board,
+		refetch: refetchBoard,
+		isLoading: isBoardLoading,
+		error: boardError,
+		isError: isBoardError,
+	} = UseBoardQuery();
+
 	const { t } = useTranslation();
 	const [canvasState, setCanvasState] = useState<CanvasState>({
 		mode: CanvasMode.None,
@@ -91,10 +100,15 @@ function Board() {
 				message: contentMutationError?.message,
 				when: t("board.critical_error.when.saving_content"),
 			});
+		} else if (isBoardError) {
+			setCriticalError({
+				message: boardError?.message,
+				when: t("board.critical_error.when.loading_board"),
+			});
 		}
-	}, [isCurrentMemberError, isContentQueryError, isContentMutationError]);
+	}, [isCurrentMemberError, isContentQueryError, isContentMutationError, isBoardError]);
 
-	if (contentIsLoading || isMemberLoading || !currentMember) {
+	if (contentIsLoading || isMemberLoading || !currentMember || isBoardLoading) {
 		return <Loader />;
 	}
 
@@ -110,9 +124,11 @@ function Board() {
 			/>
 
 			<BoardMenu
+				refetchBoard={refetchBoard}
 				showSaving={currentMember?.role?.can_edit}
-				boardName={"db.boardName"}
+				board={board}
 				unsavedChanges={unsavedChanges}
+				modifiable={currentMember?.role?.name === "Owner"}
 			/>
 
 			{currentMember?.role?.can_edit && (

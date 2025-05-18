@@ -309,7 +309,11 @@
     "translation": {
       "board": {
         "board_menu": {
+          "description_label": "Description:",
+          "description_placeholder": "Add some description...",
+          "edit_success_message": "Board updated successfully",
           "exit": "Exit board",
+          "name_placeholder": "Board must have a name",
           "saved": "Saved",
           "saving": "Saving..."
         },
@@ -318,6 +322,7 @@
           "reload_message": "The page will be reloaded in a 10 seconds. If it doesn't, please refresh the page manually",
           "title": "Critical Error!",
           "when": {
+            "loading_board": "While loading board",
             "loading_content": "While loading board content",
             "loading_user": "While loading current user",
             "saving_content": "While saving board content"
@@ -389,6 +394,7 @@
           "add": "Add",
           "delete": "Delete",
           "label": "Actions",
+          "reset": "Reset",
           "save": "Save"
         },
         "loading": "Loading...",

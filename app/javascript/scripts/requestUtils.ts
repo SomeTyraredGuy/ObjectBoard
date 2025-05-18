@@ -5,7 +5,7 @@ function getCSRFToken() {
 }
 
 function getBaseURL() {
-	return getMeta("url-with-path");
+	return window.location.href;
 }
 
 export { getCSRFToken, getBaseURL };
