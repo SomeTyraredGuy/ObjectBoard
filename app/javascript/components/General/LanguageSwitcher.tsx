@@ -3,6 +3,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/shadcn/componen
 import LanguageSVG from "../svg/LanguageSVG";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/shadcn/components/ui/button";
+import { getBaseURL } from "@/scripts/requestUtils";
 
 type Props = {
 	side?: "top" | "bottom" | "left" | "right";
@@ -31,7 +32,12 @@ function LanguageSwitcher({ side = "bottom", className }: Props) {
 							variant="outline"
 							className="bg-background hover:bg-primary hover:text-secondary my-1"
 							onClick={() => {
-								const url = window.location.href.replace(/\/(en|uk)(\/|$)/, `/${lang.code}$2`);
+								let url = getBaseURL();
+								if (/\/(en|uk)(\/|$)/.test(url)) {
+									url = url.replace(/\/(en|uk)(\/|$)/, `/${lang.code}$2`);
+								} else {
+									url = url.replace(/(https?:\/\/[^/]+)(\/?)/, `$1/${lang.code}/`);
+								}
 								window.location.href = url;
 							}}
 						>

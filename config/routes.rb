@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   scope "(:locale)", locale: /en|uk/ do
     root "pages#app"
-    devise_for :user
+    devise_for :users
 
     resources :boards, except: [:show, :new] do
       member do

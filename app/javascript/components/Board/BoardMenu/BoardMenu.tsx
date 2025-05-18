@@ -5,6 +5,7 @@ import Hint from "@/components/General/Hint/Hint";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import ShowBoard from "./ShowBoard";
+import ROUTES from "@/routes";
 
 type Props = {
 	board: {
@@ -31,7 +32,7 @@ function BoardMenu({ board, unsavedChanges, showSaving, refetchBoard, modifiable
 					<th className="bg-background hover:bg-primary border-standard flex items-center rounded-l-2xl !border-r-0 p-0">
 						<Hint title={t("exit")} side="bottom" asChild>
 							<Link
-								to={`/${window.currentLocale}/boards`}
+								to={ROUTES.boards()}
 								className="hover:text-secondary flex h-full w-12 items-center justify-center"
 							>
 								<UndoSVG className="h-6 w-6" />
