@@ -6,11 +6,6 @@ class BoardsController < ApplicationController
     @boards = policy_scope(Board)
   end
 
-  # GET /boards/1 or /boards/1.json
-  def show
-    render layout: "board"
-  end
-
   # GET /boards/new
   def new
     @board = Board.new

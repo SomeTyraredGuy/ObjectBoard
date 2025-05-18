@@ -1,30 +1,26 @@
 Rails.application.routes.draw do
   scope "(:locale)", locale: /en|uk/ do
-    root "pages#home"
+    root "pages#app"
     devise_for :user
-    get "pricing" => "pages#pricing"
 
-    resources :boards do
-      member do
-        scope constraints: { action: :show } do
-          get "member/current" => "members#current"
-          get "member/others" => "members#others"
-          patch "member/update_role/:member_id" => "members#update_role", as: "member_update_role"
-          post "member/add_to_board" => "members#add_to_board"
-          get "content/get" => "board_content#get", as: "content_get"
-          post "content/save" => "board_content#save", as: "content_save"
-        end
+    scope "boards/:id" do
+      scope "member" do
+        get "current" => "members#current"
+        get "others" => "members#others"
+        patch "update_role/:member_id" => "members#update_role", as: "member_update_role"
+        post "add_to_board" => "members#add_to_board"
+      end
+      scope "content" do
+        get "get" => "board_content#get", as: "content_get"
+        post "save" => "board_content#save", as: "content_save"
       end
     end
   end
 
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  get '*path', to: 'pages#app', constraints: lambda { |req|
+    !req.xhr? && req.format.html?
+  }
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 end

@@ -10,7 +10,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <script type="text/javascript">
-      window.frontendTranslations = <%= raw frontend_translations_json(controller_name) %>;
+      window.frontendTranslations = <%= raw frontend_translations_json %>;
       window.currentLocale = "<%= I18n.locale %>";
     </script>
 
@@ -25,7 +25,7 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true, type: "module" %>
     <%= hotwire_livereload_tags if Rails.env.development? %>
     
   </head>

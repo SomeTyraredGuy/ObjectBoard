@@ -1,8 +1,11 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Index, { IndexProps } from "./Index";
 
-function QueryWrap({ db }: IndexProps) {
+type Props = {
+	children: React.ReactNode;
+};
+
+function QueryWrap({ children }: Props) {
 	const queryClient = new QueryClient({
 		defaultOptions: {
 			queries: {
@@ -11,11 +14,7 @@ function QueryWrap({ db }: IndexProps) {
 		},
 	});
 
-	return (
-		<QueryClientProvider client={queryClient}>
-			<Index db={db} />
-		</QueryClientProvider>
-	);
+	return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }
 
 export default QueryWrap;

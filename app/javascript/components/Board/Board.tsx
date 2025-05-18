@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import MemberMenu from "./MemberMenu/MemberMenu.js";
-import ToolBar from "./ToolBar/ToolBar.jsx";
-import BoardMenu from "./BoardMenu/BoardMenu.jsx";
-import ResourcesMenu from "./ResourcesMenu/ResourcesMenu.jsx";
+import ToolBar from "./ToolBar/ToolBar.js";
+import BoardMenu from "./BoardMenu/BoardMenu.js";
+import ResourcesMenu from "./ResourcesMenu/ResourcesMenu.js";
 import { useState } from "react";
-import { CanvasMode, CanvasState } from "../../Types/Canvas";
+import { CanvasMode, CanvasState } from "../../Types/Canvas.js";
 import Canvas from "./Canvas/Canvas.js";
 import UseObjectsInteraction from "../../hooks/Board/Canvas/Objects/UseObjectsInteraction.js";
 import UseStageScaleAndPosition from "../../hooks/Board/Canvas/UseStageScaleAndPosition.js";
@@ -15,16 +15,9 @@ import createCanvasStateUtils from "../../scripts/canvasStateUtils/createCanvasS
 import UseCurrentMemberQuery from "../../hooks/Board/Members/UseCurrentMemberQuery.js";
 import { Toaster } from "@/shadcn/components/ui/sonner.js";
 import CriticalError from "../General/CriticalError.js";
-import "../../scripts/I18n.js";
 import { useTranslation } from "react-i18next";
 
-export type IndexProps = {
-	db: {
-		boardName: string;
-	};
-};
-
-function Index({ db }: IndexProps) {
+function Board() {
 	const { t } = useTranslation();
 	const [canvasState, setCanvasState] = useState<CanvasState>({
 		mode: CanvasMode.None,
@@ -118,7 +111,7 @@ function Index({ db }: IndexProps) {
 
 			<BoardMenu
 				showSaving={currentMember?.role?.can_edit}
-				boardName={db.boardName}
+				boardName={"db.boardName"}
 				unsavedChanges={unsavedChanges}
 			/>
 
@@ -149,4 +142,4 @@ function Index({ db }: IndexProps) {
 	);
 }
 
-export default Index;
+export default Board;
