@@ -8,7 +8,7 @@ import "@/scripts/I18n.js";
 
 function App() {
 	const router = createBrowserRouter([
-		{ path: "/", element: <Home /> },
+		{ path: "/:locale?", element: <Home /> },
 		{ path: "/:locale?/boards/:id", element: <Board /> },
 		{ path: "/:locale?/boards", element: <Boards /> },
 		// TODO: devise
