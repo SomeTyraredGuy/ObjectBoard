@@ -37,6 +37,7 @@
         "shadcn",
         "sonner",
         "stylesheet",
+        "unlockable",
         "XYWH"
     ],
     "[typescript]": {
