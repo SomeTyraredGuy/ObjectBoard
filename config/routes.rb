@@ -1,7 +1,23 @@
 Rails.application.routes.draw do
   scope "(:locale)", locale: /en|uk/ do
     root "pages#app"
-    devise_for :users
+    devise_for :users, skip: :all
+
+    scope :users do
+      get "" => "users/users#current", as: :current_user
+      
+      devise_scope :user do
+        post 'sign_in', to: 'users/sessions#create', as: :user_session
+        delete 'sign_out', to: 'users/sessions#destroy', as: :destroy_user_session
+
+        
+        post '', to: 'users/registrations#create'
+        patch '', to: 'users/registrations#update', as: :user_registration
+        delete '', to: 'users/registrations#destroy'
+
+        put 'password', to: 'users/passwords#update'
+      end
+    end
 
     resources :boards, except: [:show, :new] do
       member do
