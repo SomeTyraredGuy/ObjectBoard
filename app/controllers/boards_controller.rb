@@ -52,7 +52,7 @@ class BoardsController < ApplicationController
   private
 
   def board_params
-    params.expect(value: %i[name description])
+    params.expect(board: %i[name description])
   end
 
   def create_owner

@@ -3,9 +3,10 @@ import CurrentMemberButton from "./CurrentMember/CurrentMemberButton";
 import { CurrentMember, OtherMember } from "@/Types/Member";
 import OtherMembersDropdown from "./OtherMembers/OtherMembersDropdown";
 import MemberSettings from "./Settings/MemberSettings";
-import UseOtherMembersQuery from "@/hooks/Board/Members/UseOtherMembersQuery";
+import UseCustomQuery from "@/hooks/UseCustomQuery";
 import AddMemberForm from "./OtherMembers/AddMemberForm";
 import useNotification from "@/hooks/useNotification";
+import { getFullURL } from "@/scripts/requestUtils";
 
 type Props = {
 	currentMember: CurrentMember;
@@ -13,7 +14,15 @@ type Props = {
 };
 
 function MemberMenu({ currentMember, refetchCurrentMember }: Props) {
-	const { otherMembers, isError, error, refetch } = UseOtherMembersQuery();
+	const {
+		data: otherMembers = [],
+		isError,
+		error,
+		refetch,
+	} = UseCustomQuery({
+		queryKey: ["other_members"],
+		path: `${getFullURL()}/member/others`,
+	});
 
 	useNotification({
 		isError,

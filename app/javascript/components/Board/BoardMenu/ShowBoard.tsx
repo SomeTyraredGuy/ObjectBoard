@@ -7,6 +7,7 @@ import { Button } from "@/shadcn/components/ui/button";
 import UseCustomMutation from "@/hooks/UseCustomMutation";
 import useNotification from "@/hooks/useNotification";
 import { Separator } from "@/shadcn/components/ui/separator";
+import { getFullURL } from "@/scripts/requestUtils";
 
 type Props = {
 	open: boolean;
@@ -22,8 +23,8 @@ type Props = {
 function EditBoard({ open, closeFn, board, modifiable, refetchBoard }: Props) {
 	const { t } = useTranslation();
 	const { mutate, error, isError, isSuccess } = UseCustomMutation({
-		path: "",
-		refetchFn: refetchBoard,
+		path: getFullURL(),
+		onSuccess: refetchBoard,
 		method: "PUT",
 	});
 	useNotification({
@@ -69,7 +70,7 @@ function EditBoard({ open, closeFn, board, modifiable, refetchBoard }: Props) {
 							className="mb-2 w-full"
 						/>
 						<DialogFooter className="!justify-center">
-							<Button className="w-26" onClick={() => mutate(updated)}>
+							<Button className="w-26" onClick={() => mutate({ board: updated })}>
 								{t("common.actions.save")}
 							</Button>
 							<Button className="w-26" onClick={handleReset}>

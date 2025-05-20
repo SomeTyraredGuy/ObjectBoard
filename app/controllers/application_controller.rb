@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
   around_action :switch_locale
+  after_action :add_csrf_token_to_json_request_header
 
   rescue_from StandardError, with: :handle_standard_error
   rescue_from BaseError, with: :handle_base_error
@@ -59,5 +60,11 @@ class ApplicationController < ActionController::Base
   def switch_locale(&)
     locale = params[:locale] || I18n.locale
     I18n.with_locale(locale, &)
+  end
+
+  def add_csrf_token_to_json_request_header
+    return unless request.format == :json && !request.get? && protect_against_forgery?
+
+    response.headers["X-CSRF-Token"] = form_authenticity_token
   end
 end

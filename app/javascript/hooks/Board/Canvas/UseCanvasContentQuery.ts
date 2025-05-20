@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { getBaseURL } from "../../../scripts/requestUtils";
+import UseCustomQuery from "@/hooks/UseCustomQuery";
+import { getFullURL } from "../../../scripts/requestUtils";
 import { CanvasObject } from "../../../Types/CanvasObjects";
 import { useEffect } from "react";
 import { CanvasStateUtils } from "../../../Types/CanvasStateUtils";
@@ -17,19 +17,9 @@ export default function UseCanvasContentQuery({ canvasStateUtils, setCanvasObjec
 		error,
 		isError,
 		refetch,
-	} = useQuery({
+	} = UseCustomQuery({
 		queryKey: ["canvasContent"],
-		queryFn: async () => {
-			const JSON = await fetch(`${getBaseURL()}/content/get`);
-			const response = await JSON.json();
-
-			if (!JSON.ok) {
-				if (response.error) throw new Error(response.error);
-				throw new Error();
-			}
-
-			return response;
-		},
+		path: `${getFullURL()}/content/get`,
 		refetchInterval: false,
 	});
 

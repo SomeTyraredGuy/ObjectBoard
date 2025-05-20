@@ -1,9 +1,9 @@
 import { RefObject, useRef, useState } from "react";
 import { ChangeRecord, HistoryRecord } from "../../../Types/History";
 import useTimeout from "../../UseTimeout";
-import { useMutation } from "@tanstack/react-query";
-import { getCSRFToken, getBaseURL } from "../../../scripts/requestUtils";
+import { getFullURL } from "../../../scripts/requestUtils";
 import { CanvasObject, isCanvasObject } from "../../../Types/CanvasObjects";
+import UseCustomMutation from "@/hooks/UseCustomMutation";
 
 type Props = {
 	noChanges: (changeRecord: ChangeRecord) => boolean;
@@ -15,7 +15,7 @@ export default function UseCanvasContentMutation({ noChanges, changeObjects }: P
 	const [unsavedChanges, setUnsavedChanges] = useState<boolean>(false);
 	const localIDs = useRef<number[]>([]);
 
-	function getJSONRecord() {
+	function getRecord() {
 		const del: number[] = [];
 		const create: CanvasObject[] = [];
 		localIDs.current = [];
@@ -23,7 +23,11 @@ export default function UseCanvasContentMutation({ noChanges, changeObjects }: P
 
 		unsavedRecord.current.forEach((record) => {
 			if (record.newProperties === null) del.push(record.id);
-			else if (record.oldProperties === null && record.newProperties.id < 0 && isCanvasObject(record.newProperties)) {
+			else if (
+				record.oldProperties === null &&
+				record.newProperties.id < 0 &&
+				isCanvasObject(record.newProperties)
+			) {
 				localIDs.current.push(record.newProperties.id);
 				create.push(record.newProperties);
 			} else
@@ -44,52 +48,44 @@ export default function UseCanvasContentMutation({ noChanges, changeObjects }: P
 
 		unsavedRecord.current = [];
 
-		return JSON.stringify(recordToSend);
+		return recordToSend;
 	}
 
-	const { mutate, isPending, isError, error } = useMutation({
-		mutationFn: async () => {
-			const response = await fetch(`${getBaseURL()}/content/save`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Accept: "application/json",
-					"X-CSRF-Token": getCSRFToken(),
-				},
-				body: getJSONRecord(),
+	async function processResponse(response: Response) {
+		const resp = await response.json();
+		if (!resp.assigned_IDs) {
+			if (resp.error) throw new Error(resp.error);
+			throw new Error();
+		} else {
+			if (resp.assigned_IDs.length === 0) return;
+
+			if (resp.assigned_IDs.length !== localIDs.current.length) throw new Error();
+			if (resp.assigned_IDs.some((id) => id < 0)) throw new Error();
+
+			changeObjects.current(
+				localIDs.current.map((id, i) => ({
+					id: id,
+					type: "assignID",
+					oldProperties: { id: id },
+					newProperties: { id: resp.assigned_IDs[i] },
+				})),
+				true,
+			);
+			unsavedRecord.current.forEach((record) => {
+				// assign new IDs to records that were created before response
+				if (record.id < 0) {
+					const index = localIDs.current.indexOf(record.id);
+					if (index !== -1) record.id = resp.assigned_IDs[index];
+				}
 			});
+		}
+	}
 
-			const resp = await response.json();
-			if (!resp.assigned_IDs) {
-				if (resp.error) throw new Error(resp.error);
-				throw new Error();
-			} else {
-				if (resp.assigned_IDs.length === 0) return;
-
-				if (resp.assigned_IDs.length !== localIDs.current.length) throw new Error();
-				if (resp.assigned_IDs.some((id) => id < 0)) throw new Error();
-
-				changeObjects.current(
-					localIDs.current.map((id, i) => ({
-						id: id,
-						type: "assignID",
-						oldProperties: { id: id },
-						newProperties: { id: resp.assigned_IDs[i] },
-					})),
-					true
-				);
-				unsavedRecord.current.forEach((record) => {
-					// assign new IDs to records that were created before response
-					if (record.id < 0) {
-						const index = localIDs.current.indexOf(record.id);
-						if (index !== -1) record.id = resp.assigned_IDs[index];
-					}
-				});
-			}
-		},
-		onSuccess: () => {
-			setUnsavedChanges(false);
-		},
+	const { mutate, isPending, isError, error } = UseCustomMutation({
+		path: `${getFullURL()}/content/save`,
+		method: "POST",
+		onSuccess: () => setUnsavedChanges(false),
+		onResponse: processResponse,
 	});
 
 	const { startTimeout, clearTimer: clearTimeout } = useTimeout({
@@ -101,7 +97,7 @@ export default function UseCanvasContentMutation({ noChanges, changeObjects }: P
 			}
 
 			clearMaxTimeout();
-			mutate();
+			mutate(getRecord());
 		},
 	});
 
@@ -109,7 +105,7 @@ export default function UseCanvasContentMutation({ noChanges, changeObjects }: P
 		delay: 15000, // 15 seconds
 		callback: () => {
 			clearTimeout();
-			mutate();
+			mutate(getRecord());
 		},
 	});
 
@@ -151,7 +147,7 @@ export default function UseCanvasContentMutation({ noChanges, changeObjects }: P
 
 		clearTimeout();
 		clearMaxTimeout();
-		mutate();
+		mutate(getRecord());
 	});
 
 	return {

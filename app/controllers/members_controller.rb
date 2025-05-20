@@ -19,7 +19,7 @@ class MembersController < ApplicationController
   def update_role
     member_to_update = Member.find_member(params.expect(:member_id))
 
-    new_role = params.expect(value: %i[name can_edit can_change_roles can_assign_admin can_ignore_rules])
+    new_role = params.expect(newRole: %i[name can_edit can_change_roles can_assign_admin can_ignore_rules])
 
     update_role_authorize new_role, member_to_update
 
@@ -31,7 +31,7 @@ class MembersController < ApplicationController
   def add_to_board
     authorize @member
 
-    new_member_name = params.expect(:value)
+    new_member_name = params.expect(:name)
     user = User.find_by(name: new_member_name)
     raise UserErrors::NotFound.new(metadata: { name: new_member_name }) unless user
 

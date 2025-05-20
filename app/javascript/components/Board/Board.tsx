@@ -12,20 +12,23 @@ import UseHistory from "../../hooks/Board/UseHistory.js";
 import UseCanvasContentQuery from "../../hooks/Board/Canvas/UseCanvasContentQuery.js";
 import Loader from "../General/Loader.js";
 import createCanvasStateUtils from "../../scripts/canvasStateUtils/createCanvasStateUtils.js";
-import UseCurrentMemberQuery from "../../hooks/Board/Members/UseCurrentMemberQuery.js";
+import UseCustomQuery from "@/hooks/UseCustomQuery";
+import { getFullURL } from "@/scripts/requestUtils.js";
 import { Toaster } from "@/shadcn/components/ui/sonner.js";
 import CriticalError from "../General/CriticalError.js";
 import { useTranslation } from "react-i18next";
-import UseBoardQuery from "@/hooks/Board/Board/UseBoardQuery.js";
 
 function Board() {
 	const {
-		board,
+		data: board,
 		refetch: refetchBoard,
 		isLoading: isBoardLoading,
 		error: boardError,
 		isError: isBoardError,
-	} = UseBoardQuery();
+	} = UseCustomQuery({
+		queryKey: ["board"],
+		path: `${getFullURL()}/get`,
+	});
 
 	const { t } = useTranslation();
 	const [canvasState, setCanvasState] = useState<CanvasState>({
@@ -34,12 +37,15 @@ function Board() {
 	const canvasStateUtils = createCanvasStateUtils(setCanvasState);
 
 	const {
-		currentMember,
+		data: currentMember,
 		refetch: refetchCurrentMember,
 		isLoading: isMemberLoading,
 		error: currentMemberError,
 		isError: isCurrentMemberError,
-	} = UseCurrentMemberQuery();
+	} = UseCustomQuery({
+		queryKey: ["current_member"],
+		path: `${getFullURL()}/member/current`,
+	});
 
 	const useStageScaleAndPosition = UseStageScaleAndPosition();
 	const { stageScale } = useStageScaleAndPosition;

@@ -14,6 +14,7 @@ import SelectRole from "./SelectRole";
 import RoleSwitcherList from "./RoleSwitcherList";
 import useNotification from "@/hooks/useNotification";
 import { useTranslation } from "react-i18next";
+import { getFullURL } from "@/scripts/requestUtils";
 
 const roleDefaults = [
 	{ name: "Admin", can_edit: true, can_change_roles: true, can_assign_admin: false, can_ignore_rules: true },
@@ -37,8 +38,8 @@ function MemberSettings({ currentMember, member, refetchFn, closeFn }: Props) {
 		isError,
 		isSuccess,
 	} = UseCustomMutation({
-		path: `/member/update_role/${member.member_id}`,
-		refetchFn: refetchFn,
+		path: `${getFullURL()}/member/update_role/${member.member_id}`,
+		onSuccess: refetchFn,
 		method: "PATCH",
 	});
 
@@ -87,7 +88,7 @@ function MemberSettings({ currentMember, member, refetchFn, closeFn }: Props) {
 				/>
 
 				<DialogFooter className="!justify-center">
-					<Button className="w-26" onClick={() => save(newRole)} disabled={changesIsDisabled()}>
+					<Button className="w-26" onClick={() => save({ newRole })} disabled={changesIsDisabled()}>
 						{t("common.actions.save")}
 					</Button>
 				</DialogFooter>
