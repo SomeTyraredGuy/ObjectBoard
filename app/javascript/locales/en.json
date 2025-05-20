@@ -159,6 +159,7 @@
         "no_token": "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided.",
         "send_instructions": "You will receive an email with instructions on how to reset your password in a few minutes.",
         "send_paranoid_instructions": "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.",
+        "update_failed": "Error updating password. %{error}",
         "updated": "Your password has been changed successfully. You are now signed in.",
         "updated_not_active": "Your password has been changed successfully."
       },
@@ -391,6 +392,10 @@
         "notification": {
           "error": "Error!",
           "success": "Success!"
+        },
+        "pages": {
+          "boards": "Boards",
+          "to_boards": "Go to Boards"
         }
       },
       "home": {
@@ -437,6 +442,19 @@
         "go_home": "Go to Homepage",
         "message": "The page you are looking for does not exist or has been moved.",
         "title": "Oops! Page Not Found."
+      },
+      "users": {
+        "email": "Email",
+        "login": "Login",
+        "login_failed": "Login failed. Please check your credentials.",
+        "login_label": "Enter your credentials to access your account.",
+        "login_success": "Login successful! Redirecting...",
+        "logout": "Logout",
+        "my_profile": "My Profile",
+        "password": "Password",
+        "remember_me": "Remember Me",
+        "sign_up": "Sign Up",
+        "to_profile": "To Profile"
       }
     }
   }

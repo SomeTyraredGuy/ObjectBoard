@@ -17,3 +17,7 @@ uk:
         success: Успіх!
 
       loading: Завантаження...
+
+      pages:
+        boards: Дошки
+        to_boards: Перейти до дошок

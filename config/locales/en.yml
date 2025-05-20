@@ -17,3 +17,7 @@ en:
         success: Success!
 
       loading: Loading...
+
+      pages:
+        boards: Boards
+        to_boards: Go to Boards
