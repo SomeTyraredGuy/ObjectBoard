@@ -1,0 +1,15 @@
+en:
+  translation:
+    users:
+      login: Login
+      login_label: Enter your credentials to access your account.
+      login_failed: Login failed. Please check your credentials.
+      login_success: Login successful! Redirecting...
+
+      sign_up: Sign Up
+      logout: Logout
+      password: Password
+      email: Email
+      remember_me: Remember Me
+      my_profile: My Profile
+      to_profile: To Profile

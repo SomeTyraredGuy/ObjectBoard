@@ -1,0 +1,15 @@
+uk:
+  translation:
+    users:
+      login: Увійти
+      login_label: Введіть облікові дані для доступу до свого акаунту.
+      login_failed: Увійти не вдалося. Будь ласка, перевірте свої облікові дані.
+      login_success: Увійти вдалося! Перенаправлення...
+
+      sign_up: Реєстрація
+      logout: Вихід
+      password: Пароль
+      email: Електронна пошта
+      remember_me: Запам'ятати мене
+      my_profile: Мій профіль
+      to_profile: До профілю

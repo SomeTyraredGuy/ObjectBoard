@@ -6,18 +6,23 @@ import Board from "./Board/Board";
 import Boards from "./Boards/Boards";
 import "@/scripts/I18n.js";
 import NotFoundPage from "./NotFoundPage";
+import { UserProvider } from "./General/UserContext";
+import LogIn from "./LogIn/LogIn";
 
 function App() {
 	const router = createBrowserRouter([
 		{ path: "/:locale?", element: <Home /> },
 		{ path: "/:locale?/boards/:id", element: <Board /> },
 		{ path: "/:locale?/boards", element: <Boards /> },
+		{ path: "/:locale?/users/sign_in", element: <LogIn /> },
 		// TODO: devise
 		{ path: "*", element: <NotFoundPage /> },
 	]);
 	return (
 		<QueryWrap>
-			<RouterProvider router={router} />
+			<UserProvider>
+				<RouterProvider router={router} />
+			</UserProvider>
 		</QueryWrap>
 	);
 }

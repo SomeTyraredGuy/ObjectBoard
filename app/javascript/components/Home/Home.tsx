@@ -7,13 +7,12 @@ import CallToActionSection from "./CallToActionSection";
 import Footer from "../Layout/Footer";
 
 function Home() {
-	const isLoggedIn = false;
-	const userName = "John Doe";
-
 	return (
 		<div className="bg-background text-foreground min-h-screen">
+			<Header />
+
 			<div className="px-10">
-				<HeroSection isLoggedIn={isLoggedIn} />
+				<HeroSection />
 
 				<FeaturesSection />
 
