@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { Button } from "@/shadcn/components/ui/button";
@@ -9,6 +9,7 @@ import { Label } from "@/shadcn/components/ui/label";
 import { Switch } from "@/shadcn/components/ui/switch";
 import UseCustomMutation from "@/hooks/UseCustomMutation";
 import { useTranslation } from "react-i18next";
+import ROUTES from "@/routes";
 
 function LogIn() {
 	const [email, setEmail] = useState("");
@@ -20,7 +21,7 @@ function LogIn() {
 
 	const handleLoginSuccess = () => {
 		queryClient.invalidateQueries({ queryKey: ["user"] });
-		navigate("/");
+		navigate(ROUTES.home());
 	};
 
 	const {
@@ -29,7 +30,7 @@ function LogIn() {
 		isError: isLoginError,
 		isSuccess: isLoginSuccess,
 	} = UseCustomMutation({
-		path: "/users/sign_in",
+		path: ROUTES.signIn(),
 		method: "POST",
 		onSuccess: handleLoginSuccess,
 	});
@@ -45,7 +46,13 @@ function LogIn() {
 				<form onSubmit={handleSubmit} className="space-y-0">
 					<CardHeader>
 						<div className="mb-2 text-center">
-							<span className="text-primary text-3xl font-bold tracking-tight">ObjectBoard</span>
+							<Button
+								asChild
+								variant="outline"
+								className="text-primary hover:bg-primary hover:text-secondary mb-2 h-auto border-none bg-transparent p-2 text-3xl font-bold tracking-tight shadow-sm"
+							>
+								<Link to={ROUTES.home()}>ObjectBoard</Link>
+							</Button>
 						</div>
 						<CardTitle className="text-foreground text-2xl">{t("login")}</CardTitle>
 						<CardDescription className="text-muted-foreground">{t("login_label")}</CardDescription>
@@ -104,6 +111,12 @@ function LogIn() {
 						>
 							{t("login")}
 						</Button>
+						<p className="text-muted-foreground mt-4 text-sm">
+							{t("dont_have_account")}{" "}
+							<Link to={ROUTES.signUp()} className="text-primary font-medium hover:underline">
+								{t("sign_up")}
+							</Link>
+						</p>
 					</CardFooter>
 				</form>
 			</Card>

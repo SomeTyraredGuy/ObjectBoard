@@ -7,7 +7,8 @@ import Boards from "./Boards/Boards";
 import "@/scripts/I18n.js";
 import NotFoundPage from "./NotFoundPage";
 import { UserProvider } from "./General/UserContext";
-import LogIn from "./LogIn/LogIn";
+import LogIn from "./Users/LogIn";
+import Registration from "./Users/Registration";
 
 function App() {
 	const router = createBrowserRouter([
@@ -15,6 +16,7 @@ function App() {
 		{ path: "/:locale?/boards/:id", element: <Board /> },
 		{ path: "/:locale?/boards", element: <Boards /> },
 		{ path: "/:locale?/users/sign_in", element: <LogIn /> },
+		{ path: "/:locale?/users/sign_up", element: <Registration /> },
 		// TODO: devise
 		{ path: "*", element: <NotFoundPage /> },
 	]);

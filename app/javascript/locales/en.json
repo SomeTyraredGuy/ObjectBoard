@@ -444,6 +444,9 @@
         "title": "Oops! Page Not Found."
       },
       "users": {
+        "already_have_account": "Already have an account?",
+        "confirm_password": "Confirm Password",
+        "dont_have_account": "Don't have an account?",
         "email": "Email",
         "login": "Login",
         "login_failed": "Login failed. Please check your credentials.",
@@ -451,9 +454,15 @@
         "login_success": "Login successful! Redirecting...",
         "logout": "Logout",
         "my_profile": "My Profile",
+        "name": "Name",
+        "name_placeholder": "Enter your name",
         "password": "Password",
+        "passwords_do_not_match": "Passwords do not match.",
         "remember_me": "Remember Me",
         "sign_up": "Sign Up",
+        "sign_up_failed": "Sign Up failed. Please check your details.",
+        "sign_up_label": "Create an account to access all features.",
+        "sign_up_success": "Sign Up successful! Redirecting...",
         "to_profile": "To Profile"
       }
     }

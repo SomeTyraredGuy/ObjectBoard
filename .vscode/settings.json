@@ -39,7 +39,8 @@
         "stylesheet",
         "unlockable",
         "XYWH",
-        "дошок"
+        "дошок",
+        "Підтвердіть"
     ],
     "[typescript]": {
         "editor.detectIndentation": false,
