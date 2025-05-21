@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -9,6 +9,7 @@ import { Label } from "@/shadcn/components/ui/label";
 import UseCustomMutation from "@/hooks/UseCustomMutation";
 import { useTranslation } from "react-i18next";
 import ROUTES from "@/routes";
+import { useUser } from "../General/UserContext";
 
 function Registration() {
 	const [name, setName] = useState("");
@@ -31,7 +32,7 @@ function Registration() {
 		isError: isRegistrationApiError,
 		isSuccess: isRegistrationSuccess,
 	} = UseCustomMutation({
-		path: ROUTES.signUpApi(),
+		path: ROUTES.UserApi(),
 		method: "POST",
 		onSuccess: handleRegistrationSuccess,
 	});
@@ -61,6 +62,13 @@ function Registration() {
 	} else if (isRegistrationApiError && registrationApiError) {
 		errorMessage = registrationApiError.message || t("sign_up_failed");
 	}
+
+	const { currentUser, isLoading } = useUser();
+	useEffect(() => {
+		if (!isLoading && currentUser) {
+			navigate(ROUTES.home());
+		}
+	}, [currentUser]);
 
 	return (
 		<div className="bg-background text-foreground flex min-h-screen items-center justify-center p-4">

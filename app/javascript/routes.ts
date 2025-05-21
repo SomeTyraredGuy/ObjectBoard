@@ -19,10 +19,9 @@ function getRoutes(router = false) {
 		saveCanvasContentApi: () => `${getFullURL()}/content/save`,
 		getCanvasContentApi: () => `${getFullURL()}/content/get`,
 
-		getUserApi: () => `${getBaseURL()}/users`,
+		UserApi: () => `${getBaseURL()}/users`,
 
 		signUp: () => `/${locale}/users/sign_up`,
-		signUpApi: () => `/${locale}/users`,
 		signIn: () => `/${locale}/users/sign_in`,
 		signOutApi: () => getBaseURL() + "/users/sign_out",
 		profile: () => `/${locale}/users/edit`,

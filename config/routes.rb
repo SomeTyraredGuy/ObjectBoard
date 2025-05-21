@@ -14,12 +14,10 @@ Rails.application.routes.draw do
         post '', to: 'users/registrations#create'
         patch '', to: 'users/registrations#update', as: :user_registration
         delete '', to: 'users/registrations#destroy'
-
-        put 'password', to: 'users/passwords#update'
       end
     end
 
-    resources :boards, except: [:show, :new] do
+    resources :boards, except: [:show, :new, :index] do
       member do
 
         get "get" => "boards#get"

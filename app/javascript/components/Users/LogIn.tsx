@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -10,6 +10,7 @@ import { Switch } from "@/shadcn/components/ui/switch";
 import UseCustomMutation from "@/hooks/UseCustomMutation";
 import { useTranslation } from "react-i18next";
 import ROUTES from "@/routes";
+import { useUser } from "../General/UserContext";
 
 function LogIn() {
 	const [email, setEmail] = useState("");
@@ -39,6 +40,13 @@ function LogIn() {
 		event.preventDefault();
 		logInUser({ user: { email, password, remember_me: rememberMe } });
 	};
+
+	const { currentUser, isLoading } = useUser();
+	useEffect(() => {
+		if (!isLoading && currentUser) {
+			navigate(ROUTES.home());
+		}
+	}, [currentUser]);
 
 	return (
 		<div className="bg-background flex min-h-screen items-center justify-center p-4">

@@ -24,3 +24,10 @@ uk:
       sign_up_success: Реєстрація вдалася! Перенаправлення...
       passwords_do_not_match: Паролі не співпадають.
       already_have_account: Вже маєте акаунт?
+
+      edit_profile: Редагувати профіль
+      edit_profile_label: Оновіть інформацію про свій профіль.
+      current_password: Поточний пароль
+
+      delete_account: Видалити акаунт
+      delete_account_label: Назавжди видалити свій акаунт та всі пов'язані дані. Цю дію не можна скасувати.

@@ -8,9 +8,13 @@ en:
       actions:
         label: Actions
         save: Save
+        saving: Saving...
         delete: Delete
+        deleting: Deleting...
         add: Add
         reset: Reset
+        cancel: Cancel
+        edit: Edit
 
       notification:
         error: Error!
@@ -21,3 +25,5 @@ en:
       pages:
         boards: Boards
         to_boards: Go to Boards
+
+      cannot_be_undone: Are you sure? This action cannot be undone.

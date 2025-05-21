@@ -6,7 +6,8 @@ import ROUTES from "@/routes";
 interface UserContextType {
 	currentUser: User | null;
 	isError: boolean;
-	error: unknown;
+	isLoading: boolean;
+	error;
 	refetchUser: () => void;
 }
 
@@ -29,10 +30,11 @@ export const UserProvider: React.FC<Props> = ({ children }) => {
 		data: user,
 		isError,
 		error,
+		isLoading,
 		refetch,
 	} = UseCustomQuery({
 		queryKey: ["user"],
-		path: ROUTES.getUserApi(),
+		path: ROUTES.UserApi(),
 	});
 
 	return (
@@ -41,6 +43,7 @@ export const UserProvider: React.FC<Props> = ({ children }) => {
 				currentUser: user,
 				isError,
 				error,
+				isLoading,
 				refetchUser: refetch,
 			}}
 		>

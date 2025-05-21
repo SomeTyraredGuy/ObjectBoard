@@ -24,3 +24,10 @@ en:
       sign_up_success: Sign Up successful! Redirecting...
       passwords_do_not_match: Passwords do not match.
       already_have_account: Already have an account?
+
+      edit_profile: Edit Profile
+      edit_profile_label: Update your profile information.
+      current_password: Current Password
+
+      delete_account: Delete Account
+      delete_account_label: Permanently delete your account and all associated data. This action is irreversible.
