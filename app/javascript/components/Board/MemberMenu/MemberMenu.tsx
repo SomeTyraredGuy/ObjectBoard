@@ -6,7 +6,7 @@ import MemberSettings from "./Settings/MemberSettings";
 import UseCustomQuery from "@/hooks/UseCustomQuery";
 import AddMemberForm from "./OtherMembers/AddMemberForm";
 import useNotification from "@/hooks/useNotification";
-import { getFullURL } from "@/scripts/requestUtils";
+import ROUTES from "@/routes";
 
 type Props = {
 	currentMember: CurrentMember;
@@ -21,7 +21,7 @@ function MemberMenu({ currentMember, refetchCurrentMember }: Props) {
 		refetch,
 	} = UseCustomQuery({
 		queryKey: ["other_members"],
-		path: `${getFullURL()}/member/others`,
+		path: ROUTES.otherMembersApi(),
 	});
 
 	useNotification({

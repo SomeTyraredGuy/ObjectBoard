@@ -1,14 +1,34 @@
-const locale = window.currentLocale || "en";
+import { getBaseURL, getFullURL } from "./scripts/requestUtils";
 
-const ROUTES = {
-	home: () => `/${locale}`,
-	boards: () => `/${locale}/boards`,
-	board: (id: string) => `/${locale}/boards/${id}`,
-	signUp: () => `/${locale}/users/sign_up`,
-	signUpApi: () => `/${locale}/users`,
-	signIn: () => `/${locale}/users/sign_in`,
-	signOut: () => `/${locale}/users/sign_out`,
-	profile: () => `/${locale}/users/edit`,
-};
+function getRoutes(router = false) {
+	const locale = router ? ":locale?" : window.currentLocale || "en";
+
+	return {
+		home: () => `/${locale}`,
+
+		boards: () => `/${locale}/boards`,
+
+		board: (id?: number) => `/${locale}/boards/${router ? ":id" : id}`,
+		boardApi: () => `${getFullURL()}/get`,
+
+		currentMemberApi: () => `${getFullURL()}/member/current`,
+		otherMembersApi: () => `${getFullURL()}/member/others`,
+		addMemberApi: () => getFullURL() + "/member/add_to_board",
+		updateMemberRoleApi: (id?: number) => `${getFullURL()}/member/update_role/${router ? ":id" : id}`,
+
+		saveCanvasContentApi: () => `${getFullURL()}/content/save`,
+		getCanvasContentApi: () => `${getFullURL()}/content/get`,
+
+		getUserApi: () => `${getBaseURL()}/users`,
+
+		signUp: () => `/${locale}/users/sign_up`,
+		signUpApi: () => `/${locale}/users`,
+		signIn: () => `/${locale}/users/sign_in`,
+		signOutApi: () => getBaseURL() + "/users/sign_out",
+		profile: () => `/${locale}/users/edit`,
+	};
+}
+const ROUTES = getRoutes();
 
 export default ROUTES;
+export { getRoutes };

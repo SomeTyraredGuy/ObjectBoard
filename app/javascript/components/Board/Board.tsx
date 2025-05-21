@@ -13,10 +13,10 @@ import UseCanvasContentQuery from "../../hooks/Board/Canvas/UseCanvasContentQuer
 import Loader from "../General/Loader.js";
 import createCanvasStateUtils from "../../scripts/canvasStateUtils/createCanvasStateUtils.js";
 import UseCustomQuery from "@/hooks/UseCustomQuery";
-import { getFullURL } from "@/scripts/requestUtils.js";
 import { Toaster } from "@/shadcn/components/ui/sonner.js";
 import CriticalError from "../General/CriticalError.js";
 import { useTranslation } from "react-i18next";
+import ROUTES from "@/routes.js";
 
 function Board() {
 	const {
@@ -27,7 +27,7 @@ function Board() {
 		isError: isBoardError,
 	} = UseCustomQuery({
 		queryKey: ["board"],
-		path: `${getFullURL()}/get`,
+		path: ROUTES.boardApi(),
 	});
 
 	const { t } = useTranslation();
@@ -44,7 +44,7 @@ function Board() {
 		isError: isCurrentMemberError,
 	} = UseCustomQuery({
 		queryKey: ["current_member"],
-		path: `${getFullURL()}/member/current`,
+		path: ROUTES.currentMemberApi(),
 	});
 
 	const useStageScaleAndPosition = UseStageScaleAndPosition();

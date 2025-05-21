@@ -12,7 +12,7 @@ import UseCustomMutation from "@/hooks/UseCustomMutation";
 import { Input } from "@/shadcn/components/ui/input";
 import useNotification from "@/hooks/useNotification";
 import { useTranslation } from "react-i18next";
-import { getFullURL } from "@/scripts/requestUtils";
+import ROUTES from "@/routes";
 
 type Props = {
 	refetchFn: () => void;
@@ -29,7 +29,7 @@ function AddMemberForm({ refetchFn, closeFn, open }: Props) {
 		isError,
 		isSuccess,
 	} = UseCustomMutation({
-		path: getFullURL() + "/member/add_to_board",
+		path: ROUTES.addMemberApi(),
 		onSuccess: refetchFn,
 		method: "POST",
 	});

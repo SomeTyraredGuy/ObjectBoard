@@ -14,7 +14,7 @@ import SelectRole from "./SelectRole";
 import RoleSwitcherList from "./RoleSwitcherList";
 import useNotification from "@/hooks/useNotification";
 import { useTranslation } from "react-i18next";
-import { getFullURL } from "@/scripts/requestUtils";
+import ROUTES from "@/routes";
 
 const roleDefaults = [
 	{ name: "Admin", can_edit: true, can_change_roles: true, can_assign_admin: false, can_ignore_rules: true },
@@ -38,7 +38,7 @@ function MemberSettings({ currentMember, member, refetchFn, closeFn }: Props) {
 		isError,
 		isSuccess,
 	} = UseCustomMutation({
-		path: `${getFullURL()}/member/update_role/${member.member_id}`,
+		path: ROUTES.updateMemberRoleApi(member.member_id),
 		onSuccess: refetchFn,
 		method: "PATCH",
 	});

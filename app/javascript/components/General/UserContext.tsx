@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from "react";
 import { User } from "@/Types/User";
-import { getBaseURL } from "@/scripts/requestUtils";
 import UseCustomQuery from "@/hooks/UseCustomQuery";
+import ROUTES from "@/routes";
 
 interface UserContextType {
 	currentUser: User | null;
@@ -32,7 +32,7 @@ export const UserProvider: React.FC<Props> = ({ children }) => {
 		refetch,
 	} = UseCustomQuery({
 		queryKey: ["user"],
-		path: `${getBaseURL()}/users`,
+		path: ROUTES.getUserApi(),
 	});
 
 	return (

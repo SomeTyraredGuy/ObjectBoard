@@ -1,8 +1,8 @@
 import UseCustomQuery from "@/hooks/UseCustomQuery";
-import { getFullURL } from "../../../scripts/requestUtils";
 import { CanvasObject } from "../../../Types/CanvasObjects";
 import { useEffect } from "react";
 import { CanvasStateUtils } from "../../../Types/CanvasStateUtils";
+import ROUTES from "@/routes";
 
 type Props = {
 	canvasStateUtils: CanvasStateUtils;
@@ -19,7 +19,7 @@ export default function UseCanvasContentQuery({ canvasStateUtils, setCanvasObjec
 		refetch,
 	} = UseCustomQuery({
 		queryKey: ["canvasContent"],
-		path: `${getFullURL()}/content/get`,
+		path: ROUTES.getCanvasContentApi(),
 		refetchInterval: false,
 	});
 

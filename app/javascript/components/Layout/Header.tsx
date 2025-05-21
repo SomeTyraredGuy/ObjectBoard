@@ -15,13 +15,12 @@ import LanguageSwitcher from "../General/LanguageSwitcher";
 import ROUTES from "@/routes";
 import UseCustomMutation from "@/hooks/UseCustomMutation";
 import { useUser } from "@/components/General/UserContext";
-import { getBaseURL } from "@/scripts/requestUtils";
 
 function Header() {
 	const { t } = useTranslation();
 	const { currentUser, refetchUser } = useUser();
 	const { mutate: signOut } = UseCustomMutation({
-		path: getBaseURL() + "/users/sign_out",
+		path: ROUTES.signOutApi(),
 		method: "DELETE",
 		onResponse: refetchUser,
 	});

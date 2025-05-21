@@ -1,9 +1,9 @@
 import { RefObject, useRef, useState } from "react";
 import { ChangeRecord, HistoryRecord } from "../../../Types/History";
 import useTimeout from "../../UseTimeout";
-import { getFullURL } from "../../../scripts/requestUtils";
 import { CanvasObject, isCanvasObject } from "../../../Types/CanvasObjects";
 import UseCustomMutation from "@/hooks/UseCustomMutation";
+import ROUTES from "@/routes";
 
 type Props = {
 	noChanges: (changeRecord: ChangeRecord) => boolean;
@@ -82,7 +82,7 @@ export default function UseCanvasContentMutation({ noChanges, changeObjects }: P
 	}
 
 	const { mutate, isPending, isError, error } = UseCustomMutation({
-		path: `${getFullURL()}/content/save`,
+		path: ROUTES.saveCanvasContentApi(),
 		method: "POST",
 		onSuccess: () => setUnsavedChanges(false),
 		onResponse: processResponse,
