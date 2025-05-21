@@ -30,7 +30,7 @@ function OtherMembersDropdown({ currentMember, otherMembers, toggleMemberMenu, t
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
 				{otherMembers.length > 0 && (
-					<MembersIcon avatars={otherMembers.slice(0, 3).map((member) => member.avatar)} />
+					<MembersIcon avatars={otherMembers.slice(0, 3).map(() => "member.avatar")} />
 				)}
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-sm bg-background">

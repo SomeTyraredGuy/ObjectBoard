@@ -60,7 +60,6 @@ class Member < ApplicationRecord
       member_id: id,
       user_id: user.id,
       name: user.name,
-      avatar: "https://i.pinimg.com/736x/a7/23/42/a72342f9852d27544d62573990fa023d.jpg",
       role: {
         name: role.name,
         can_edit: role.can_edit,
@@ -76,7 +75,6 @@ class Member < ApplicationRecord
       member_id: id,
       user_id: user.id,
       name: user.name,
-      avatar: "https://i.pinimg.com/736x/a7/23/42/a72342f9852d27544d62573990fa023d.jpg",
       role: {
         name: role.name
       }
