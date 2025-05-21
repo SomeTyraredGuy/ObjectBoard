@@ -36,11 +36,11 @@ Rails.application.routes.draw do
 
       end
     end
-  end
 
-  get '*path', to: 'pages#app', constraints: lambda { |req|
+    get '*path', to: 'pages#app', constraints: lambda { |req|
     !req.xhr? && req.format.html?
   }
+  end
 
   get "up" => "rails/health#show", as: :rails_health_check
 end

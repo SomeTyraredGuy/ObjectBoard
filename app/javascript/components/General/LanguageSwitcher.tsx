@@ -1,5 +1,5 @@
 import React from "react";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/shadcn/components/ui/hover-card";
+import { Popover, PopoverContent, PopoverTrigger } from "@/shadcn/components/ui/popover";
 import LanguageSVG from "../svg/LanguageSVG";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/shadcn/components/ui/button";
@@ -18,13 +18,13 @@ function LanguageSwitcher({ side = "bottom", className }: Props) {
 	];
 
 	return (
-		<HoverCard>
-			<HoverCardTrigger
+		<Popover>
+			<PopoverTrigger
 				className={`bg-background shadow-xs hover:bg-primary hover:text-secondary inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border text-sm font-medium transition-all ${className}`}
 			>
 				<LanguageSVG className="size-3/5" />
-			</HoverCardTrigger>
-			<HoverCardContent side={side} className="w-auto p-2">
+			</PopoverTrigger>
+			<PopoverContent side={side} className="w-auto p-2">
 				<div className="flex flex-col">
 					{languages.map((lang, i) => (
 						<Button
@@ -45,8 +45,8 @@ function LanguageSwitcher({ side = "bottom", className }: Props) {
 						</Button>
 					))}
 				</div>
-			</HoverCardContent>
-		</HoverCard>
+			</PopoverContent>
+		</Popover>
 	);
 }
 
