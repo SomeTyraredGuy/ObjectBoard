@@ -20,7 +20,7 @@ function LanguageSwitcher({ side = "bottom", className }: Props) {
 	return (
 		<Popover>
 			<PopoverTrigger
-				className={`bg-background shadow-xs hover:bg-primary hover:text-secondary inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border text-sm font-medium transition-all ${className}`}
+				className={`bg-background shadow-xs button-hover inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border text-sm font-medium transition-all ${className}`}
 			>
 				<LanguageSVG className="size-3/5" />
 			</PopoverTrigger>
@@ -30,7 +30,7 @@ function LanguageSwitcher({ side = "bottom", className }: Props) {
 						<Button
 							key={i}
 							variant="outline"
-							className="bg-background hover:bg-primary hover:text-secondary my-1"
+							className="bg-background button-hover my-1"
 							onClick={() => {
 								let url = getFullURL();
 								if (/\/(en|uk)(\/|$)/.test(url)) {

@@ -145,3 +145,7 @@
 	height: 100vh;
 	overflow: hidden;
 }
+
+.button-hover {
+	@apply hover:bg-primary hover:text-secondary;
+}

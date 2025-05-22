@@ -57,7 +57,7 @@ function LogIn() {
 							<Button
 								asChild
 								variant="outline"
-								className="text-primary hover:bg-primary hover:text-secondary mb-2 h-auto border-none bg-transparent p-2 text-3xl font-bold tracking-tight shadow-sm"
+								className="text-primary button-hover mb-2 h-auto border-none bg-transparent p-2 text-3xl font-bold tracking-tight shadow-sm"
 							>
 								<Link to={ROUTES.home()}>ObjectBoard</Link>
 							</Button>

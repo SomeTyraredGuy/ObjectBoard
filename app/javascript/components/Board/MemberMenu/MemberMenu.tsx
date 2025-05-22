@@ -45,10 +45,10 @@ function MemberMenu({ currentMember, refetchCurrentMember }: Props) {
 			<table className="fixed end-0 top-0 m-2">
 				<tbody className="w-full">
 					<tr className="flex h-16 items-center justify-end">
-						<th className="border-standard bg-background hover:bg-primary hover:text-secondary h-full w-56 rounded-l-2xl">
+						<th className="border-standard bg-background button-hover h-full w-56 rounded-l-2xl">
 							<CurrentMemberButton currentMember={currentMember} toggleMemberMenu={toggleMemberMenu} />
 						</th>
-						<th className="border-standard bg-background hover:bg-primary hover:text-secondary h-full w-16 rounded-r-2xl !border-l-0">
+						<th className="border-standard bg-background button-hover h-full w-16 rounded-r-2xl !border-l-0">
 							<OtherMembersDropdown
 								currentMember={currentMember}
 								otherMembers={otherMembers}

@@ -44,7 +44,7 @@ function BoardMenu({ board, unsavedChanges, showSaving, refetchBoard, modifiable
 					>
 						<button
 							onClick={toggleShowBoard}
-							className="flex-grow-1 hover:bg-primary hover:text-secondary content-center truncate p-2 text-center"
+							className="flex-grow-1 button-hover content-center truncate p-2 text-center"
 						>
 							{board.name}
 						</button>

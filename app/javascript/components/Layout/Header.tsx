@@ -36,7 +36,7 @@ function Header() {
 					{currentUser && (
 						<nav className="flex items-center">
 							<Button variant="ghost" asChild>
-								<Link to={ROUTES.boards()} className="hover:bg-primary hover:text-secondary shadow-xs">
+								<Link to={ROUTES.boards()} className="button-hover shadow-xs">
 									<LayoutGridIcon className="size-6" />
 									<span className="text-base">{t("common.pages.boards")}</span>
 								</Link>
@@ -48,10 +48,7 @@ function Header() {
 					{currentUser ? (
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
-								<Button
-									variant="ghost"
-									className="hover:bg-primary hover:text-secondary shadow-xs flex items-center gap-2"
-								>
+								<Button variant="ghost" className="button-hover shadow-xs flex items-center gap-2">
 									<UserCircleIcon className="size-6" />
 									<span className="hidden text-base sm:inline">{currentUser.name}</span>
 								</Button>
@@ -81,11 +78,7 @@ function Header() {
 						</DropdownMenu>
 					) : (
 						<>
-							<Button
-								variant="outline"
-								asChild
-								className="hover:bg-primary hover:text-secondary shadow-xs border-border/0"
-							>
+							<Button variant="outline" asChild className="button-hover shadow-xs border-border/0">
 								<Link to={ROUTES.signIn()}>
 									<LogInIcon className="mr-2 h-4 w-4" />
 									{t("users.login")}

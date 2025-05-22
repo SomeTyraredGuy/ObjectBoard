@@ -149,7 +149,7 @@ function ProfileField({ labelKey, fieldType, initialValue = "", refetchUser }: P
 						onClick={handleEdit}
 						size="sm"
 						disabled={isSaving}
-						className="hover:bg-primary hover:text-secondary ml-2 flex-shrink-0"
+						className="button-hover ml-2 flex-shrink-0"
 					>
 						{t("common.actions.edit")}
 					</Button>
