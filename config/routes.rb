@@ -28,6 +28,8 @@ Rails.application.routes.draw do
           get "others" => "members#others"
           patch "update_role/:member_id" => "members#update_role", as: "member_update_role"
           post "add_to_board" => "members#add_to_board"
+          delete "leave_board" => "members#leave_board"
+          post "accept_invite" => "members#accept_invite"
         end
 
         scope :content do
@@ -39,8 +41,10 @@ Rails.application.routes.draw do
     end
 
     get '*path', to: 'pages#app', constraints: lambda { |req|
-    !req.xhr? && req.format.html?
-  }
+      !req.xhr? && req.format.html?
+    }
+
+    match '*unmatched', to: 'application#route_not_found', via: :all
   end
 
   get "up" => "rails/health#show", as: :rails_health_check
