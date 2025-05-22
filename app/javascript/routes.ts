@@ -7,15 +7,19 @@ function getRoutes(router = false) {
 		home: () => `/${locale}`,
 
 		boards: () => `/${locale}/boards`,
-		boardsApi: () => `${getFullURL()}/all`,
+		allBoardsApi: () => `${getFullURL()}/all`,
 
 		board: (id?: number) => `/${locale}/boards/${router ? ":id" : id}`,
-		boardApi: () => `${getFullURL()}/one`,
+		getOneBoardApi: () => `${getFullURL()}/one`,
+		deleteBoardApi: (boardId: number) => `${getBaseURL()}/boards/${boardId}`,
+		createBoardApi: () => `${getBaseURL()}/boards`,
 
 		currentMemberApi: () => `${getFullURL()}/member/current`,
 		otherMembersApi: () => `${getFullURL()}/member/others`,
 		addMemberApi: () => getFullURL() + "/member/add_to_board",
-		updateMemberRoleApi: (id?: number) => `${getFullURL()}/member/update_role/${router ? ":id" : id}`,
+		updateMemberRoleApi: (member_id: number) => `${getFullURL()}/member/update_role/${member_id}`,
+		leaveBoardApi: (boardId: number) => `${getBaseURL()}/boards/${boardId}/member/leave_board`,
+		acceptInviteApi: (boardId: number) => `${getBaseURL()}/boards/${boardId}/member/accept_invite`,
 
 		saveCanvasContentApi: () => `${getFullURL()}/content/save`,
 		getCanvasContentApi: () => `${getFullURL()}/content/get`,

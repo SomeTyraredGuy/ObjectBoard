@@ -26,7 +26,8 @@ function Board() {
 		isError: isBoardError,
 	} = UseCustomQuery({
 		queryKey: ["board"],
-		path: ROUTES.boardApi(),
+		path: ROUTES.getOneBoardApi(),
+		disableNotification: true,
 	});
 
 	const { t } = useTranslation();
@@ -44,6 +45,7 @@ function Board() {
 	} = UseCustomQuery({
 		queryKey: ["current_member"],
 		path: ROUTES.currentMemberApi(),
+		disableNotification: true,
 	});
 
 	const useStageScaleAndPosition = UseStageScaleAndPosition();

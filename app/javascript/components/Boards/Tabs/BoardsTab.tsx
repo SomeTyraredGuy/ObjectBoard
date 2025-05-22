@@ -4,19 +4,26 @@ import { Board } from "@/Types/Board";
 import { TabsContent } from "@radix-ui/react-tabs";
 import { Search } from "lucide-react";
 import React, { useState } from "react";
-import BoardCard from "../BoardCard";
+import BoardsGrid from "../BoardsGrid";
 import { useTranslation } from "react-i18next";
 import Filters, { FilterType } from "../Filters";
+import UseCustomMutation from "@/hooks/UseCustomMutation";
+import ROUTES from "@/routes";
+
+type showConfirmation = {
+	action: () => void;
+	boardId: number;
+	label: string;
+} | null;
 
 type Props = {
 	boards: Board[];
+	refetchBoards: () => void;
 	isLoading: boolean;
-	isError: boolean;
-	error: unknown;
 	onNavigateToTab: (tabValue: string) => void;
 };
 
-function BoardsTab({ boards, isLoading, isError, error, onNavigateToTab }: Props) {
+function BoardsTab({ boards, refetchBoards, isLoading, onNavigateToTab }: Props) {
 	const { t } = useTranslation();
 
 	const [searchTerm, setSearchTerm] = useState("");
@@ -35,10 +42,26 @@ function BoardsTab({ boards, isLoading, isError, error, onNavigateToTab }: Props
 			(roleFilters.length > 0 ? roleFilters.some((filter) => filter.func(board)) : true),
 	);
 
+	const [showConfirmation, setShowConfirmation] = useState<showConfirmation>(null);
+
+	const { mutate: deleteBoard } = UseCustomMutation({
+		path: ROUTES.deleteBoardApi(showConfirmation?.boardId),
+		method: "DELETE",
+		onSuccess: refetchBoards,
+		successMessage: t("board.successfully_deleted"),
+	});
+
+	const { mutate: leaveBoard } = UseCustomMutation({
+		path: ROUTES.leaveBoardApi(showConfirmation?.boardId),
+		method: "DELETE",
+		onSuccess: refetchBoards,
+		successMessage: t("board.successfully_left"),
+	});
+
 	return (
 		<TabsContent value="boards">
 			<div className="flex flex-col space-y-4">
-				<div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+				<div className="items-start sm:items-center">
 					<h1 className="text-2xl font-semibold tracking-tight">{t("board.my_boards.label")}</h1>
 				</div>
 
@@ -56,45 +79,40 @@ function BoardsTab({ boards, isLoading, isError, error, onNavigateToTab }: Props
 					<Filters addFilter={addFilter} removeFilter={removeFilter} />
 				</div>
 
-				{(isLoading || isError) && (
+				{isLoading && (
 					<div className="py-10 text-center">
-						<p className={isLoading ? "text-muted-foreground" : "text-destructive"}>
-							{isLoading
-								? t("board.search.loading_boards")
-								: error instanceof Error
-									? error.message
-									: t("common.notification.unexpected_error")}
-						</p>
+						<p className="text-muted-foreground">{t("board.search.loading_boards")}</p>
 					</div>
 				)}
 
-				{!isLoading &&
-					!isError &&
-					(filteredBoards.length === 0 ? (
-						<div className="py-10 text-center">
-							<p className="text-muted-foreground">
-								{searchTerm ? t("board.search.no_boards_matching") : t("board.my_boards.no_boards")}
-							</p>
-							{!searchTerm && (
-								<Button
-									variant="outline"
-									className="button-hover mt-2"
-									onClick={() => onNavigateToTab("new")}
-								>
-									{t("board.new_board.create_first")}
-								</Button>
-							)}
-						</div>
-					) : (
-						<div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-							{filteredBoards.map((board) => (
-								<BoardCard key={board.id} board={board} />
-							))}
-						</div>
-					))}
+				{!isLoading && filteredBoards.length === 0 ? (
+					<div className="py-10 text-center">
+						<p className="text-muted-foreground">
+							{searchTerm ? t("board.search.no_boards_matching") : t("board.my_boards.no_boards")}
+						</p>
+						{!searchTerm && (
+							<Button
+								variant="outline"
+								className="button-hover mt-2"
+								onClick={() => onNavigateToTab("new")}
+							>
+								{t("board.new_board.create_first")}
+							</Button>
+						)}
+					</div>
+				) : (
+					<BoardsGrid
+						boards={filteredBoards}
+						leaveBoard={() => leaveBoard({})}
+						deleteBoard={() => deleteBoard({})}
+						showConfirmation={showConfirmation}
+						setShowConfirmation={setShowConfirmation}
+					/>
+				)}
 			</div>
 		</TabsContent>
 	);
 }
 
 export default BoardsTab;
+export type { showConfirmation };

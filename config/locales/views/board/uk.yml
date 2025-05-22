@@ -49,6 +49,7 @@ uk:
           Admin: Адмін
           Editor: Редактор
           Viewer: Глядач
+          Invited: Запрошений
           settings:
             label: Змінити роль
             can_edit:
@@ -76,14 +77,28 @@ uk:
         reload_message: Сторінка буде перезавантажена через 10 секунд. Якщо це не відбувається, будь ласка, оновіть сторінку вручну
 
       open: Відкрити дошку
+      leave: Вийти з дошки
+      delete: Видалити дошку
+      successfully_left: Ви успішно вийшли з дошки
+      successfully_deleted: Дошка успішно видалена
+      successfully_created: Дошка успішно створена
+      successfully_declined_invite: Ви успішно відхилили запрошення
+      successfully_accepted_invite: Ви успішно прийняли запрошення
+
       my_boards:
         label: Мої дошки
         no_boards: У вас немає жодної дошки
 
-      invites: Запрошення
       new_board:
         label: Нова дошка
         create_first: Створіть свою першу дошку
+        title: Створити нову дошку
+        name: Назва дошки
+        name_placeholder: Напишіть назву для вашої дошки
+        description: Опис дошки
+        description_placeholder: Напишіть опис для вашої дошки
+        create: Створити
+        creating: Створюється...
 
       search:
         placeholder: Пошук дошки за назвою та описом...
@@ -91,3 +106,7 @@ uk:
         filter_by_role: "Фільтрувати за роллю:"
         loading_boards: Завантаження дошок...
         no_boards_matching: Немає дошок, що відповідають пошуковому запиту
+
+      invites:
+        label: Запрошення
+        no_invites: У вас немає запрошень

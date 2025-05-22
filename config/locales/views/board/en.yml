@@ -48,6 +48,7 @@ en:
           Admin: Admin
           Editor: Editor
           Viewer: Viewer
+          Invited: Invited
           settings:
             label: Change role
             can_edit:
@@ -75,14 +76,28 @@ en:
         reload_message: The page will be reloaded in a 10 seconds. If it doesn't, please refresh the page manually
 
       open: Open board
+      leave: Leave board
+      delete: Delete board
+      successfully_left: You have successfully left the board
+      successfully_deleted: You have successfully deleted the board
+      successfully_created: You have successfully created the board
+      successfully_declined_invite: You have successfully declined the invite
+      successfully_accepted_invite: You have successfully accepted the invite
+
       my_boards:
         label: My boards
         no_boards: You don't have any boards yet
 
-      invites: Invites
       new_board:
         label: New board
-        create_first: Create your first board
+        create_first: Create your first board.
+        title: Create new board
+        name: Board name
+        name_placeholder: Write a name for your board
+        description: Board description
+        description_placeholder: Write a description for your board
+        create: Create board
+        creating: Creating board...
 
       search:
         placeholder: Search boards by name and description...
@@ -90,3 +105,7 @@ en:
         filter_by_role: "Filter by role:"
         loading_boards: Loading boards...
         no_boards_matching: No boards matching the search
+
+      invites:
+        label: Invites
+        no_invites: You don't have any invites yet

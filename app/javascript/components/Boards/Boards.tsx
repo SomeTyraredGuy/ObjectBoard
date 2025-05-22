@@ -26,15 +26,14 @@ function Boards() {
 	const {
 		data: boardsData = [],
 		isLoading,
-		isError,
-		error,
+		refetch: refetchBoards,
 	} = UseCustomQuery({
 		queryKey: ["boards"],
-		path: ROUTES.boardsApi(),
+		path: ROUTES.allBoardsApi(),
 	});
 	const boards: Board[] = boardsData || [];
 
-	const [activeTab, setActiveTab] = useState("invites");
+	const [activeTab, setActiveTab] = useState("boards");
 	const handleNavigateToTab = (tabValue: string) => {
 		setActiveTab(tabValue);
 	};
@@ -60,21 +59,19 @@ function Boards() {
 
 					<BoardsTab
 						boards={boards}
+						refetchBoards={refetchBoards}
 						isLoading={isLoading}
-						isError={isError}
-						error={error}
 						onNavigateToTab={handleNavigateToTab}
 					/>
 
 					<InvitesTab
 						boards={boards}
+						refetchBoards={refetchBoards}
 						isLoading={isLoading}
-						isError={isError}
-						error={error}
 						onNavigateToTab={handleNavigateToTab}
 					/>
 
-					<NewBoardTab />
+					<NewBoardTab refetchBoards={refetchBoards} onNavigateToTab={handleNavigateToTab} />
 				</Tabs>
 			</div>
 		</Layout>

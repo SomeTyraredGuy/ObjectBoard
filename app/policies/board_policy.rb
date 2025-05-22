@@ -1,7 +1,7 @@
 class BoardPolicy < ApplicationPolicy
   def access?
     member = Member.find_by(board: record, user: user)
-    !member.nil?
+    !member.nil? && member.role.name != :Invited
   end
 
   def edit?

@@ -4,8 +4,26 @@ class MemberPolicy < ApplicationPolicy
 
     return admin_assignable? if admin_assign?
 
+    return false if invited_assign?
+
     true
   end
+
+  def add_to_board?
+    record.role.can_change_roles
+  end
+
+  def leave_board?
+    return false if @context[:current_member].nil?
+
+    current_user_role = @context[:current_member].role
+
+    return false unless record == @context[:current_member] || current_user_role.can_change_roles
+
+    true
+  end
+
+  protected
 
   def admin_assign?
     @context[:new_role][:name] == "Admin" || record.role.name == "Admin"
@@ -15,8 +33,8 @@ class MemberPolicy < ApplicationPolicy
     @context[:current_member].role.can_assign_admin
   end
 
-  def add_to_board?
-    record.role.can_change_roles
+  def invited_assign?
+    @context[:new_role][:name] == "Invited" || record.role.name == "Invited"
   end
 
   class Scope < ApplicationPolicy::Scope

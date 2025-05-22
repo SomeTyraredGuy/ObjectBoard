@@ -46,7 +46,8 @@ function MemberSettings({ currentMember, member, refetchFn, closeFn }: Props) {
 		return (
 			!currentMember.role.can_change_roles ||
 			member.role.name === "Owner" ||
-			(member.role.name === "Admin" && !currentMember.role.can_assign_admin)
+			(member.role.name === "Admin" && !currentMember.role.can_assign_admin) ||
+			member.role.name === "Invited"
 		);
 	}
 

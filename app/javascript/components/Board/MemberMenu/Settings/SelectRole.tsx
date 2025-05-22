@@ -18,6 +18,7 @@ function SelectRole({ currentMemberRole, onChange, defaultValue, disabled }: Pro
 		{ name: "Admin", disabled: !currentMemberRole.can_assign_admin },
 		{ name: "Editor", disabled: !currentMemberRole.can_change_roles },
 		{ name: "Viewer", disabled: !currentMemberRole.can_change_roles },
+		{ name: "Invited", disabled: true },
 	];
 
 	return (

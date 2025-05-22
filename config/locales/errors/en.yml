@@ -3,6 +3,7 @@ en:
     general:
       unexpected: Unexpected error
       unauthorized: You are not authorized to perform this action
+      not_found: Routing Error! No route matches the request
     users:
       not_found: User not found
     roles:

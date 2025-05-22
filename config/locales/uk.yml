@@ -15,6 +15,8 @@ uk:
         reset: Скинути
         cancel: Скасувати
         edit: Редагувати
+        accept: Прийняти
+        decline: Відхилити
 
       notification:
         error: Помилка!

@@ -155,7 +155,12 @@
             "saving_content": "Під час збереження вмісту дошки"
           }
         },
-        "invites": "Запрошення",
+        "delete": "Видалити дошку",
+        "invites": {
+          "label": "Запрошення",
+          "no_invites": "У вас немає запрошень"
+        },
+        "leave": "Вийти з дошки",
         "members_menu": {
           "add": {
             "label": "Додати нового учасника",
@@ -168,6 +173,7 @@
           "role": {
             "Admin": "Адмін",
             "Editor": "Редактор",
+            "Invited": "Запрошений",
             "Owner": "Власник",
             "Viewer": "Глядач",
             "label": "Роль: ",
@@ -198,8 +204,15 @@
           "no_boards": "У вас немає жодної дошки"
         },
         "new_board": {
+          "create": "Створити",
           "create_first": "Створіть свою першу дошку",
-          "label": "Нова дошка"
+          "creating": "Створюється...",
+          "description": "Опис дошки",
+          "description_placeholder": "Напишіть опис для вашої дошки",
+          "label": "Нова дошка",
+          "name": "Назва дошки",
+          "name_placeholder": "Напишіть назву для вашої дошки",
+          "title": "Створити нову дошку"
         },
         "open": "Відкрити дошку",
         "resources_menu": {
@@ -224,6 +237,11 @@
           "no_boards_matching": "Немає дошок, що відповідають пошуковому запиту",
           "placeholder": "Пошук дошки за назвою та описом..."
         },
+        "successfully_accepted_invite": "Ви успішно прийняли запрошення",
+        "successfully_created": "Дошка успішно створена",
+        "successfully_declined_invite": "Ви успішно відхилили запрошення",
+        "successfully_deleted": "Дошка успішно видалена",
+        "successfully_left": "Ви успішно вийшли з дошки",
         "toolbar": {
           "ellipse": "Еліпс",
           "line": "Лінія",
@@ -236,8 +254,10 @@
       },
       "common": {
         "actions": {
+          "accept": "Прийняти",
           "add": "Додати",
           "cancel": "Скасувати",
+          "decline": "Відхилити",
           "delete": "Видалити",
           "deleting": "Видаляється...",
           "edit": "Редагувати",

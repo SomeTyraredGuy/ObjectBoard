@@ -379,7 +379,12 @@
             "saving_content": "While saving board content"
           }
         },
-        "invites": "Invites",
+        "delete": "Delete board",
+        "invites": {
+          "label": "Invites",
+          "no_invites": "You don't have any invites yet"
+        },
+        "leave": "Leave board",
         "members_menu": {
           "add": {
             "label": "Add new member",
@@ -392,6 +397,7 @@
           "role": {
             "Admin": "Admin",
             "Editor": "Editor",
+            "Invited": "Invited",
             "Owner": "Owner",
             "Viewer": "Viewer",
             "label": "Role: ",
@@ -422,8 +428,15 @@
           "no_boards": "You don't have any boards yet"
         },
         "new_board": {
-          "create_first": "Create your first board",
-          "label": "New board"
+          "create": "Create board",
+          "create_first": "Create your first board.",
+          "creating": "Creating board...",
+          "description": "Board description",
+          "description_placeholder": "Write a description for your board",
+          "label": "New board",
+          "name": "Board name",
+          "name_placeholder": "Write a name for your board",
+          "title": "Create new board"
         },
         "open": "Open board",
         "resources_menu": {
@@ -447,6 +460,11 @@
           "no_boards_matching": "No boards matching the search",
           "placeholder": "Search boards by name and description..."
         },
+        "successfully_accepted_invite": "You have successfully accepted the invite",
+        "successfully_created": "You have successfully created the board",
+        "successfully_declined_invite": "You have successfully declined the invite",
+        "successfully_deleted": "You have successfully deleted the board",
+        "successfully_left": "You have successfully left the board",
         "toolbar": {
           "ellipse": "Ellipse",
           "line": "Line",
@@ -459,8 +477,10 @@
       },
       "common": {
         "actions": {
+          "accept": "Accept",
           "add": "Add",
           "cancel": "Cancel",
+          "decline": "Decline",
           "delete": "Delete",
           "deleting": "Deleting...",
           "edit": "Edit",
