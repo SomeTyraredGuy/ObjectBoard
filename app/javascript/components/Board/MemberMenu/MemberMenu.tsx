@@ -5,7 +5,6 @@ import OtherMembersDropdown from "./OtherMembers/OtherMembersDropdown";
 import MemberSettings from "./Settings/MemberSettings";
 import UseCustomQuery from "@/hooks/UseCustomQuery";
 import AddMemberForm from "./OtherMembers/AddMemberForm";
-import useNotification from "@/hooks/useNotification";
 import ROUTES from "@/routes";
 
 type Props = {
@@ -14,19 +13,9 @@ type Props = {
 };
 
 function MemberMenu({ currentMember, refetchCurrentMember }: Props) {
-	const {
-		data: otherMembers = [],
-		isError,
-		error,
-		refetch,
-	} = UseCustomQuery({
+	const { data: otherMembers = [], refetch } = UseCustomQuery({
 		queryKey: ["other_members"],
 		path: ROUTES.otherMembersApi(),
-	});
-
-	useNotification({
-		isError,
-		error,
 	});
 
 	const [chosenMember, setChosenMember] = useState<OtherMember | null>(null);

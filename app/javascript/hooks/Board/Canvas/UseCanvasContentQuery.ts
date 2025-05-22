@@ -21,6 +21,7 @@ export default function UseCanvasContentQuery({ canvasStateUtils, setCanvasObjec
 		queryKey: ["canvasContent"],
 		path: ROUTES.getCanvasContentApi(),
 		refetchInterval: false,
+		disableNotification: true,
 	});
 
 	useEffect(() => {

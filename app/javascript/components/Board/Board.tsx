@@ -13,7 +13,6 @@ import UseCanvasContentQuery from "../../hooks/Board/Canvas/UseCanvasContentQuer
 import Loader from "../General/Loader.js";
 import createCanvasStateUtils from "../../scripts/canvasStateUtils/createCanvasStateUtils.js";
 import UseCustomQuery from "@/hooks/UseCustomQuery";
-import { Toaster } from "@/shadcn/components/ui/sonner.js";
 import CriticalError from "../General/CriticalError.js";
 import { useTranslation } from "react-i18next";
 import ROUTES from "@/routes.js";
@@ -156,8 +155,6 @@ function Board() {
 			)}
 
 			<MemberMenu currentMember={currentMember} refetchCurrentMember={refetchCurrentMember} />
-
-			<Toaster expand position="top-center" richColors theme="light" />
 
 			{criticalError && <CriticalError when={criticalError.when} message={criticalError.message} />}
 		</div>

@@ -10,7 +10,6 @@ import {
 import { Button } from "@/shadcn/components/ui/button";
 import UseCustomMutation from "@/hooks/UseCustomMutation";
 import { Input } from "@/shadcn/components/ui/input";
-import useNotification from "@/hooks/useNotification";
 import { useTranslation } from "react-i18next";
 import ROUTES from "@/routes";
 
@@ -23,21 +22,10 @@ type Props = {
 function AddMemberForm({ refetchFn, closeFn, open }: Props) {
 	const { t } = useTranslation();
 	const [name, setName] = useState("");
-	const {
-		mutate: add,
-		error,
-		isError,
-		isSuccess,
-	} = UseCustomMutation({
+	const { mutate: add } = UseCustomMutation({
 		path: ROUTES.addMemberApi(),
 		onSuccess: refetchFn,
 		method: "POST",
-	});
-
-	useNotification({
-		isError,
-		error,
-		isSuccess,
 		successMessage: t("board.members_menu.add.success_message", { nickname: name }),
 	});
 

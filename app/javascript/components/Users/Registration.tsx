@@ -26,12 +26,7 @@ function Registration() {
 		navigate(ROUTES.home());
 	};
 
-	const {
-		mutate: registerUser,
-		error: registrationApiError,
-		isError: isRegistrationApiError,
-		isSuccess: isRegistrationSuccess,
-	} = UseCustomMutation({
+	const { mutate: registerUser } = UseCustomMutation({
 		path: ROUTES.UserApi(),
 		method: "POST",
 		onSuccess: handleRegistrationSuccess,
@@ -56,13 +51,6 @@ function Registration() {
 		});
 	};
 
-	let errorMessage = null;
-	if (clientError) {
-		errorMessage = clientError;
-	} else if (isRegistrationApiError && registrationApiError) {
-		errorMessage = registrationApiError.message || t("sign_up_failed");
-	}
-
 	const { currentUser, isLoading } = useUser();
 	useEffect(() => {
 		if (!isLoading && currentUser) {
@@ -86,14 +74,9 @@ function Registration() {
 						<CardDescription>{t("sign_up_label")}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						{errorMessage && (
+						{clientError && (
 							<div className="bg-destructive/20 text-destructive border-destructive mb-4 rounded-md border p-3">
-								{errorMessage}
-							</div>
-						)}
-						{isRegistrationSuccess && (
-							<div className="mb-4 rounded-md border border-green-500 bg-green-500/20 p-3 text-green-700 dark:text-green-400">
-								{t("sign_up_success")}
+								{clientError}
 							</div>
 						)}
 						<div className="grid w-full items-center gap-4">
@@ -160,7 +143,6 @@ function Registration() {
 						<Button
 							type="submit"
 							className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-ring w-full"
-							disabled={isRegistrationSuccess}
 						>
 							{t("sign_up")}
 						</Button>

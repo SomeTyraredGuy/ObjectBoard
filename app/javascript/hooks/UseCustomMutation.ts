@@ -1,14 +1,26 @@
 import { getCSRFToken, setCSRFToken } from "../scripts/requestUtils.js";
 import { useMutation } from "@tanstack/react-query";
+import useNotification from "./useNotification.js";
 
 type Props = {
 	path: string;
 	onSuccess?: () => void;
 	onResponse?: (response: Response) => void;
 	method: string;
+	disableNotification?: boolean;
+	notifySuccess?: boolean;
+	successMessage?: string;
 };
 
-export default function UseCustomMutation({ path, onSuccess, method, onResponse = () => {} }: Props) {
+export default function UseCustomMutation({
+	path,
+	onSuccess,
+	method,
+	onResponse = () => {},
+	notifySuccess = true,
+	successMessage,
+	disableNotification = false,
+}: Props) {
 	const { mutate, error, isError, isSuccess, isPending } = useMutation({
 		mutationFn: async (value: unknown) => {
 			const response = await fetch(path, {
@@ -35,6 +47,12 @@ export default function UseCustomMutation({ path, onSuccess, method, onResponse 
 		},
 		onSuccess: onSuccess,
 	});
+
+	if (!disableNotification) {
+		const notification = notifySuccess ? { isError, error, isSuccess, successMessage } : { isError, error };
+
+		useNotification(notification);
+	}
 
 	return {
 		mutate,

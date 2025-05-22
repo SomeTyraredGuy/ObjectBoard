@@ -1,12 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
+import useNotification from "./useNotification";
 
 type Props = {
 	queryKey: string[];
 	path: string;
 	refetchInterval?: number | false;
+	disableNotification?: boolean;
 };
 
-export default function UseCustomQuery({ queryKey, path }: Props) {
+export default function UseCustomQuery({ queryKey, path, disableNotification = false }: Props) {
 	const { data, isError, error, refetch, isLoading } = useQuery({
 		queryKey: queryKey,
 		queryFn: async () => {
@@ -21,6 +23,13 @@ export default function UseCustomQuery({ queryKey, path }: Props) {
 			return response;
 		},
 	});
+
+	if (!disableNotification) {
+		useNotification({
+			isError,
+			error,
+		});
+	}
 
 	return { data, isError, error, refetch, isLoading };
 }

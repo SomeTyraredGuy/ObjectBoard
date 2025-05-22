@@ -11,6 +11,7 @@ import LogIn from "./Users/LogIn";
 import Registration from "./Users/Registration";
 import UserProfile from "./Users/UserProfile";
 import { getRoutes } from "@/routes";
+import { Toaster } from "sonner";
 
 function App() {
 	const ROUTES = getRoutes(true);
@@ -27,6 +28,7 @@ function App() {
 		<QueryWrap>
 			<UserProvider>
 				<RouterProvider router={router} />
+				<Toaster expand position="top-center" richColors theme="light" />
 			</UserProvider>
 		</QueryWrap>
 	);

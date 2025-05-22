@@ -12,7 +12,6 @@ import { Button } from "@/shadcn/components/ui/button";
 import UseCustomMutation from "@/hooks/UseCustomMutation";
 import SelectRole from "./SelectRole";
 import RoleSwitcherList from "./RoleSwitcherList";
-import useNotification from "@/hooks/useNotification";
 import { useTranslation } from "react-i18next";
 import ROUTES from "@/routes";
 
@@ -32,21 +31,10 @@ type Props = {
 function MemberSettings({ currentMember, member, refetchFn, closeFn }: Props) {
 	const { t } = useTranslation();
 	const [newRole, setNewRole] = React.useState<fullRoleType>(member.role as fullRoleType);
-	const {
-		mutate: save,
-		error,
-		isError,
-		isSuccess,
-	} = UseCustomMutation({
+	const { mutate: save } = UseCustomMutation({
 		path: ROUTES.updateMemberRoleApi(member.member_id),
 		onSuccess: refetchFn,
 		method: "PATCH",
-	});
-
-	useNotification({
-		isError,
-		error,
-		isSuccess,
 		successMessage: t("board.members_menu.role.settings.success_message", { nickname: member.name }),
 	});
 

@@ -86,6 +86,7 @@ export default function UseCanvasContentMutation({ noChanges, changeObjects }: P
 		method: "POST",
 		onSuccess: () => setUnsavedChanges(false),
 		onResponse: processResponse,
+		disableNotification: true,
 	});
 
 	const { startTimeout, clearTimer: clearTimeout } = useTimeout({

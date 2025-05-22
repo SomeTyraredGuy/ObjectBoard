@@ -29,12 +29,7 @@ function ProfileField({ labelKey, fieldType, initialValue = "", refetchUser }: P
 		}
 	}, [isEditing]);
 
-	const {
-		mutate: updateField,
-		isPending: isSaving,
-		isError: isUpdateError,
-		error: updateError,
-	} = UseCustomMutation({
+	const { mutate: updateField, isPending: isSaving } = UseCustomMutation({
 		path: ROUTES.UserApi(),
 		method: "PATCH",
 		onSuccess: () => {
@@ -133,11 +128,6 @@ function ProfileField({ labelKey, fieldType, initialValue = "", refetchUser }: P
 							{t("common.actions.cancel")}
 						</Button>
 					</div>
-					{isUpdateError && (
-						<div className="bg-destructive/20 text-destructive border-destructive mb-4 rounded-md border p-3">
-							{updateError?.message}
-						</div>
-					)}
 				</form>
 			) : (
 				<div className="flex items-center justify-between">

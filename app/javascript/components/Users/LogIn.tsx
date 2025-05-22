@@ -25,12 +25,7 @@ function LogIn() {
 		navigate(ROUTES.home());
 	};
 
-	const {
-		mutate: logInUser,
-		error: loginError,
-		isError: isLoginError,
-		isSuccess: isLoginSuccess,
-	} = UseCustomMutation({
+	const { mutate: logInUser } = UseCustomMutation({
 		path: ROUTES.signIn(),
 		method: "POST",
 		onSuccess: handleLoginSuccess,
@@ -105,12 +100,6 @@ function LogIn() {
 								className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-input"
 							/>
 						</div>
-						{isLoginError && loginError && (
-							<p className="text-destructive text-sm font-medium">
-								{(loginError as Error).message || t("login_failed")}
-							</p>
-						)}
-						{isLoginSuccess && <p className="text-sm font-medium text-green-600">{t("login_success")}</p>}
 					</CardContent>
 					<CardFooter className="mt-4 flex flex-col items-center">
 						<Button

@@ -5,7 +5,6 @@ import { Textarea } from "@/shadcn/components/ui/textarea";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/shadcn/components/ui/button";
 import UseCustomMutation from "@/hooks/UseCustomMutation";
-import useNotification from "@/hooks/useNotification";
 import { Separator } from "@/shadcn/components/ui/separator";
 import { getFullURL } from "@/scripts/requestUtils";
 
@@ -22,15 +21,10 @@ type Props = {
 
 function EditBoard({ open, closeFn, board, modifiable, refetchBoard }: Props) {
 	const { t } = useTranslation();
-	const { mutate, error, isError, isSuccess } = UseCustomMutation({
+	const { mutate: updateBoard } = UseCustomMutation({
 		path: getFullURL(),
 		onSuccess: refetchBoard,
 		method: "PUT",
-	});
-	useNotification({
-		isError,
-		error,
-		isSuccess,
 		successMessage: t("board.board_menu.edit_success_message"),
 	});
 	const [updated, setUpdated] = React.useState(board);
@@ -70,7 +64,7 @@ function EditBoard({ open, closeFn, board, modifiable, refetchBoard }: Props) {
 							className="mb-2 w-full"
 						/>
 						<DialogFooter className="!justify-center">
-							<Button className="w-26" onClick={() => mutate({ board: updated })}>
+							<Button className="w-26" onClick={() => updateBoard({ board: updated })}>
 								{t("common.actions.save")}
 							</Button>
 							<Button className="w-26" onClick={handleReset}>
