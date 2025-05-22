@@ -1,17 +1,12 @@
 class BoardsController < ApplicationController
   include BoardRelated
 
-  # GET /boards or /boards.json
-  def index
-    @boards = policy_scope(Board)
+  def all
+    render json: policy_scope(Board)
   end
 
-  def get
-    board = {
-      name: @board.name,
-      description: @board.description
-    }
-    render json: board
+  def one
+    render json: @board
   end
 
   # GET /boards/new

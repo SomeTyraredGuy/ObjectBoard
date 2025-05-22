@@ -155,6 +155,7 @@
             "saving_content": "Під час збереження вмісту дошки"
           }
         },
+        "invites": "Запрошення",
         "members_menu": {
           "add": {
             "label": "Додати нового учасника",
@@ -192,6 +193,15 @@
             }
           }
         },
+        "my_boards": {
+          "label": "Мої дошки",
+          "no_boards": "У вас немає жодної дошки"
+        },
+        "new_board": {
+          "create_first": "Створіть свою першу дошку",
+          "label": "Нова дошка"
+        },
+        "open": "Відкрити дошку",
         "resources_menu": {
           "properties": {
             "corner_radius": "Радіус закруглення",
@@ -206,6 +216,13 @@
             "groups": "Групи",
             "properties": "Властивості"
           }
+        },
+        "search": {
+          "filter_by_role": "Фільтрувати за роллю:",
+          "filters": "Фільтри",
+          "loading_boards": "Завантаження дошок...",
+          "no_boards_matching": "Немає дошок, що відповідають пошуковому запиту",
+          "placeholder": "Пошук дошки за назвою та описом..."
         },
         "toolbar": {
           "ellipse": "Еліпс",
@@ -237,7 +254,8 @@
         },
         "notification": {
           "error": "Помилка!",
-          "success": "Успіх!"
+          "success": "Успіх!",
+          "unexpected_error": "Сталася непередбачена помилка"
         },
         "pages": {
           "boards": "Дошки",

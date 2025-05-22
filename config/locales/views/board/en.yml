@@ -73,3 +73,20 @@ en:
           loading_board: While loading board
         message: "Description: {{message}}"
         reload_message: The page will be reloaded in a 10 seconds. If it doesn't, please refresh the page manually
+
+      open: Open board
+      my_boards:
+        label: My boards
+        no_boards: You don't have any boards yet
+
+      invites: Invites
+      new_board:
+        label: New board
+        create_first: Create your first board
+
+      search:
+        placeholder: Search boards by name and description...
+        filters: Filters
+        filter_by_role: "Filter by role:"
+        loading_boards: Loading boards...
+        no_boards_matching: No boards matching the search

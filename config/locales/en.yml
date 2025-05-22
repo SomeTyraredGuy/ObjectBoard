@@ -19,6 +19,7 @@ en:
       notification:
         error: Error!
         success: Success!
+        unexpected_error: An unexpected error occurred
 
       loading: Loading...
 

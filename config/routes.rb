@@ -17,10 +17,11 @@ Rails.application.routes.draw do
       end
     end
 
+    get "boards/all" => "boards#all"
     resources :boards, except: [:show, :new, :index] do
       member do
 
-        get "get" => "boards#get"
+        get "one" => "boards#one"
 
         scope :member do
           get "current" => "members#current"

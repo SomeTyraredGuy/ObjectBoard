@@ -7,9 +7,10 @@ function getRoutes(router = false) {
 		home: () => `/${locale}`,
 
 		boards: () => `/${locale}/boards`,
+		boardsApi: () => `${getFullURL()}/all`,
 
 		board: (id?: number) => `/${locale}/boards/${router ? ":id" : id}`,
-		boardApi: () => `${getFullURL()}/get`,
+		boardApi: () => `${getFullURL()}/one`,
 
 		currentMemberApi: () => `${getFullURL()}/member/current`,
 		otherMembersApi: () => `${getFullURL()}/member/others`,

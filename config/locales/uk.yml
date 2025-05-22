@@ -19,6 +19,7 @@ uk:
       notification:
         error: Помилка!
         success: Успіх!
+        unexpected_error: Сталася непередбачена помилка
 
       loading: Завантаження...
 

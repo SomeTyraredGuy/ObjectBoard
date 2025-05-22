@@ -379,6 +379,7 @@
             "saving_content": "While saving board content"
           }
         },
+        "invites": "Invites",
         "members_menu": {
           "add": {
             "label": "Add new member",
@@ -416,6 +417,15 @@
             }
           }
         },
+        "my_boards": {
+          "label": "My boards",
+          "no_boards": "You don't have any boards yet"
+        },
+        "new_board": {
+          "create_first": "Create your first board",
+          "label": "New board"
+        },
+        "open": "Open board",
         "resources_menu": {
           "properties": {
             "corner_radius": "Corner radius",
@@ -429,6 +439,13 @@
             "groups": "Groups",
             "properties": "Properties"
           }
+        },
+        "search": {
+          "filter_by_role": "Filter by role:",
+          "filters": "Filters",
+          "loading_boards": "Loading boards...",
+          "no_boards_matching": "No boards matching the search",
+          "placeholder": "Search boards by name and description..."
         },
         "toolbar": {
           "ellipse": "Ellipse",
@@ -460,7 +477,8 @@
         },
         "notification": {
           "error": "Error!",
-          "success": "Success!"
+          "success": "Success!",
+          "unexpected_error": "An unexpected error occurred"
         },
         "pages": {
           "boards": "Boards",
