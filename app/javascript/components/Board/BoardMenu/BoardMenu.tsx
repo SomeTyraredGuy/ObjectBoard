@@ -40,11 +40,11 @@ function BoardMenu({ board, unsavedChanges, showSaving, refetchBoard, modifiable
 						</Hint>
 					</th>
 					<th
-						className={`flex-grow-1 border-standard bg-background flex w-48 border-s-0 p-0 ${showSaving ? "" : "rounded-r-2xl"}`}
+						className={`flex-grow-1 button-hover border-standard bg-background flex w-48 border-s-0 p-0 ${showSaving ? "" : "rounded-r-2xl"}`}
 					>
 						<button
 							onClick={toggleShowBoard}
-							className="flex-grow-1 button-hover content-center truncate p-2 text-center"
+							className="flex-grow-1 content-center truncate p-2 text-center"
 						>
 							{board.name}
 						</button>
