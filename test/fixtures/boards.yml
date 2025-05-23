@@ -7,3 +7,7 @@ one:
 two:
   name: 2
   description: MyString
+
+with_invite:
+  name: 3
+  description: MyString

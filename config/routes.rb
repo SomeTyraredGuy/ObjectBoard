@@ -24,17 +24,17 @@ Rails.application.routes.draw do
         get "one" => "boards#one"
 
         scope :member do
-          get "current" => "members#current"
-          get "others" => "members#others"
-          patch "update_role/:member_id" => "members#update_role", as: "member_update_role"
-          post "add_to_board" => "members#add_to_board"
-          delete "leave_board" => "members#leave_board"
-          post "accept_invite" => "members#accept_invite"
+          get "current" => "members#current", as: :current_member
+          get "others" => "members#others", as: :others_members
+          patch "update_role/:member_id" => "members#update_role", as: :member_update_role
+          post "add_to_board" => "members#add_to_board", as: :member_add_to_board
+          delete "leave_board" => "members#leave_board", as: :member_leave_board
+          post "accept_invite" => "members#accept_invite", as: :member_accept_invite
         end
 
         scope :content do
-          get "get" => "board_content#get", as: "content_get"
-          post "save" => "board_content#save", as: "content_save"
+          get "get" => "board_content#get", as: :content_get
+          post "save" => "board_content#save", as: :content_save
         end
 
       end

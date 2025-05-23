@@ -29,3 +29,8 @@ b1Viewer:
   user: Viewer
   board: one
   role: Viewer
+
+invite:
+  user: Owner
+  board: with_invite
+  role: Invited
