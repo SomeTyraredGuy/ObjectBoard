@@ -24,7 +24,6 @@ export type CanvasState =
 	| {
 			mode: CanvasMode.Selected;
 			objects: CanvasObject[];
-			movedBy?: Point; // for SelectionLayer to just move and not fully recalculate
 			lineModification?: LineModification;
 			resizing?: Resizing;
 	  }

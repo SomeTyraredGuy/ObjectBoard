@@ -3,11 +3,18 @@ import { CanvasObject, Point } from "../../Types/CanvasObjects";
 import { CanvasStateUtils } from "../../Types/CanvasStateUtils";
 import { setInsertingMode, updatePropertyInsertingMode } from "./insertingMode";
 import { setNoneMode } from "./noneMode";
-import { addToSelectedMode, modifyLineSelectedMode, moveSelectedMode, resizeSelectedMode, setSelectedMode, updateSelectedMode } from "./selectedMode";
+import {
+	addToSelectedMode,
+	modifyLineSelectedMode,
+	moveSelectedMode,
+	resizeSelectedMode,
+	setSelectedMode,
+	updateSelectedMode,
+} from "./selectedMode";
 import { setSelectionNetMode, updateSelectionNetMode } from "./selectionNetMode";
 
 export default function createCanvasStateUtils(
-	setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>
+	setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
 ): CanvasStateUtils {
 	return {
 		None: {
@@ -17,8 +24,9 @@ export default function createCanvasStateUtils(
 			set: (canvasObjects: CanvasObject[]) => setSelectedMode(setCanvasState, canvasObjects),
 			update: (newSelected: CanvasObject[]) => updateSelectedMode(setCanvasState, newSelected),
 			add: (newObject: CanvasObject) => addToSelectedMode(setCanvasState, newObject),
-			move: (newSelected: CanvasObject[], moveBy: Point) => moveSelectedMode(setCanvasState, newSelected, moveBy),
-			modifyLine: (lineModification: LineModification) => modifyLineSelectedMode(setCanvasState, lineModification),
+			move: (newSelected: CanvasObject[]) => moveSelectedMode(setCanvasState, newSelected),
+			modifyLine: (lineModification: LineModification) =>
+				modifyLineSelectedMode(setCanvasState, lineModification),
 			resize: (resizing: Resizing) => resizeSelectedMode(setCanvasState, resizing),
 		},
 		SelectionNet: {
@@ -27,7 +35,8 @@ export default function createCanvasStateUtils(
 		},
 		Inserting: {
 			set: (startingProperties: CanvasObject) => setInsertingMode(setCanvasState, startingProperties),
-			updateProperty: (property: string, value: unknown) => updatePropertyInsertingMode(setCanvasState, property, value),
+			updateProperty: (property: string, value: unknown) =>
+				updatePropertyInsertingMode(setCanvasState, property, value),
 		},
 	};
 }

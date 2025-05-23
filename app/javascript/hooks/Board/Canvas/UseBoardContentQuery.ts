@@ -1,6 +1,6 @@
 import UseCustomQuery from "@/hooks/UseCustomQuery";
 import { CanvasObject } from "../../../Types/CanvasObjects";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { CanvasStateUtils } from "../../../Types/CanvasStateUtils";
 import ROUTES from "@/routes";
 
@@ -24,8 +24,16 @@ export default function UseBoardContentQuery({ canvasStateUtils, setCanvasObject
 		disableNotification: true,
 	});
 
+	const isPageUnloading = useRef(false);
+	window.addEventListener("beforeunload", () => {
+		isPageUnloading.current = true;
+		setTimeout(() => {
+			isPageUnloading.current = false;
+		}, 1000);
+	});
+
 	useEffect(() => {
-		if (isContentMutationError) refetch();
+		if (isContentMutationError && !isPageUnloading.current) refetch();
 	}, [isContentMutationError]);
 
 	useEffect(() => {

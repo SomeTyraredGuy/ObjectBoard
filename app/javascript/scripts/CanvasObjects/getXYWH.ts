@@ -62,21 +62,10 @@ export function getXYWHfromArray(objects: CanvasObject[]): XYWH | null {
 	};
 }
 
-export function getXYWH(canvasState: CanvasState, currentXYWH: XYWH | null): XYWH | null {
+export function getXYWH(canvasState: CanvasState): XYWH | null {
 	switch (canvasState.mode) {
 		case CanvasMode.Selected:
 			if (canvasState.objects.length === 0) return null;
-
-			if (canvasState.movedBy && currentXYWH) {
-				const newXYWH = {
-					x: currentXYWH.x + canvasState.movedBy.x,
-					y: currentXYWH.y + canvasState.movedBy.y,
-					width: currentXYWH.width,
-					height: currentXYWH.height,
-				};
-				canvasState.movedBy = undefined;
-				return newXYWH;
-			}
 
 			return getXYWHfromArray(canvasState.objects);
 

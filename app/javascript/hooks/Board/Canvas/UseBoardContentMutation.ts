@@ -4,6 +4,7 @@ import useTimeout from "../../UseTimeout";
 import { CanvasObject, isCanvasObject } from "../../../Types/CanvasObjects";
 import UseCustomMutation from "@/hooks/UseCustomMutation";
 import ROUTES from "@/routes";
+import { useTranslation } from "react-i18next";
 
 type Props = {
 	noChanges: (changeRecord: ChangeRecord) => boolean;
@@ -11,11 +12,22 @@ type Props = {
 };
 
 export default function UseBoardContentMutation({ noChanges, changeObjects }: Props) {
+	const { t } = useTranslation("translation", { keyPrefix: "board.critical_error" });
 	const unsavedRecord = useRef<HistoryRecord>([]);
 	const [unsavedChanges, setUnsavedChanges] = useState<boolean>(false);
 	const localIDs = useRef<number[]>([]);
+	const assignedIDs = useRef<number[]>([]);
+	const errorOccurred = useRef<boolean>(false);
 
 	function getRecord() {
+		unsavedRecord.current.forEach((record) => {
+			// assign new IDs to records that were created before response
+			if (record.id < 0) {
+				const index = localIDs.current.indexOf(record.id);
+				if (index !== -1) record.id = assignedIDs.current[index];
+			}
+		});
+
 		const del: number[] = [];
 		const create: CanvasObject[] = [];
 		localIDs.current = [];
@@ -59,8 +71,10 @@ export default function UseBoardContentMutation({ noChanges, changeObjects }: Pr
 		} else {
 			if (resp.assigned_IDs.length === 0) return;
 
-			if (resp.assigned_IDs.length !== localIDs.current.length) throw new Error();
-			if (resp.assigned_IDs.some((id) => id < 0)) throw new Error();
+			if (resp.assigned_IDs.length !== localIDs.current.length) throw new Error(t("id_assign_failed"));
+			if (resp.assigned_IDs.some((id) => id < 0)) throw new Error(t("id_assign_failed"));
+
+			assignedIDs.current = resp.assigned_IDs;
 
 			changeObjects.current(
 				localIDs.current.map((id, i) => ({
@@ -71,13 +85,6 @@ export default function UseBoardContentMutation({ noChanges, changeObjects }: Pr
 				})),
 				true,
 			);
-			unsavedRecord.current.forEach((record) => {
-				// assign new IDs to records that were created before response
-				if (record.id < 0) {
-					const index = localIDs.current.indexOf(record.id);
-					if (index !== -1) record.id = resp.assigned_IDs[index];
-				}
-			});
 		}
 	}
 
@@ -87,6 +94,9 @@ export default function UseBoardContentMutation({ noChanges, changeObjects }: Pr
 		onSuccess: () => setUnsavedChanges(false),
 		onResponse: processResponse,
 		disableNotification: true,
+		onError: () => {
+			errorOccurred.current = true;
+		},
 	});
 
 	const { startTimeout, clearTimer: clearTimeout } = useTimeout({
@@ -125,10 +135,12 @@ export default function UseBoardContentMutation({ noChanges, changeObjects }: Pr
 
 				unsavedRecord.current[index] = {
 					...unsavedRecord.current[index],
-					newProperties: {
-						...unsavedRecord.current[index].newProperties,
-						...change.newProperties,
-					},
+					newProperties: change.newProperties
+						? {
+								...unsavedRecord.current[index].newProperties,
+								...change.newProperties,
+							}
+						: null,
 				};
 
 				if (noChanges(unsavedRecord.current[index])) {
@@ -144,7 +156,7 @@ export default function UseBoardContentMutation({ noChanges, changeObjects }: Pr
 	}
 
 	window.addEventListener("beforeunload", () => {
-		if (!unsavedChanges) return;
+		if (!unsavedChanges || errorOccurred.current) return;
 
 		clearTimeout();
 		clearMaxTimeout();
