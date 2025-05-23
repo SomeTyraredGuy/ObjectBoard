@@ -19,13 +19,13 @@ function CriticalError({ when, message }: Props) {
 			<DialogContent showXButton={false}>
 				<DialogTitle className="text-destructive text-center text-2xl font-bold">
 					{t("title")}
-					<p className="text-lg font-medium opacity-65">{when}</p>
+					<span className="block text-lg font-medium opacity-65">{when}</span>
 				</DialogTitle>
-				<DialogDescription className="mt-2 text-center text-sm">
-					<p className="mb-4 text-lg font-medium">{t("message", { message })}</p>
-					<Separator />
-					<p className="text-muted-foreground text-sm">{t("reload_message")}</p>
+				<DialogDescription className="mb-4 mt-2 text-center text-lg font-medium">
+					{t("message", { message })}
 				</DialogDescription>
+				<Separator />
+				<span className="text-muted-foreground text-center text-sm">{t("reload_message")}</span>
 			</DialogContent>
 		</Dialog>
 	);
