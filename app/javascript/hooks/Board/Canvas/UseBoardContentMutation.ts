@@ -125,10 +125,12 @@ export default function UseBoardContentMutation({ noChanges, changeObjects }: Pr
 
 				unsavedRecord.current[index] = {
 					...unsavedRecord.current[index],
-					newProperties: {
-						...unsavedRecord.current[index].newProperties,
-						...change.newProperties,
-					},
+					newProperties: change.newProperties
+						? {
+								...unsavedRecord.current[index].newProperties,
+								...change.newProperties,
+							}
+						: null,
 				};
 
 				if (noChanges(unsavedRecord.current[index])) {
