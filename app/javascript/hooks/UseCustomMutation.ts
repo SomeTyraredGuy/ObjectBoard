@@ -35,7 +35,7 @@ export default function UseCustomMutation({
 				body: JSON.stringify(value),
 			});
 
-			onResponse(response);
+			await onResponse(response);
 
 			if (!response.ok) {
 				const errorData = await response.json();

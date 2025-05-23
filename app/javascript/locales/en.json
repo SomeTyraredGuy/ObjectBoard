@@ -369,6 +369,7 @@
           "saving": "Saving..."
         },
         "critical_error": {
+          "id_assign_failed": "ID assignment failed.",
           "message": "Description: {{message}}",
           "reload_message": "The page will be reloaded in a 10 seconds. If it doesn't, please refresh the page manually",
           "title": "Critical Error!",

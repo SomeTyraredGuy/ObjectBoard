@@ -74,6 +74,7 @@ en:
           loading_board: While loading board
         message: "Description: {{message}}"
         reload_message: The page will be reloaded in a 10 seconds. If it doesn't, please refresh the page manually
+        id_assign_failed: ID assignment failed.
 
       open: Open board
       leave: Leave board

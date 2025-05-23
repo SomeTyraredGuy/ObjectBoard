@@ -4,6 +4,7 @@ import useTimeout from "../../UseTimeout";
 import { CanvasObject, isCanvasObject } from "../../../Types/CanvasObjects";
 import UseCustomMutation from "@/hooks/UseCustomMutation";
 import ROUTES from "@/routes";
+import { useTranslation } from "react-i18next";
 
 type Props = {
 	noChanges: (changeRecord: ChangeRecord) => boolean;
@@ -11,6 +12,7 @@ type Props = {
 };
 
 export default function UseBoardContentMutation({ noChanges, changeObjects }: Props) {
+	const { t } = useTranslation("translation", { keyPrefix: "board.critical_error" });
 	const unsavedRecord = useRef<HistoryRecord>([]);
 	const [unsavedChanges, setUnsavedChanges] = useState<boolean>(false);
 	const localIDs = useRef<number[]>([]);
@@ -69,8 +71,8 @@ export default function UseBoardContentMutation({ noChanges, changeObjects }: Pr
 		} else {
 			if (resp.assigned_IDs.length === 0) return;
 
-			if (resp.assigned_IDs.length !== localIDs.current.length) throw new Error();
-			if (resp.assigned_IDs.some((id) => id < 0)) throw new Error();
+			if (resp.assigned_IDs.length !== localIDs.current.length) throw new Error(t("id_assign_failed"));
+			if (resp.assigned_IDs.some((id) => id < 0)) throw new Error(t("id_assign_failed"));
 
 			assignedIDs.current = resp.assigned_IDs;
 
