@@ -1,5 +1,5 @@
 class Member < ApplicationRecord
-  validates :user, presence: { message: "Username is invalid or does not exist" }
+  validates :user, presence: { message: I18n.t("errors.members.user_presence_validation_failed") }
   validate :owner_is_immutable, on: :update
   validates :board, :role, presence: {}
   validates :user, uniqueness: { scope: :board, message: I18n.t("errors.members.already_exists") }
