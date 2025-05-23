@@ -1,9 +1,9 @@
 import { CanvasMode, CanvasState, LineModification, Resizing } from "../../Types/Canvas";
-import { CanvasObject, Point } from "../../Types/CanvasObjects";
+import { CanvasObject } from "../../Types/CanvasObjects";
 
 export function setSelectedMode(
 	setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
-	canvasObjects: CanvasObject[]
+	canvasObjects: CanvasObject[],
 ) {
 	setCanvasState({
 		mode: CanvasMode.Selected,
@@ -13,7 +13,7 @@ export function setSelectedMode(
 
 export function updateSelectedMode(
 	setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
-	newSelected: CanvasObject[]
+	newSelected: CanvasObject[],
 ) {
 	setCanvasState((prev) => {
 		if (prev.mode !== CanvasMode.Selected) return prev;
@@ -27,7 +27,7 @@ export function updateSelectedMode(
 
 export function addToSelectedMode(
 	setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
-	newObject: CanvasObject
+	newObject: CanvasObject,
 ) {
 	setCanvasState((prev) => {
 		if (prev.mode !== CanvasMode.Selected) return prev;
@@ -42,7 +42,6 @@ export function addToSelectedMode(
 export function moveSelectedMode(
 	setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
 	newSelected: CanvasObject[],
-	moveBy: Point
 ) {
 	setCanvasState((prev) => {
 		if (prev.mode !== CanvasMode.Selected) return prev;
@@ -50,14 +49,13 @@ export function moveSelectedMode(
 		return {
 			...prev,
 			objects: newSelected,
-			movedBy: moveBy,
 		};
 	});
 }
 
 export function modifyLineSelectedMode(
 	setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
-	lineModification: LineModification
+	lineModification: LineModification,
 ) {
 	setCanvasState((prev) => {
 		if (prev.mode !== CanvasMode.Selected) return prev;
@@ -71,7 +69,7 @@ export function modifyLineSelectedMode(
 
 export function resizeSelectedMode(
 	setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
-	resizing: Resizing
+	resizing: Resizing,
 ) {
 	setCanvasState((prev) => {
 		if (prev.mode !== CanvasMode.Selected) return prev;

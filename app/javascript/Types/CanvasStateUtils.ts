@@ -9,7 +9,7 @@ export type CanvasStateUtils = {
 		set: (canvasObjects: CanvasObject[]) => void;
 		update: (newSelected: CanvasObject[]) => void;
 		add: (newObject: CanvasObject) => void;
-		move: (newSelected: CanvasObject[], moveBy: Point) => void;
+		move: (newSelected: CanvasObject[]) => void;
 		modifyLine: (lineModification: LineModification) => void;
 		resize: (resizing: Resizing) => void;
 	};

@@ -106,7 +106,7 @@ function SelectionLayer({ canvasState, canvasStateUtils, scale }: Props) {
 	}
 
 	const XYWH = useRef<XYWH | null>(null);
-	XYWH.current = getXYWH(canvasState, XYWH.current);
+	XYWH.current = getXYWH(canvasState);
 	if (!XYWH.current) return null;
 
 	const SELECTION_GENERAL_PROPERTIES = {

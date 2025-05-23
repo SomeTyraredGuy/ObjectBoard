@@ -32,7 +32,7 @@ export default function UseObjects({ canvasState, canvasStateUtils, handleHistor
 		canvasObjects,
 		setCanvasObjects,
 		canvasStateUtils,
-		canvasState
+		canvasState,
 	);
 
 	function addNewObject(object: CanvasObject) {
@@ -85,7 +85,10 @@ export default function UseObjects({ canvasState, canvasStateUtils, handleHistor
 			newSelected.push(newObject);
 		});
 
-		canvasStateUtils.Selected.move(newSelected, moveBy);
+		console.log("oldSelected", canvasState.objects);
+		console.log("newSelected", newSelected);
+
+		canvasStateUtils.Selected.move(newSelected);
 
 		setCanvasObjects(newObjects);
 		historyHandleChanges(newHistoryRecord, true);
@@ -146,7 +149,7 @@ export default function UseObjects({ canvasState, canvasStateUtils, handleHistor
 				currentPoint: Point,
 				initialSelectionNet: XYWH,
 				initialObject: CanvasObject,
-				side: Side
+				side: Side,
 			) => ChangeRecord;
 			switch (newObject.type) {
 				case CanvasObjectType.Line:
@@ -175,7 +178,14 @@ export default function UseObjects({ canvasState, canvasStateUtils, handleHistor
 			}
 
 			historyRecord.push(
-				resizeFunc(newObject, resizedByPercent, currentPoint, initialSelectionNet, initialSelectedObjects[i], side)
+				resizeFunc(
+					newObject,
+					resizedByPercent,
+					currentPoint,
+					initialSelectionNet,
+					initialSelectedObjects[i],
+					side,
+				),
 			);
 		});
 
