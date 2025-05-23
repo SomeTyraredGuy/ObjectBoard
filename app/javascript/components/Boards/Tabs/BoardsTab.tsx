@@ -3,7 +3,7 @@ import { Input } from "@/shadcn/components/ui/input";
 import { Board } from "@/Types/Board";
 import { TabsContent } from "@radix-ui/react-tabs";
 import { Search } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BoardsGrid from "../BoardsGrid";
 import { useTranslation } from "react-i18next";
 import Filters, { FilterType } from "../Filters";
@@ -43,6 +43,9 @@ function BoardsTab({ boards, refetchBoards, isLoading, onNavigateToTab }: Props)
 	);
 
 	const [showConfirmation, setShowConfirmation] = useState<showConfirmation>(null);
+	useEffect(() => {
+		setShowConfirmation(null);
+	}, [boards]);
 
 	const { mutate: deleteBoard } = UseCustomMutation({
 		path: ROUTES.deleteBoardApi(showConfirmation?.boardId),

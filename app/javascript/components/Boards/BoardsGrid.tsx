@@ -64,7 +64,7 @@ function BoardsGrid({
 								size="sm"
 								className="w-9/20"
 								asChild={!acceptInvite}
-								onClick={() => setAcceptedBoardId(board.id)}
+								onClick={setAcceptedBoardId ? () => setAcceptedBoardId(board.id) : undefined}
 							>
 								{acceptInvite ? (
 									t("common.actions.accept")
