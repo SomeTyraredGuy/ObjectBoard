@@ -1,6 +1,7 @@
 import React from "react";
 import { CurrentMember } from "../../../../Types/Member";
 import { useTranslation } from "react-i18next";
+import { UserCircleIcon } from "lucide-react";
 
 type Props = {
 	currentMember: CurrentMember;
@@ -15,7 +16,8 @@ function CurrentMemberButton({ currentMember, toggleMemberMenu }: Props) {
 				onClick={() => toggleMemberMenu(currentMember)}
 				className="flex w-full flex-row items-center rounded-l-2xl border-0 p-2"
 			>
-				<img className="h-12 w-12 rounded-full" src={currentMember.avatar} alt="Current user avatar" />
+				{/* <img className="h-12 w-12 rounded-full" src={currentMember.avatar} alt="Current user avatar" /> */}
+				<UserCircleIcon className="size-10" />
 				<span className="mx-2 truncate text-start">
 					{currentMember.name}
 					<br />

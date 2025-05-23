@@ -3,7 +3,7 @@ module BoardRelated
 
   included do
     if controller_name == "boards"
-      before_action :set_board, except: %i[index new create] # rubocop:disable Rails/LexicallyScopedActionFilter
+      before_action :set_board, except: %i[all create] # rubocop:disable Rails/LexicallyScopedActionFilter
     else
       before_action :set_board
     end

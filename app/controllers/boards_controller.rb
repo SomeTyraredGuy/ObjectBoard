@@ -1,24 +1,12 @@
 class BoardsController < ApplicationController
   include BoardRelated
 
-  # GET /boards or /boards.json
-  def index
-    @boards = policy_scope(Board)
+  def all
+    render json: policy_scope(Board)
   end
 
-  # GET /boards/1 or /boards/1.json
-  def show
-    render layout: "board"
-  end
-
-  # GET /boards/new
-  def new
-    @board = Board.new
-  end
-
-  # GET /boards/1/edit
-  def edit
-    authorize @board
+  def one
+    render json: @board
   end
 
   # POST /boards or /boards.json
@@ -26,10 +14,7 @@ class BoardsController < ApplicationController
     @board = Board.new(board_params)
     save_board!
 
-    respond_to do |format|
-      format.html { redirect_to @board, notice: "Board was successfully created." }
-      format.json { render :show, status: :created, location: @board }
-    end
+    render json: {}, status: :created
   end
 
   # PATCH/PUT /boards/1 or /boards/1.json
@@ -37,11 +22,6 @@ class BoardsController < ApplicationController
     authorize @board
 
     update_board!
-
-    respond_to do |format|
-      format.html { redirect_to @board, notice: "Board was successfully updated." }
-      format.json { render :show, status: :ok, location: @board }
-    end
   end
 
   # DELETE /boards/1 or /boards/1.json
@@ -50,10 +30,7 @@ class BoardsController < ApplicationController
 
     destroy_board!
 
-    respond_to do |format|
-      format.html { redirect_to boards_path, status: :see_other, notice: "Board was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    head :no_content
   end
 
   private

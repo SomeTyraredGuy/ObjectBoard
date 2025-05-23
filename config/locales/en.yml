@@ -8,11 +8,25 @@ en:
       actions:
         label: Actions
         save: Save
+        saving: Saving...
         delete: Delete
+        deleting: Deleting...
         add: Add
+        reset: Reset
+        cancel: Cancel
+        edit: Edit
+        accept: Accept
+        decline: Decline
 
       notification:
         error: Error!
         success: Success!
+        unexpected_error: An unexpected error occurred
 
       loading: Loading...
+
+      pages:
+        boards: Boards
+        to_boards: Go to Boards
+
+      cannot_be_undone: Are you sure? This action cannot be undone.

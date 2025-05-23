@@ -8,11 +8,25 @@ uk:
       actions:
         label: Дії
         save: Зберегти
+        saving: Зберігається...
         delete: Видалити
+        deleting: Видаляється...
         add: Додати
+        reset: Скинути
+        cancel: Скасувати
+        edit: Редагувати
+        accept: Прийняти
+        decline: Відхилити
 
       notification:
         error: Помилка!
         success: Успіх!
+        unexpected_error: Сталася непередбачена помилка
 
       loading: Завантаження...
+
+      pages:
+        boards: Дошки
+        to_boards: Перейти до дошок
+
+      cannot_be_undone: Ви впевнені? Цю дію не можна скасувати.

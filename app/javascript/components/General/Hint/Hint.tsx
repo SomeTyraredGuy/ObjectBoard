@@ -9,12 +9,13 @@ type Props = {
 	side?: "top" | "bottom" | "left" | "right";
 	href?: string;
 	className?: string;
+	asChild?: boolean;
 };
 
-function Hint({ children, title, description, side = "bottom", href, className }: Props) {
+function Hint({ children, title, description, side = "bottom", href, className, asChild }: Props) {
 	return (
 		<HoverCard>
-			<HoverCardTrigger href={href} className={className}>
+			<HoverCardTrigger href={href} className={className} asChild={asChild}>
 				{children}
 			</HoverCardTrigger>
 			<HoverCardContent side={side} className="w-auto">

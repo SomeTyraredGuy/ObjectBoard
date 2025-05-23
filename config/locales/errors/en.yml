@@ -3,6 +3,7 @@ en:
     general:
       unexpected: Unexpected error
       unauthorized: You are not authorized to perform this action
+      not_found: Routing Error! No route matches the request
     users:
       not_found: User not found
     roles:
@@ -13,6 +14,7 @@ en:
       cant_be_created: Can't add new member to board
       owner_is_immutable: Owner role can't be changed
       already_exists: Can't add member that already belongs to the board
+      user_presence_validation_failed: Username is invalid or does not exist
     boards:
       not_found: Board not found
       cant_be_updated: Can't update board settings

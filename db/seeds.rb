@@ -18,6 +18,8 @@ Role.create(id: 5, name: :Editor, can_edit: true)
 
 Role.create(id: 6, name: :Viewer)
 
+Role.create(id: 7, name: :Invited)
+
 password = 'qweqwe'
 names = (0..9).to_a
 emails = names.map { |name| "#{name}@#{name}" }
@@ -39,3 +41,7 @@ Member.create(user_id: 3, board_id: 1, role_id: 3)
 Member.create(user_id: 4, board_id: 1, role_id: 4)
 Member.create(user_id: 5, board_id: 1, role_id: 5)
 Member.create(user_id: 6, board_id: 1, role_id: 6)
+
+Board.create(name: 'test2', description: 'test2')
+Member.create(user_id: 2, board_id: 2, role_id: 1)
+Member.create(user_id: 1, board_id: 2, role_id: 7)

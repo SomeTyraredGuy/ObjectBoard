@@ -9,11 +9,11 @@ import {
 } from "@/shadcn/components/ui/dialog";
 import { CurrentMember, fullRoleType, OtherMember } from "@/Types/Member";
 import { Button } from "@/shadcn/components/ui/button";
-import UseMemberMutation from "@/hooks/Board/Members/UseMemberMutation";
+import UseCustomMutation from "@/hooks/UseCustomMutation";
 import SelectRole from "./SelectRole";
 import RoleSwitcherList from "./RoleSwitcherList";
-import useNotification from "@/hooks/useNotification";
 import { useTranslation } from "react-i18next";
+import ROUTES from "@/routes";
 
 const roleDefaults = [
 	{ name: "Admin", can_edit: true, can_change_roles: true, can_assign_admin: false, can_ignore_rules: true },
@@ -31,21 +31,10 @@ type Props = {
 function MemberSettings({ currentMember, member, refetchFn, closeFn }: Props) {
 	const { t } = useTranslation();
 	const [newRole, setNewRole] = React.useState<fullRoleType>(member.role as fullRoleType);
-	const {
-		mutate: save,
-		error,
-		isError,
-		isSuccess,
-	} = UseMemberMutation({
-		path: `update_role/${member.member_id}`,
-		refetchFn: refetchFn,
+	const { mutate: save } = UseCustomMutation({
+		path: ROUTES.updateMemberRoleApi(member.member_id),
+		onSuccess: refetchFn,
 		method: "PATCH",
-	});
-
-	useNotification({
-		isError,
-		error,
-		isSuccess,
 		successMessage: t("board.members_menu.role.settings.success_message", { nickname: member.name }),
 	});
 
@@ -57,7 +46,8 @@ function MemberSettings({ currentMember, member, refetchFn, closeFn }: Props) {
 		return (
 			!currentMember.role.can_change_roles ||
 			member.role.name === "Owner" ||
-			(member.role.name === "Admin" && !currentMember.role.can_assign_admin)
+			(member.role.name === "Admin" && !currentMember.role.can_assign_admin) ||
+			member.role.name === "Invited"
 		);
 	}
 
@@ -87,7 +77,7 @@ function MemberSettings({ currentMember, member, refetchFn, closeFn }: Props) {
 				/>
 
 				<DialogFooter className="!justify-center">
-					<Button className="w-26" onClick={() => save(newRole)} disabled={changesIsDisabled()}>
+					<Button className="w-26" onClick={() => save({ newRole })} disabled={changesIsDisabled()}>
 						{t("common.actions.save")}
 					</Button>
 				</DialogFooter>

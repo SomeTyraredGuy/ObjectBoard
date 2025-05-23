@@ -1,0 +1,582 @@
+{
+  "en": {
+    "date": {
+      "abbr_day_names": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "abbr_month_names": [
+        null,
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+      ],
+      "day_names": [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "formats": {
+        "default": "%Y-%m-%d",
+        "long": "%B %d, %Y",
+        "short": "%b %d"
+      },
+      "month_names": [
+        null,
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ],
+      "order": [
+        "year",
+        "month",
+        "day"
+      ]
+    },
+    "datetime": {
+      "distance_in_words": {
+        "about_x_hours": {
+          "one": "about 1 hour",
+          "other": "about %{count} hours"
+        },
+        "about_x_months": {
+          "one": "about 1 month",
+          "other": "about %{count} months"
+        },
+        "about_x_years": {
+          "one": "about 1 year",
+          "other": "about %{count} years"
+        },
+        "almost_x_years": {
+          "one": "almost 1 year",
+          "other": "almost %{count} years"
+        },
+        "half_a_minute": "half a minute",
+        "less_than_x_minutes": {
+          "one": "less than a minute",
+          "other": "less than %{count} minutes"
+        },
+        "less_than_x_seconds": {
+          "one": "less than 1 second",
+          "other": "less than %{count} seconds"
+        },
+        "over_x_years": {
+          "one": "over 1 year",
+          "other": "over %{count} years"
+        },
+        "x_days": {
+          "one": "1 day",
+          "other": "%{count} days"
+        },
+        "x_minutes": {
+          "one": "1 minute",
+          "other": "%{count} minutes"
+        },
+        "x_months": {
+          "one": "1 month",
+          "other": "%{count} months"
+        },
+        "x_seconds": {
+          "one": "1 second",
+          "other": "%{count} seconds"
+        }
+      },
+      "prompts": {
+        "day": "Day",
+        "hour": "Hour",
+        "minute": "Minute",
+        "month": "Month",
+        "second": "Seconds",
+        "year": "Year"
+      }
+    },
+    "devise": {
+      "confirmations": {
+        "confirmed": "Your email address has been successfully confirmed.",
+        "new": {
+          "resend_confirmation_instructions": "Resend confirmation instructions"
+        },
+        "send_instructions": "You will receive an email with instructions for how to confirm your email address in a few minutes.",
+        "send_paranoid_instructions": "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
+      },
+      "failure": {
+        "already_authenticated": "You are already signed in.",
+        "inactive": "Your account is not activated yet.",
+        "invalid": "Invalid %{authentication_keys} or password.",
+        "last_attempt": "You have one more attempt before your account is locked.",
+        "locked": "Your account is locked.",
+        "not_found_in_database": "Invalid %{authentication_keys} or password.",
+        "timeout": "Your session expired. Please sign in again to continue.",
+        "unauthenticated": "You need to sign in or sign up before continuing.",
+        "unconfirmed": "You have to confirm your email address before continuing."
+      },
+      "mailer": {
+        "confirmation_instructions": {
+          "action": "Confirm my account",
+          "greeting": "Welcome %{recipient}!",
+          "instruction": "You can confirm your account email through the link below:",
+          "subject": "Confirmation instructions"
+        },
+        "email_changed": {
+          "greeting": "Hello %{recipient}!",
+          "message": "We're contacting you to notify you that your email has been changed to %{email}.",
+          "message_unconfirmed": "We're contacting you to notify you that your email is being changed to %{email}.",
+          "subject": "Email Changed"
+        },
+        "password_change": {
+          "greeting": "Hello %{recipient}!",
+          "message": "We're contacting you to notify you that your password has been changed.",
+          "subject": "Password Changed"
+        },
+        "reset_password_instructions": {
+          "action": "Change my password",
+          "greeting": "Hello %{recipient}!",
+          "instruction": "Someone has requested a link to change your password. You can do this through the link below.",
+          "instruction_2": "If you didn't request this, please ignore this email.",
+          "instruction_3": "Your password won't change until you access the link above and create a new one.",
+          "subject": "Reset password instructions"
+        },
+        "unlock_instructions": {
+          "action": "Unlock my account",
+          "greeting": "Hello %{recipient}!",
+          "instruction": "Click the link below to unlock your account:",
+          "message": "Your account has been locked due to an excessive number of unsuccessful sign in attempts.",
+          "subject": "Unlock instructions"
+        }
+      },
+      "omniauth_callbacks": {
+        "failure": "Could not authenticate you from %{kind} because \"%{reason}\".",
+        "success": "Successfully authenticated from %{kind} account."
+      },
+      "passwords": {
+        "edit": {
+          "change_my_password": "Change my password",
+          "change_your_password": "Change your password",
+          "confirm_new_password": "Confirm new password",
+          "new_password": "New password"
+        },
+        "new": {
+          "forgot_your_password": "Forgot your password?",
+          "send_me_reset_password_instructions": "Send me reset password instructions"
+        },
+        "no_token": "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided.",
+        "send_instructions": "You will receive an email with instructions on how to reset your password in a few minutes.",
+        "send_paranoid_instructions": "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.",
+        "update_failed": "Error updating password. %{error}",
+        "updated": "Your password has been changed successfully. You are now signed in.",
+        "updated_not_active": "Your password has been changed successfully."
+      },
+      "registrations": {
+        "destroyed": "Bye! Your account has been successfully cancelled. We hope to see you again soon.",
+        "edit": {
+          "are_you_sure": "Are you sure?",
+          "cancel_my_account": "Cancel my account",
+          "currently_waiting_confirmation_for_email": "Currently waiting confirmation for: %{email}",
+          "leave_blank_if_you_don_t_want_to_change_it": "leave blank if you don't want to change it",
+          "title": "Edit %{resource}",
+          "unhappy": "Unhappy?",
+          "update": "Update",
+          "we_need_your_current_password_to_confirm_your_changes": "we need your current password to confirm your changes"
+        },
+        "new": {
+          "sign_up": "Sign up"
+        },
+        "signed_up": "Welcome! You have signed up successfully.",
+        "signed_up_but_inactive": "You have signed up successfully. However, we could not sign you in because your account is not yet activated.",
+        "signed_up_but_locked": "You have signed up successfully. However, we could not sign you in because your account is locked.",
+        "signed_up_but_unconfirmed": "A message with a confirmation link has been sent to your email address. Please follow the link to activate your account.",
+        "update_needs_confirmation": "You updated your account successfully, but we need to verify your new email address. Please check your email and follow the confirmation link to confirm your new email address.",
+        "updated": "Your account has been updated successfully.",
+        "updated_but_not_signed_in": "Your account has been updated successfully, but since your password was changed, you need to sign in again."
+      },
+      "sessions": {
+        "already_signed_out": "Signed out successfully.",
+        "new": {
+          "sign_in": "Log in"
+        },
+        "signed_in": "Signed in successfully.",
+        "signed_out": "Signed out successfully."
+      },
+      "shared": {
+        "links": {
+          "back": "Back",
+          "didn_t_receive_confirmation_instructions": "Didn't receive confirmation instructions?",
+          "didn_t_receive_unlock_instructions": "Didn't receive unlock instructions?",
+          "forgot_your_password": "Forgot your password?",
+          "sign_in": "Log in",
+          "sign_in_with_provider": "Sign in with %{provider}",
+          "sign_up": "Sign up"
+        },
+        "minimum_password_length": {
+          "one": "(%{count} character minimum)",
+          "other": "(%{count} characters minimum)"
+        }
+      },
+      "unlocks": {
+        "new": {
+          "resend_unlock_instructions": "Resend unlock instructions"
+        },
+        "send_instructions": "You will receive an email with instructions for how to unlock your account in a few minutes.",
+        "send_paranoid_instructions": "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes.",
+        "unlocked": "Your account has been unlocked successfully. Please sign in to continue."
+      }
+    },
+    "flash": {
+      "actions": {
+        "create": {
+          "notice": "%{resource_name} was successfully created."
+        },
+        "destroy": {
+          "alert": "%{resource_name} could not be destroyed.",
+          "notice": "%{resource_name} was successfully destroyed."
+        },
+        "update": {
+          "notice": "%{resource_name} was successfully updated."
+        }
+      }
+    },
+    "helpers": {
+      "select": {
+        "prompt": "Please select"
+      },
+      "submit": {
+        "create": "Create %{model}",
+        "submit": "Save %{model}",
+        "update": "Update %{model}"
+      }
+    },
+    "number": {
+      "currency": {
+        "format": {
+          "delimiter": ",",
+          "format": "%u%n",
+          "negative_format": "-%u%n",
+          "precision": 2,
+          "separator": ".",
+          "significant": false,
+          "strip_insignificant_zeros": false,
+          "unit": "$"
+        }
+      },
+      "format": {
+        "delimiter": ",",
+        "precision": 3,
+        "round_mode": "default",
+        "separator": ".",
+        "significant": false,
+        "strip_insignificant_zeros": false
+      },
+      "human": {
+        "decimal_units": {
+          "format": "%n %u",
+          "units": {
+            "billion": "Billion",
+            "million": "Million",
+            "quadrillion": "Quadrillion",
+            "thousand": "Thousand",
+            "trillion": "Trillion",
+            "unit": ""
+          }
+        },
+        "format": {
+          "delimiter": "",
+          "precision": 3,
+          "significant": true,
+          "strip_insignificant_zeros": true
+        },
+        "storage_units": {
+          "format": "%n %u",
+          "units": {
+            "byte": {
+              "one": "Byte",
+              "other": "Bytes"
+            },
+            "eb": "EB",
+            "gb": "GB",
+            "kb": "KB",
+            "mb": "MB",
+            "pb": "PB",
+            "tb": "TB",
+            "zb": "ZB"
+          }
+        }
+      },
+      "nth": {},
+      "percentage": {
+        "format": {
+          "delimiter": "",
+          "format": "%n%"
+        }
+      },
+      "precision": {
+        "format": {
+          "delimiter": ""
+        }
+      }
+    },
+    "support": {
+      "array": {
+        "last_word_connector": ", and ",
+        "two_words_connector": " and ",
+        "words_connector": ", "
+      }
+    },
+    "time": {
+      "am": "am",
+      "formats": {
+        "default": "%a, %d %b %Y %H:%M:%S %z",
+        "long": "%B %d, %Y %H:%M",
+        "short": "%d %b %H:%M"
+      },
+      "pm": "pm"
+    },
+    "translation": {
+      "board": {
+        "board_menu": {
+          "description_label": "Description:",
+          "description_placeholder": "Add some description...",
+          "edit_success_message": "Board updated successfully",
+          "exit": "Exit board",
+          "name_placeholder": "Board must have a name",
+          "saved": "Saved",
+          "saving": "Saving..."
+        },
+        "critical_error": {
+          "message": "Description: {{message}}",
+          "reload_message": "The page will be reloaded in a 10 seconds. If it doesn't, please refresh the page manually",
+          "title": "Critical Error!",
+          "when": {
+            "loading_board": "While loading board",
+            "loading_content": "While loading board content",
+            "loading_user": "While loading current user",
+            "saving_content": "While saving board content"
+          }
+        },
+        "delete": "Delete board",
+        "invites": {
+          "label": "Invites",
+          "no_invites": "You don't have any invites yet"
+        },
+        "leave": "Leave board",
+        "members_menu": {
+          "add": {
+            "label": "Add new member",
+            "placeholder": "New member nickname",
+            "success_message": "{{nickname}} added successfully"
+          },
+          "other": {
+            "label": "Other members"
+          },
+          "role": {
+            "Admin": "Admin",
+            "Editor": "Editor",
+            "Invited": "Invited",
+            "Owner": "Owner",
+            "Viewer": "Viewer",
+            "label": "Role: ",
+            "settings": {
+              "can_assign_admin": {
+                "description": "Allows the user to assign and change admin roles",
+                "label": "Can assign admin"
+              },
+              "can_change_roles": {
+                "description": "Allows the user to change general roles",
+                "label": "Can change roles"
+              },
+              "can_edit": {
+                "description": "Allows the user to edit the board",
+                "label": "Can edit"
+              },
+              "can_ignore_rules": {
+                "description": "Allows the user to ignore rules",
+                "label": "Can ignore rules"
+              },
+              "label": "Change role",
+              "success_message": "{{nickname}} role changed successfully"
+            }
+          }
+        },
+        "my_boards": {
+          "label": "My boards",
+          "no_boards": "You don't have any boards yet"
+        },
+        "new_board": {
+          "create": "Create board",
+          "create_first": "Create your first board.",
+          "creating": "Creating board...",
+          "description": "Board description",
+          "description_placeholder": "Write a description for your board",
+          "label": "New board",
+          "name": "Board name",
+          "name_placeholder": "Write a name for your board",
+          "title": "Create new board"
+        },
+        "open": "Open board",
+        "resources_menu": {
+          "properties": {
+            "corner_radius": "Corner radius",
+            "fill_color": "Fill color",
+            "no_objects": "No object to be edited",
+            "opacity": "Opacity",
+            "stroke_color": "Stroke color",
+            "stroke_width": "Stroke width"
+          },
+          "states": {
+            "groups": "Groups",
+            "properties": "Properties"
+          }
+        },
+        "search": {
+          "filter_by_role": "Filter by role:",
+          "filters": "Filters",
+          "loading_boards": "Loading boards...",
+          "no_boards_matching": "No boards matching the search",
+          "placeholder": "Search boards by name and description..."
+        },
+        "successfully_accepted_invite": "You have successfully accepted the invite",
+        "successfully_created": "You have successfully created the board",
+        "successfully_declined_invite": "You have successfully declined the invite",
+        "successfully_deleted": "You have successfully deleted the board",
+        "successfully_left": "You have successfully left the board",
+        "toolbar": {
+          "ellipse": "Ellipse",
+          "line": "Line",
+          "rectangle": "Rectangle",
+          "redo": "Redo",
+          "select": "Select",
+          "text": "Text",
+          "undo": "Undo"
+        }
+      },
+      "common": {
+        "actions": {
+          "accept": "Accept",
+          "add": "Add",
+          "cancel": "Cancel",
+          "decline": "Decline",
+          "delete": "Delete",
+          "deleting": "Deleting...",
+          "edit": "Edit",
+          "label": "Actions",
+          "reset": "Reset",
+          "save": "Save",
+          "saving": "Saving..."
+        },
+        "cannot_be_undone": "Are you sure? This action cannot be undone.",
+        "loading": "Loading...",
+        "locales": {
+          "en": "English",
+          "uk": "Ukrainian"
+        },
+        "notification": {
+          "error": "Error!",
+          "success": "Success!",
+          "unexpected_error": "An unexpected error occurred"
+        },
+        "pages": {
+          "boards": "Boards",
+          "to_boards": "Go to Boards"
+        }
+      },
+      "home": {
+        "additional_description": "Our system provides a structured environment for collaboration, offering deep object customization, including advanced capabilities for managing user rights and change versions.",
+        "button_sign_up": "Sign Up Now",
+        "call_to_action": {
+          "text": "Join ObjectBoard today and experience a new level of organized, visual, and controlled teamwork. Sign up for free or explore existing public boards.",
+          "title": "Ready to Transform Your Collaboration?"
+        },
+        "general_description": "Your visual, interactive, and regulated platform for collaboration. Create, customize, and manage access to objects with unparalleled flexibility.",
+        "how_it_works": {
+          "step_1_text": "Start by creating a new board for your project, team, or idea. Give it a name and a description to set the context.",
+          "step_1_title": "1. Create Your Board",
+          "step_2_text": "Populate your board with various objects like shapes, text, and lines. Customize their properties, group them, and set up complex structures.",
+          "step_2_title": "2. Add & Customize Objects",
+          "step_3_text": "Invite members to your board and assign roles. Control who can view, edit, or create specific content, ensuring smooth and secure teamwork.",
+          "step_3_title": "3. Manage Access & Collaborate",
+          "step_4_text": "Track all modifications with our version control system. Administrators can review contributions and approve them to become part of the official board version.",
+          "step_4_title": "4. Review & Approve Changes",
+          "title": "How ObjectBoard Works"
+        },
+        "key_features": {
+          "1_text": "An intuitive and dynamic interface that makes collaboration natural and effective.",
+          "1_title": "Visual & Interactive",
+          "2_text": "Extensive object configuration options, including grouping, and detailed attributes.",
+          "2_title": "Comprehensive Object Settings",
+          "3_text": "Precise control over who can view, edit, or create objects on the board.",
+          "3_title": "Regulated Access Control",
+          "4_text": "Flexible role distribution and detailed access rights management for each user, ensuring order and security.",
+          "4_title": "Advanced User Management",
+          "5_text": "Group objects, set individual permissions for viewing, editing, and creating new objects.",
+          "5_title": "Flexible Object Permissions",
+          "6_text": "Changes made by each individual user are saved as a separate version.. Administrators can review and approve changes, forming a new common version of the board.",
+          "6_title": "Version Control for Changes",
+          "title": "Key Advantages of ObjectBoard"
+        }
+      },
+      "layouts": {
+        "footer": {
+          "contact": "Contact: "
+        }
+      },
+      "not_found": {
+        "go_home": "Go to Homepage",
+        "message": "The page you are looking for does not exist or has been moved.",
+        "title": "Oops! Page Not Found."
+      },
+      "users": {
+        "already_have_account": "Already have an account?",
+        "confirm_password": "Confirm Password",
+        "current_password": "Current Password",
+        "delete_account": "Delete Account",
+        "delete_account_label": "Permanently delete your account and all associated data. This action is irreversible.",
+        "dont_have_account": "Don't have an account?",
+        "edit_profile": "Edit Profile",
+        "edit_profile_label": "Update your profile information.",
+        "email": "Email",
+        "login": "Login",
+        "login_failed": "Login failed. Please check your credentials.",
+        "login_label": "Enter your credentials to access your account.",
+        "login_success": "Login successful! Redirecting...",
+        "logout": "Logout",
+        "my_profile": "My Profile",
+        "name": "Name",
+        "name_placeholder": "Enter your name",
+        "password": "Password",
+        "passwords_do_not_match": "Passwords do not match.",
+        "remember_me": "Remember Me",
+        "sign_up": "Sign Up",
+        "sign_up_failed": "Sign Up failed. Please check your details.",
+        "sign_up_label": "Create an account to access all features.",
+        "sign_up_success": "Sign Up successful! Redirecting...",
+        "to_profile": "To Profile"
+      }
+    }
+  }
+}

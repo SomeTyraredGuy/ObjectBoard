@@ -3,9 +3,9 @@ import CurrentMemberButton from "./CurrentMember/CurrentMemberButton";
 import { CurrentMember, OtherMember } from "@/Types/Member";
 import OtherMembersDropdown from "./OtherMembers/OtherMembersDropdown";
 import MemberSettings from "./Settings/MemberSettings";
-import UseOtherMembersQuery from "@/hooks/Board/Members/UseOtherMembersQuery";
+import UseCustomQuery from "@/hooks/UseCustomQuery";
 import AddMemberForm from "./OtherMembers/AddMemberForm";
-import useNotification from "@/hooks/useNotification";
+import ROUTES from "@/routes";
 
 type Props = {
 	currentMember: CurrentMember;
@@ -13,11 +13,9 @@ type Props = {
 };
 
 function MemberMenu({ currentMember, refetchCurrentMember }: Props) {
-	const { otherMembers, isError, error, refetch } = UseOtherMembersQuery();
-
-	useNotification({
-		isError,
-		error,
+	const { data: otherMembers = [], refetch } = UseCustomQuery({
+		queryKey: ["other_members"],
+		path: ROUTES.otherMembersApi(),
 	});
 
 	const [chosenMember, setChosenMember] = useState<OtherMember | null>(null);
@@ -36,10 +34,10 @@ function MemberMenu({ currentMember, refetchCurrentMember }: Props) {
 			<table className="fixed end-0 top-0 m-2">
 				<tbody className="w-full">
 					<tr className="flex h-16 items-center justify-end">
-						<th className="border-standard bg-background hover:bg-primary hover:text-secondary h-full w-56 rounded-l-2xl">
+						<th className="border-standard bg-background button-hover h-full w-56 rounded-l-2xl">
 							<CurrentMemberButton currentMember={currentMember} toggleMemberMenu={toggleMemberMenu} />
 						</th>
-						<th className="border-standard bg-background hover:bg-primary hover:text-secondary h-full w-16 rounded-r-2xl !border-l-0">
+						<th className="border-standard bg-background button-hover h-full w-16 rounded-r-2xl !border-l-0">
 							<OtherMembersDropdown
 								currentMember={currentMember}
 								otherMembers={otherMembers}

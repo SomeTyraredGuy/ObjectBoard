@@ -1,0 +1,33 @@
+en:
+  translation:
+    users:
+      login: Login
+      login_label: Enter your credentials to access your account.
+      login_failed: Login failed. Please check your credentials.
+      login_success: Login successful! Redirecting...
+      dont_have_account: Don't have an account?
+
+      logout: Logout
+
+      name: Name
+      name_placeholder: Enter your name
+      password: Password
+      confirm_password: Confirm Password
+      email: Email
+      remember_me: Remember Me
+      my_profile: My Profile
+      to_profile: To Profile
+
+      sign_up: Sign Up
+      sign_up_label: Create an account to access all features.
+      sign_up_failed: Sign Up failed. Please check your details.
+      sign_up_success: Sign Up successful! Redirecting...
+      passwords_do_not_match: Passwords do not match.
+      already_have_account: Already have an account?
+
+      edit_profile: Edit Profile
+      edit_profile_label: Update your profile information.
+      current_password: Current Password
+
+      delete_account: Delete Account
+      delete_account_label: Permanently delete your account and all associated data. This action is irreversible.

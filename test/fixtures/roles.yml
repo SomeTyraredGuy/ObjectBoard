@@ -41,3 +41,10 @@ Viewer:
   can_ignore_rules: false
   can_change_roles: false
   can_assign_admin: false
+
+Invited:
+  name: Invited
+  can_edit: false
+  can_ignore_rules: false
+  can_change_roles: false
+  can_assign_admin: false

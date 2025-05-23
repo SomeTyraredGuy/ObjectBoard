@@ -1,7 +1,7 @@
 class Role < ApplicationRecord
   before_validation :set_defaults
 
-  enum :name, { Owner: 0, Admin: 1, Editor: 2, Viewer: 3 }
+  enum :name, { Owner: 0, Admin: 1, Editor: 2, Viewer: 3, Invited: 4 }
   has_many :members, dependent: nil
 
   def self.find_role(role_attrs)

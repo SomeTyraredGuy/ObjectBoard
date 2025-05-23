@@ -1,6 +1,6 @@
 import { RefObject, useRef } from "react";
 import useTimeout from "../UseTimeout";
-import UseCanvasContentMutation from "./Canvas/UseCanvasContentMutation";
+import UseBoardContentMutation from "./Canvas/UseBoardContentMutation";
 import { HistoryRecord, ChangeRecord } from "../../Types/History";
 
 type Props = {
@@ -21,7 +21,7 @@ export default function UseHistory({ changeObjects }: Props) {
 		unsavedChanges,
 		isError: isContentMutationError,
 		error: contentMutationError,
-	} = UseCanvasContentMutation({ noChanges, changeObjects });
+	} = UseBoardContentMutation({ noChanges, changeObjects });
 
 	const { startTimeout } = useTimeout({
 		delay: 200,
@@ -93,7 +93,7 @@ export default function UseHistory({ changeObjects }: Props) {
 				type: change.type,
 				newProperties: change.oldProperties,
 				oldProperties: change.newProperties,
-			}))
+			})),
 		);
 	}
 

@@ -83,3 +83,7 @@ gem "tailwindcss-rails", "~> 4.2"
 gem "rack-contrib", "~> 2.5"
 
 gem "i18n-js", "~> 4.2"
+
+gem "active_model_serializers", "~> 0.10.15"
+
+gem "devise-i18n", "~> 1.13"

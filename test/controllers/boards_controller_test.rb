@@ -5,39 +5,25 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @board = boards(:one)
-    sign_in users(:Owner)
-  end
-
-  class IndexTest < BoardsControllerTest
-    test "should get index" do
-      get boards_url
-      assert_response :success
-    end
-
-    test "index should contain only boards user can access" do
-      get boards_url
-      assert_response :success
-      assert_select "p.boardNameTest", count: 1
-      assert_select "p.boardNameTest", text: @board.name
-    end
-  end
-
-  test "should get new" do
-    get new_board_url
-    assert_response :success
+    @user = users(:Owner)
+    sign_in @user
   end
 
   test "should create board" do
     assert_difference("Board.count") do
       post boards_url, params: { board: { description: @board.description, name: @board.name } }
     end
-
-    assert_redirected_to board_url(Board.last, locale: I18n.locale)
   end
 
   test "should show board" do
     get board_url(I18n.locale, @board)
     assert_response :success
+  end
+
+  test "should get all boards" do
+    get boards_all_url
+    assert_response :success
+    assert_equal @user.boards.count, response.parsed_body.length
   end
 
   class DestroyTest < BoardsControllerTest
@@ -46,7 +32,7 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
         delete board_url(I18n.locale, @board)
       end
 
-      assert_redirected_to boards_url(locale: I18n.locale)
+      assert_response :no_content
     end
 
     test "admins can't destroy board" do
@@ -75,33 +61,11 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  class EditTest < BoardsControllerTest
-    test "should get edit" do
-      get edit_board_url(I18n.locale, @board)
-      assert_response :success
-    end
-
-    test "Admins can't open edit board page" do
-      assert_cant_open_edit_board_page users(:AdminMinimal)
-
-      assert_cant_open_edit_board_page users(:Admin2)
-
-      assert_cant_open_edit_board_page users(:AdminFull)
-    end
-
-    test "Editors can't open edit board page" do
-      assert_cant_open_edit_board_page users(:Editor)
-    end
-
-    test "Viewers can't open edit board page" do
-      assert_cant_open_edit_board_page users(:Viewer)
-    end
-  end
-
   class UpdateTest < BoardsControllerTest
     test "should update board" do
       patch board_url(I18n.locale, @board), params: { board: { description: @board.description, name: @board.name } }
-      assert_redirected_to board_url(@board, locale: I18n.locale)
+
+      assert_response :no_content
     end
 
     test "Admins can't update board" do
@@ -121,31 +85,6 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "should redirect unauthorized user to login page" do
-    sign_out users(:Owner)
-
-    get boards_url
-    assert_redirected_to_login_page
-
-    get new_board_url
-    assert_redirected_to_login_page
-
-    get edit_board_url(I18n.locale, @board)
-    assert_redirected_to_login_page
-
-    get board_url(I18n.locale, @board)
-    assert_redirected_to_login_page
-
-    post boards_url, params: { board: { description: @board.description, name: @board.name } }
-    assert_redirected_to_login_page
-
-    patch board_url(I18n.locale, @board), params: { board: { description: @board.description, name: @board.name } }
-    assert_redirected_to_login_page
-
-    delete board_url(I18n.locale, @board)
-    assert_redirected_to_login_page
-  end
-
   private
 
   def assert_cant_delete_board(user)
@@ -155,16 +94,10 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  def assert_cant_open_edit_board_page(user)
-    sign_in user
-    get edit_board_url(I18n.locale, @board)
-    assert_redirected_to root_url(locale: I18n.locale)
-  end
-
   def assert_cant_update_board(user)
     sign_in user
     patch board_url(I18n.locale, @board), params: { board: { description: @board.name } }
-    assert_redirected_to root_url(locale: I18n.locale)
+    assert_response :forbidden
     assert_not_equal @board.name, @board.description
   end
 

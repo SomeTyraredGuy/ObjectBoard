@@ -10,7 +10,6 @@ type restrictedMemberType = {
 	member_id: number;
 	user_id: number;
 	name: string;
-	avatar: string;
 	role: {
 		name: string;
 	};
@@ -20,7 +19,6 @@ type fullMemberType = {
 	member_id: number;
 	user_id: number;
 	name: string;
-	avatar: string;
 	role: fullRoleType;
 };
 

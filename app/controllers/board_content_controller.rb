@@ -2,11 +2,7 @@ class BoardContentController < ApplicationController
   include BoardRelated
 
   def get
-    canvas_content = {
-      objects: CanvasObject.formatted_with_type(@board.id)
-    }
-
-    render json: canvas_content
+    render json: @board, serializer: BoardContentSerializer
   end
 
   def save

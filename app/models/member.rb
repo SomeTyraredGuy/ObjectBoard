@@ -1,5 +1,5 @@
 class Member < ApplicationRecord
-  validates :user, presence: { message: "Username is invalid or does not exist" }
+  validates :user, presence: { message: I18n.t("errors.members.user_presence_validation_failed") }
   validate :owner_is_immutable, on: :update
   validates :board, :role, presence: {}
   validates :user, uniqueness: { scope: :board, message: I18n.t("errors.members.already_exists") }
@@ -53,34 +53,6 @@ class Member < ApplicationRecord
     return unless old_role.name == "Owner" || new_role.name == "Owner"
 
     errors.add(:role, :owner_is_immutable, metadata: { new_role: new_role, old_role: old_role })
-  end
-
-  def format_full # rubocop:disable Metrics/MethodLength
-    {
-      member_id: id,
-      user_id: user.id,
-      name: user.name,
-      avatar: "https://i.pinimg.com/736x/a7/23/42/a72342f9852d27544d62573990fa023d.jpg",
-      role: {
-        name: role.name,
-        can_edit: role.can_edit,
-        can_change_roles: role.can_change_roles,
-        can_assign_admin: role.can_assign_admin,
-        can_ignore_rules: role.can_ignore_rules
-      }
-    }
-  end
-
-  def format_restricted
-    {
-      member_id: id,
-      user_id: user.id,
-      name: user.name,
-      avatar: "https://i.pinimg.com/736x/a7/23/42/a72342f9852d27544d62573990fa023d.jpg",
-      role: {
-        name: role.name
-      }
-    }
   end
 
   def self.find_member(id)

@@ -37,7 +37,10 @@
         "shadcn",
         "sonner",
         "stylesheet",
-        "XYWH"
+        "unlockable",
+        "XYWH",
+        "дошок",
+        "Підтвердіть"
     ],
     "[typescript]": {
         "editor.detectIndentation": false,

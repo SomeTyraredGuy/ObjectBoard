@@ -1,0 +1,33 @@
+uk:
+  translation:
+    users:
+      login: Увійти
+      login_label: Введіть облікові дані для доступу до свого акаунту.
+      login_failed: Увійти не вдалося. Будь ласка, перевірте свої облікові дані.
+      login_success: Увійти вдалося! Перенаправлення...
+      dont_have_account: Не маєте акаунту?
+
+      logout: Вихід
+
+      name: Ім'я
+      name_placeholder: Введіть своє ім'я
+      password: Пароль
+      confirm_password: Підтвердіть пароль
+      email: Електронна пошта
+      remember_me: Запам'ятати мене
+      my_profile: Мій профіль
+      to_profile: До профілю
+
+      sign_up: Реєстрація
+      sign_up_label: Створіть акаунт, щоб отримати доступ до всіх функцій.
+      sign_up_failed: Реєстрація не вдалася. Будь ласка, перевірте свої дані.
+      sign_up_success: Реєстрація вдалася! Перенаправлення...
+      passwords_do_not_match: Паролі не співпадають.
+      already_have_account: Вже маєте акаунт?
+
+      edit_profile: Редагувати профіль
+      edit_profile_label: Оновіть інформацію про свій профіль.
+      current_password: Поточний пароль
+
+      delete_account: Видалити акаунт
+      delete_account_label: Назавжди видалити свій акаунт та всі пов'язані дані. Цю дію не можна скасувати.

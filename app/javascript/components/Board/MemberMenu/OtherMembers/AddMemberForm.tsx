@@ -8,10 +8,10 @@ import {
 	DialogTitle,
 } from "@/shadcn/components/ui/dialog";
 import { Button } from "@/shadcn/components/ui/button";
-import UseMemberMutation from "@/hooks/Board/Members/UseMemberMutation";
+import UseCustomMutation from "@/hooks/UseCustomMutation";
 import { Input } from "@/shadcn/components/ui/input";
-import useNotification from "@/hooks/useNotification";
 import { useTranslation } from "react-i18next";
+import ROUTES from "@/routes";
 
 type Props = {
 	refetchFn: () => void;
@@ -22,21 +22,10 @@ type Props = {
 function AddMemberForm({ refetchFn, closeFn, open }: Props) {
 	const { t } = useTranslation();
 	const [name, setName] = useState("");
-	const {
-		mutate: add,
-		error,
-		isError,
-		isSuccess,
-	} = UseMemberMutation({
-		path: "add_to_board",
-		refetchFn: refetchFn,
+	const { mutate: add } = UseCustomMutation({
+		path: ROUTES.addMemberApi(),
+		onSuccess: refetchFn,
 		method: "POST",
-	});
-
-	useNotification({
-		isError,
-		error,
-		isSuccess,
 		successMessage: t("board.members_menu.add.success_message", { nickname: name }),
 	});
 
@@ -59,7 +48,7 @@ function AddMemberForm({ refetchFn, closeFn, open }: Props) {
 					className="justify-self-center-safe w-2/3"
 				/>
 				<DialogFooter className="!justify-center">
-					<Button className="w-26" onClick={() => add(name)} disabled={name === ""}>
+					<Button className="w-26" onClick={() => add({ name })} disabled={name === ""}>
 						{t("common.actions.add")}
 					</Button>
 				</DialogFooter>
