@@ -120,7 +120,7 @@ function Board() {
 	}
 
 	return (
-		<div>
+		<div className="h-screen w-screen overflow-hidden">
 			<Canvas
 				objectsBlocked={!currentMember?.role?.can_edit}
 				canvasState={canvasState}
