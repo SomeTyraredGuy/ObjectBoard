@@ -9,20 +9,12 @@ class BoardsController < ApplicationController
     render json: @board
   end
 
-  # GET /boards/new
-  def new
-    @board = Board.new
-  end
-
   # POST /boards or /boards.json
   def create
     @board = Board.new(board_params)
     save_board!
 
-    respond_to do |format|
-      format.html { redirect_to @board, notice: "Board was successfully created." }
-      format.json { render :show, status: :created, location: @board }
-    end
+    render json: {}, status: :created
   end
 
   # PATCH/PUT /boards/1 or /boards/1.json
@@ -38,10 +30,7 @@ class BoardsController < ApplicationController
 
     destroy_board!
 
-    respond_to do |format|
-      format.html { redirect_to boards_path, status: :see_other, notice: "Board was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    head :no_content
   end
 
   private

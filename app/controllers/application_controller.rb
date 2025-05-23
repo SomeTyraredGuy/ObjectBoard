@@ -20,13 +20,7 @@ class ApplicationController < ActionController::Base
   def handle_base_error(error)
     error.log_error
 
-    respond_to do |format|
-      format.json { render json: { error: error.user_message }, status: error.status }
-      format.html do
-        flash[:alert] = error.user_message
-        redirect_back_or_to(root_path)
-      end
-    end
+    render json: { error: error.user_message }, status: error.status
   end
 
   def handle_not_authorized(error)
@@ -34,13 +28,7 @@ class ApplicationController < ActionController::Base
 
     user_message = I18n.t("errors.general.unauthorized")
 
-    respond_to do |format|
-      format.json { render json: { error: user_message }, status: :forbidden }
-      format.html do
-        flash[:alert] = user_message
-        redirect_back_or_to(root_path)
-      end
-    end
+    render json: { error: user_message }, status: :forbidden
   end
 
   def handle_standard_error(error)
@@ -48,13 +36,7 @@ class ApplicationController < ActionController::Base
 
     user_message = I18n.t("errors.general.unexpected")
 
-    respond_to do |format|
-      format.json { render json: { error: user_message }, status: :internal_server_error }
-      format.html do
-        flash[:alert] = user_message
-        redirect_back_or_to(root_path)
-      end
-    end
+    render json: { error: user_message }, status: :internal_server_error
   end
 
   def default_url_options
