@@ -10,16 +10,16 @@ type Props = {
 	isContentMutationError: boolean;
 };
 
-export default function UseCanvasContentQuery({ canvasStateUtils, setCanvasObjects, isContentMutationError }: Props) {
+export default function UseBoardContentQuery({ canvasStateUtils, setCanvasObjects, isContentMutationError }: Props) {
 	const {
-		data: canvasContent,
+		data: boardContent,
 		isLoading,
 		error,
 		isError,
 		refetch,
 	} = UseCustomQuery({
-		queryKey: ["canvasContent"],
-		path: ROUTES.getCanvasContentApi(),
+		queryKey: ["boardContent"],
+		path: ROUTES.getBoardContentApi(),
 		refetchInterval: false,
 		disableNotification: true,
 	});
@@ -29,11 +29,11 @@ export default function UseCanvasContentQuery({ canvasStateUtils, setCanvasObjec
 	}, [isContentMutationError]);
 
 	useEffect(() => {
-		if (canvasContent) {
+		if (boardContent) {
 			canvasStateUtils.None.set();
-			if (canvasContent.objects) setCanvasObjects(canvasContent.objects.toSorted((a, b) => a.id - b.id));
+			if (boardContent.objects) setCanvasObjects(boardContent.objects.toSorted((a, b) => a.id - b.id));
 		}
-	}, [canvasContent]);
+	}, [boardContent]);
 
 	return { isLoading, error, isError };
 }

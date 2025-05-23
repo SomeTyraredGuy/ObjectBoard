@@ -9,7 +9,7 @@ import Canvas from "./Canvas/Canvas.js";
 import UseObjectsInteraction from "../../hooks/Board/Canvas/Objects/UseObjectsInteraction.js";
 import UseStageScaleAndPosition from "../../hooks/Board/Canvas/UseStageScaleAndPosition.js";
 import UseHistory from "../../hooks/Board/UseHistory.js";
-import UseCanvasContentQuery from "../../hooks/Board/Canvas/UseCanvasContentQuery.js";
+import UseBoardContentQuery from "../../hooks/Board/Canvas/UseBoardContentQuery.js";
 import Loader from "../General/Loader.js";
 import createCanvasStateUtils from "../../scripts/canvasStateUtils/createCanvasStateUtils.js";
 import UseCustomQuery from "@/hooks/UseCustomQuery";
@@ -85,7 +85,7 @@ function Board() {
 		isLoading: contentIsLoading,
 		error: contentQueryError,
 		isError: isContentQueryError,
-	} = UseCanvasContentQuery({ canvasStateUtils, setCanvasObjects, isContentMutationError });
+	} = UseBoardContentQuery({ canvasStateUtils, setCanvasObjects, isContentMutationError });
 
 	const [criticalError, setCriticalError] = useState<null | {
 		message: string;

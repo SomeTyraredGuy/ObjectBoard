@@ -21,8 +21,8 @@ function getRoutes(router = false) {
 		leaveBoardApi: (boardId: number) => `${getBaseURL()}/boards/${boardId}/member/leave_board`,
 		acceptInviteApi: (boardId: number) => `${getBaseURL()}/boards/${boardId}/member/accept_invite`,
 
-		saveCanvasContentApi: () => `${getFullURL()}/content/save`,
-		getCanvasContentApi: () => `${getFullURL()}/content/get`,
+		saveBoardContentApi: () => `${getFullURL()}/content/save`,
+		getBoardContentApi: () => `${getFullURL()}/content/get`,
 
 		UserApi: () => `${getBaseURL()}/users`,
 

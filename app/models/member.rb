@@ -55,32 +55,6 @@ class Member < ApplicationRecord
     errors.add(:role, :owner_is_immutable, metadata: { new_role: new_role, old_role: old_role })
   end
 
-  def format_full # rubocop:disable Metrics/MethodLength
-    {
-      member_id: id,
-      user_id: user.id,
-      name: user.name,
-      role: {
-        name: role.name,
-        can_edit: role.can_edit,
-        can_change_roles: role.can_change_roles,
-        can_assign_admin: role.can_assign_admin,
-        can_ignore_rules: role.can_ignore_rules
-      }
-    }
-  end
-
-  def format_restricted
-    {
-      member_id: id,
-      user_id: user.id,
-      name: user.name,
-      role: {
-        name: role.name
-      }
-    }
-  end
-
   def self.find_member(id)
     member = Member.find_by(id: id)
     raise MemberErrors::NotFound.new(metadata: { member_id: id }) unless member

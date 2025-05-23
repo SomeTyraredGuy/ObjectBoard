@@ -2,18 +2,17 @@ class MembersController < ApplicationController
   include BoardRelated
 
   def current
-    render json: @member.format_full
+    render json: @member
   end
 
   def others
     other_users = []
-    can_change_roles = @member.role.can_change_roles
 
     @board.members.where.not(user_id: current_user.id).find_each do |member|
-      other_users.push(can_change_roles ? member.format_full : member.format_restricted)
+      other_users.push(member)
     end
 
-    render json: other_users
+    render json: other_users, each_serializer: MemberSerializer
   end
 
   def update_role
@@ -44,6 +43,7 @@ class MembersController < ApplicationController
     new_member.handle_create_error
   end
 
+  # Also used for declining an invite
   def leave_board
     if @member.role.name == :Owner
       raise MemberErrors::OwnerIsImmutable.new(metadata: { user: current_user,

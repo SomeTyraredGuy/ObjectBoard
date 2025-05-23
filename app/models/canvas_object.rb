@@ -44,20 +44,6 @@ class CanvasObject < ApplicationRecord # rubocop:disable Metrics/ClassLength
     canvas_object
   end
 
-  def self.formatted_with_type(board_id)
-    CanvasObject.all_from_board(board_id).map do |canvas_object|
-      formatted_canvas_object = canvas_object.attributes.symbolize_keys.except(
-        :board_id, :created_at, :updated_at, :specific_data
-      )
-
-      formatted_canvas_object.merge(
-        canvas_object.specific_data.symbolize_keys.except(
-          :id, :canvas_object_id, :created_at, :updated_at
-        )
-      )
-    end
-  end
-
   def update_canvas_object(unfiltered_attrs)
     canvas_object_attrs = unfiltered_attrs.slice(*CanvasObject.attrs)
 

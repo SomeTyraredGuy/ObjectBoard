@@ -10,7 +10,7 @@ type Props = {
 	changeObjects: RefObject<(HistoryRecord: HistoryRecord, useNewProp?: boolean) => void>;
 };
 
-export default function UseCanvasContentMutation({ noChanges, changeObjects }: Props) {
+export default function UseBoardContentMutation({ noChanges, changeObjects }: Props) {
 	const unsavedRecord = useRef<HistoryRecord>([]);
 	const [unsavedChanges, setUnsavedChanges] = useState<boolean>(false);
 	const localIDs = useRef<number[]>([]);
@@ -82,7 +82,7 @@ export default function UseCanvasContentMutation({ noChanges, changeObjects }: P
 	}
 
 	const { mutate, isPending, isError, error } = UseCustomMutation({
-		path: ROUTES.saveCanvasContentApi(),
+		path: ROUTES.saveBoardContentApi(),
 		method: "POST",
 		onSuccess: () => setUnsavedChanges(false),
 		onResponse: processResponse,
