@@ -85,9 +85,6 @@ export default function UseObjects({ canvasState, canvasStateUtils, handleHistor
 			newSelected.push(newObject);
 		});
 
-		console.log("oldSelected", canvasState.objects);
-		console.log("newSelected", newSelected);
-
 		canvasStateUtils.Selected.move(newSelected);
 
 		setCanvasObjects(newObjects);
