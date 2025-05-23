@@ -14,8 +14,17 @@ export default function UseBoardContentMutation({ noChanges, changeObjects }: Pr
 	const unsavedRecord = useRef<HistoryRecord>([]);
 	const [unsavedChanges, setUnsavedChanges] = useState<boolean>(false);
 	const localIDs = useRef<number[]>([]);
+	const assignedIDs = useRef<number[]>([]);
 
 	function getRecord() {
+		unsavedRecord.current.forEach((record) => {
+			// assign new IDs to records that were created before response
+			if (record.id < 0) {
+				const index = localIDs.current.indexOf(record.id);
+				if (index !== -1) record.id = assignedIDs.current[index];
+			}
+		});
+
 		const del: number[] = [];
 		const create: CanvasObject[] = [];
 		localIDs.current = [];
@@ -62,6 +71,8 @@ export default function UseBoardContentMutation({ noChanges, changeObjects }: Pr
 			if (resp.assigned_IDs.length !== localIDs.current.length) throw new Error();
 			if (resp.assigned_IDs.some((id) => id < 0)) throw new Error();
 
+			assignedIDs.current = resp.assigned_IDs;
+
 			changeObjects.current(
 				localIDs.current.map((id, i) => ({
 					id: id,
@@ -71,13 +82,6 @@ export default function UseBoardContentMutation({ noChanges, changeObjects }: Pr
 				})),
 				true,
 			);
-			unsavedRecord.current.forEach((record) => {
-				// assign new IDs to records that were created before response
-				if (record.id < 0) {
-					const index = localIDs.current.indexOf(record.id);
-					if (index !== -1) record.id = resp.assigned_IDs[index];
-				}
-			});
 		}
 	}
 
