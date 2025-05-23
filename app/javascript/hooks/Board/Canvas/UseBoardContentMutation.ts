@@ -15,6 +15,7 @@ export default function UseBoardContentMutation({ noChanges, changeObjects }: Pr
 	const [unsavedChanges, setUnsavedChanges] = useState<boolean>(false);
 	const localIDs = useRef<number[]>([]);
 	const assignedIDs = useRef<number[]>([]);
+	const errorOccurred = useRef<boolean>(false);
 
 	function getRecord() {
 		unsavedRecord.current.forEach((record) => {
@@ -91,6 +92,9 @@ export default function UseBoardContentMutation({ noChanges, changeObjects }: Pr
 		onSuccess: () => setUnsavedChanges(false),
 		onResponse: processResponse,
 		disableNotification: true,
+		onError: () => {
+			errorOccurred.current = true;
+		},
 	});
 
 	const { startTimeout, clearTimer: clearTimeout } = useTimeout({
@@ -150,7 +154,7 @@ export default function UseBoardContentMutation({ noChanges, changeObjects }: Pr
 	}
 
 	window.addEventListener("beforeunload", () => {
-		if (!unsavedChanges) return;
+		if (!unsavedChanges || errorOccurred.current) return;
 
 		clearTimeout();
 		clearMaxTimeout();

@@ -10,6 +10,7 @@ type Props = {
 	disableNotification?: boolean;
 	notifySuccess?: boolean;
 	successMessage?: string;
+	onError?: (error: Error) => void;
 };
 
 export default function UseCustomMutation({
@@ -20,6 +21,7 @@ export default function UseCustomMutation({
 	notifySuccess = true,
 	successMessage,
 	disableNotification = false,
+	onError,
 }: Props) {
 	const { mutate, error, isError, isSuccess, isPending } = useMutation({
 		mutationFn: async (value: unknown) => {
@@ -46,6 +48,7 @@ export default function UseCustomMutation({
 			if (csrfToken) setCSRFToken(csrfToken);
 		},
 		onSuccess: onSuccess,
+		onError: onError,
 	});
 
 	if (!disableNotification) {
