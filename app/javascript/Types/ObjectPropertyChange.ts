@@ -1,25 +1,9 @@
 export type ObjectPropertyChange =
 	| {
-			propertyName: "fill";
+			propertyName: "fill" | "stroke" | "text" | "align" | "verticalAlign";
 			newValue: string;
 	  }
 	| {
-			propertyName: "stroke";
-			newValue: string;
-	  }
-	| {
-			propertyName: "strokeWidth";
+			propertyName: "strokeWidth" | "opacity" | "cornerRadius";
 			newValue: number;
-	  }
-	| {
-			propertyName: "opacity";
-			newValue: number;
-	  }
-	| {
-			propertyName: "cornerRadius";
-			newValue: number;
-	  }
-	| {
-			propertyName: "text";
-			newValue: string;
 	  };

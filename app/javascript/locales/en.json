@@ -376,7 +376,7 @@
           "when": {
             "loading_board": "While loading board",
             "loading_content": "While loading board content",
-            "loading_user": "While loading current user",
+            "loading_member": "While loading current user",
             "saving_content": "While saving board content"
           }
         },
@@ -448,7 +448,19 @@
             "opacity": "Opacity",
             "stroke_color": "Stroke color",
             "stroke_width": "Stroke width",
-            "text": "Text"
+            "text": "Text",
+            "text_align": "Horizontally",
+            "text_align_options": {
+              "center": "Center",
+              "left": "Left",
+              "right": "Right"
+            },
+            "text_vertical_align": "Vertically",
+            "text_vertical_align_options": {
+              "bottom": "Bottom",
+              "middle": "Middle",
+              "top": "Top"
+            }
           },
           "states": {
             "groups": "Groups",

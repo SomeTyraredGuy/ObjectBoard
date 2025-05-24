@@ -34,6 +34,16 @@ uk:
           opacity: Непрозорість
           corner_radius: Радіус закруглення
           text: Текст
+          text_align: Горизонтально
+          text_align_options:
+            left: Ліворуч
+            center: По центру
+            right: Праворуч
+          text_vertical_align: Вертикально
+          text_vertical_align_options:
+            top: Зверху
+            middle: По центру
+            bottom: Знизу
 
       members_menu:
         other:
@@ -71,7 +81,7 @@ uk:
         title: Критична помилка!
         when:
           loading_content: Під час завантаження вмісту дошки
-          loading_user: Під час завантаження поточного користувача
+          loading_member: Під час завантаження поточного користувача
           saving_content: Під час збереження вмісту дошки
           loading_board: Під час завантаження дошки
         message: "Опис: {{message}}"

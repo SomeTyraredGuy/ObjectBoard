@@ -9,6 +9,7 @@ import Actions from "./Actions";
 import { useTranslation } from "react-i18next";
 import { UseCanvasState } from "../../CanvasStateContext";
 import TextInput from "./TextInput";
+import Selector from "./Selector";
 
 function getDefaultProperties(canvasState: CanvasState): Partial<CanvasObject> {
 	if (canvasState.mode === CanvasMode.Inserting) {
@@ -126,6 +127,23 @@ function ObjectsProperties({ resourcesProperties }: Props) {
 		},
 	];
 
+	const selectors = [
+		"align" in defaultProperties && {
+			label: t("text_align"),
+			options: ["left", "center", "right"],
+			localizationPath: "board.resources_menu.properties.text_align_options",
+			defaultValue: defaultProperties.align,
+			onChange: setProperty("align"),
+		},
+		"verticalAlign" in defaultProperties && {
+			label: t("text_vertical_align"),
+			options: ["top", "middle", "bottom"],
+			localizationPath: "board.resources_menu.properties.text_vertical_align_options",
+			defaultValue: defaultProperties.verticalAlign,
+			onChange: setProperty("verticalAlign"),
+		},
+	];
+
 	return (
 		<div className={`flex flex-1 flex-col items-start gap-2 overflow-y-auto p-3`}>
 			{canvasState.mode === CanvasMode.Selected && <Actions deleteSelectedObjects={deleteSelectedObjects} />}
@@ -133,45 +151,25 @@ function ObjectsProperties({ resourcesProperties }: Props) {
 			{colorPickers.map((colorPicker) => {
 				if (!colorPicker) return null;
 
-				return (
-					<ColorPicker
-						key={colorPicker.label}
-						label={colorPicker.label}
-						value={colorPicker.value}
-						setColor={colorPicker.setColor}
-					/>
-				);
+				return <ColorPicker key={colorPicker.label} {...colorPicker} />;
 			})}
 
 			{sliders.map((slider) => {
 				if (!slider) return null;
 
-				return (
-					<Slider
-						key={slider.label}
-						min={slider.min}
-						max={slider.max}
-						step={slider.step}
-						label={slider.label}
-						value={slider.value}
-						multiply100={slider.multiply100}
-						units={slider.units}
-						onChange={slider.onChange}
-					/>
-				);
+				return <Slider key={slider.label} {...slider} />;
 			})}
 
 			{textInputs.map((textInput) => {
 				if (!textInput) return null;
 
-				return (
-					<TextInput
-						key={textInput.label}
-						label={textInput.label}
-						text={textInput.text}
-						onChange={textInput.onChange}
-					/>
-				);
+				return <TextInput key={textInput.label} {...textInput} />;
+			})}
+
+			{selectors.map((selector) => {
+				if (!selector) return null;
+
+				return <Selector key={selector.label} {...selector} />;
 			})}
 		</div>
 	);

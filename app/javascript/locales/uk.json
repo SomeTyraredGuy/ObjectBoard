@@ -152,7 +152,7 @@
           "when": {
             "loading_board": "Під час завантаження дошки",
             "loading_content": "Під час завантаження вмісту дошки",
-            "loading_user": "Під час завантаження поточного користувача",
+            "loading_member": "Під час завантаження поточного користувача",
             "saving_content": "Під час збереження вмісту дошки"
           }
         },
@@ -225,7 +225,19 @@
             "opacity": "Непрозорість",
             "stroke_color": "Колір обведення",
             "stroke_width": "Ширина обведення",
-            "text": "Текст"
+            "text": "Текст",
+            "text_align": "Горизонтально",
+            "text_align_options": {
+              "center": "По центру",
+              "left": "Ліворуч",
+              "right": "Праворуч"
+            },
+            "text_vertical_align": "Вертикально",
+            "text_vertical_align_options": {
+              "bottom": "Знизу",
+              "middle": "По центру",
+              "top": "Зверху"
+            }
           },
           "states": {
             "groups": "Групи",
