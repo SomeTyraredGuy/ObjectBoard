@@ -441,10 +441,17 @@
         },
         "open": "Open board",
         "resources_menu": {
+          "actions": {
+            "down": "Send backward",
+            "lock": "Lock",
+            "unlock": "Unlock",
+            "up": "Bring forward"
+          },
           "properties": {
             "corner_radius": "Corner radius",
             "fill_color": "Fill color",
             "font_size": "Font size",
+            "locked": "Locked",
             "no_objects": "No object to be edited",
             "opacity": "Opacity",
             "stroke_color": "Stroke color",

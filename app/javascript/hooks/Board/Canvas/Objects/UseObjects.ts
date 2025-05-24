@@ -79,7 +79,7 @@ export default function UseObjects({ handleHistory }: Props) {
 
 			const newObject = { ...obj };
 
-			newHistoryRecord.push(moveObject(newObject, moveBy));
+			if (!obj.locked) newHistoryRecord.push(moveObject(newObject, moveBy));
 			newObjects[obj.index] = newObject;
 			newSelected.push(newObject);
 		});
@@ -106,7 +106,7 @@ export default function UseObjects({ handleHistory }: Props) {
 
 		const newLine = { ...line };
 
-		historyHandleChanges([moveLinePoint(newLine, moveBy, canvasState.lineModification)], true);
+		if (!newLine.locked) historyHandleChanges([moveLinePoint(newLine, moveBy, canvasState.lineModification)], true);
 
 		const newObjects = [...canvasObjects];
 		newObjects[lineIndex] = newLine;
@@ -138,6 +138,8 @@ export default function UseObjects({ handleHistory }: Props) {
 			const newObject = { ...obj };
 			newObjects[obj.index] = newObject;
 			newSelected.push(newObject);
+
+			if (newObject.locked) return;
 
 			let resizeFunc: (
 				object: CanvasObject,

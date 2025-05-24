@@ -13,7 +13,6 @@ type Props = {
 
 function Selector({ label, options, onChange, defaultValue, localizationPath }: Props) {
 	const { t } = useTranslation("translation", { keyPrefix: localizationPath });
-	console.log(defaultValue);
 
 	return (
 		<div className="border-foreground/40 border-1 w-full rounded p-2">

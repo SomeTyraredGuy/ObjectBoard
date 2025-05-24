@@ -45,6 +45,13 @@ uk:
             middle: По центру
             bottom: Знизу
           font_size: Розмір шрифту
+          locked: Заблоковано
+
+        actions:
+          lock: Заблокувати
+          unlock: Розблокувати
+          up: Перемістити вперед
+          down: Перемістити назад
 
       members_menu:
         other:

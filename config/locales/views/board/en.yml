@@ -44,6 +44,13 @@ en:
             middle: Middle
             bottom: Bottom
           font_size: Font size
+          locked: Locked
+
+        actions:
+          lock: Lock
+          unlock: Unlock
+          up: Bring forward
+          down: Send backward
 
       members_menu:
         other:

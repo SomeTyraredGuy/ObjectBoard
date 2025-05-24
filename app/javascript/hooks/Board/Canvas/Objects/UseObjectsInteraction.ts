@@ -133,11 +133,8 @@ export default function UseObjectsInteraction({ blocked, stageScale, handleHisto
 			}
 
 			case CanvasMode.SelectionNet: {
-				const overlappingObjects = getOverlappingObjects(
-					canvasObjects,
-					canvasState.origin,
-					canvasState.current,
-				);
+				let overlappingObjects = getOverlappingObjects(canvasObjects, canvasState.origin, canvasState.current);
+				overlappingObjects = overlappingObjects.filter((obj) => !obj.locked);
 
 				if (overlappingObjects.length === 0) {
 					canvasStateUtils.None.set();

@@ -155,7 +155,13 @@ function ObjectsProperties({ resourcesProperties }: Props) {
 
 	return (
 		<div className={`flex flex-1 flex-col items-start gap-2 overflow-y-auto p-3`}>
-			{canvasState.mode === CanvasMode.Selected && <Actions deleteSelectedObjects={deleteSelectedObjects} />}
+			{canvasState.mode === CanvasMode.Selected && (
+				<Actions
+					deleteSelectedObjects={deleteSelectedObjects}
+					setLocked={setProperty("locked")}
+					lock={defaultProperties.locked}
+				/>
+			)}
 
 			{colorPickers.map((colorPicker) => {
 				if (!colorPicker) return null;

@@ -6,4 +6,8 @@ export type ObjectPropertyChange =
 	| {
 			propertyName: "strokeWidth" | "opacity" | "cornerRadius" | "fontSize";
 			newValue: number;
+	  }
+	| {
+			propertyName: "locked";
+			newValue: boolean;
 	  };
