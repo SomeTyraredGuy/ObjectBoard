@@ -35,7 +35,7 @@ function ResourcesMenu({ resourcesProperties }: Props) {
 
 	return (
 		<div className="border-standard bg-background w-74 fixed right-0 top-24 flex h-5/6 flex-col rounded-l-2xl">
-			<div className="border-standard justify-center-safe flex h-14 flex-shrink-0 items-center gap-4 !border-x-0 !border-t-0">
+			{/* <div className="border-standard justify-center-safe flex h-14 flex-shrink-0 items-center gap-4 !border-x-0 !border-t-0">
 				{stateButtons.map((button, i) => (
 					<IconButton
 						key={i}
@@ -47,10 +47,10 @@ function ResourcesMenu({ resourcesProperties }: Props) {
 						className="h-10 w-10"
 					/>
 				))}
-			</div>
-			{state === State.Properties && <ObjectsProperties resourcesProperties={resourcesProperties} />}
+			</div> */}
+			{/* {state === State.Properties && */ <ObjectsProperties resourcesProperties={resourcesProperties} />}
 
-			{state === State.Groups && <ObjectsGroups />}
+			{/* {state === State.Groups && <ObjectsGroups />} */}
 		</div>
 	);
 }
