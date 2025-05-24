@@ -42,9 +42,11 @@ export interface Ellipse extends CommonCanvasObject, Point, Fill {
 	radiusY: number;
 }
 
-export interface Text extends CommonCanvasObject, Point, Fill {
+export interface Text extends CommonCanvasObject, Point, Fill, Size {
 	type: CanvasObjectType.Text;
 	text: string;
+	align?: "left" | "center" | "right";
+	verticalAlign?: "top" | "middle" | "bottom";
 }
 
 export interface Line extends CommonCanvasObject {
@@ -60,7 +62,9 @@ export function isCanvasObject(obj: unknown): obj is CanvasObject {
 
 	switch (obj.type) {
 		case CanvasObjectType.Rectangle:
-			return "x" in obj && "y" in obj && "width" in obj && "height" in obj && "fill" in obj && "cornerRadius" in obj;
+			return (
+				"x" in obj && "y" in obj && "width" in obj && "height" in obj && "fill" in obj && "cornerRadius" in obj
+			);
 
 		case CanvasObjectType.Ellipse:
 			return "x" in obj && "y" in obj && "fill" in obj && "radiusX" in obj && "radiusY" in obj;

@@ -89,7 +89,20 @@ function Objects({ objectsBlocked, canvasObjects, temporaryObject }: Props) {
 				);
 
 			case CanvasObjectType.Text:
-				return <Text {...commonProps} x={object.x} y={object.y} text={object.text} fill={object.fill} />;
+				return (
+					<Text
+						{...commonProps}
+						x={object.x}
+						y={object.y}
+						text={object.text}
+						fill={object.fill}
+						width={object.width}
+						height={object.height}
+						align={object.align}
+						verticalAlign={object.verticalAlign}
+						ellipsis
+					/>
+				);
 
 			case CanvasObjectType.Line:
 				return <Line {...commonProps} points={object.points} />;

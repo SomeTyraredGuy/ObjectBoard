@@ -52,6 +52,10 @@ export default function UseDefaultObjects() {
 			x: 0,
 			y: 0,
 			text: "Text",
+			width: 100,
+			height: 100,
+			align: "center",
+			verticalAlign: "middle",
 		};
 	}
 
