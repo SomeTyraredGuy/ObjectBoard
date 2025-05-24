@@ -56,6 +56,7 @@ uk:
       members_menu:
         other:
           label: Інші учасники
+          kick_user: Видалити користувача
 
         add:
           label: Додати нового учасника
@@ -104,6 +105,7 @@ uk:
       successfully_created: Дошка успішно створена
       successfully_declined_invite: Ви успішно відхилили запрошення
       successfully_accepted_invite: Ви успішно прийняли запрошення
+      successfully_kicked: Ви успішно видалили користувача з дошки
 
       my_boards:
         label: Мої дошки

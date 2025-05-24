@@ -169,6 +169,7 @@
             "success_message": "{{nickname}} успішно додано"
           },
           "other": {
+            "kick_user": "Видалити користувача",
             "label": "Інші учасники"
           },
           "role": {
@@ -263,6 +264,7 @@
         "successfully_created": "Дошка успішно створена",
         "successfully_declined_invite": "Ви успішно відхилили запрошення",
         "successfully_deleted": "Дошка успішно видалена",
+        "successfully_kicked": "Ви успішно видалили користувача з дошки",
         "successfully_left": "Ви успішно вийшли з дошки",
         "toolbar": {
           "ellipse": "Еліпс",

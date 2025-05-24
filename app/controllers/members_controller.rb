@@ -63,6 +63,19 @@ class MembersController < ApplicationController
     @member.handle_update_error unless @member.update(role: minimal_role)
   end
 
+  def kick
+    member_to_kick = Member.find_member(params.expect(:member_id))
+
+    if member_to_kick.role.name == :Owner
+      raise MemberErrors::OwnerIsImmutable.new(metadata: { user: current_user,
+                                                           board: member_to_kick.board })
+    end
+
+    authorize_with_current_member member_to_kick
+
+    member_to_kick.destroy
+  end
+
   private
 
   def authorize_with_current_member(member)
