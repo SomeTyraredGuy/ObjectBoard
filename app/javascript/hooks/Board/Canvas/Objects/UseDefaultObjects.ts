@@ -46,7 +46,7 @@ export default function UseDefaultObjects() {
 			type: CanvasObjectType.Text,
 			locked: false,
 			stroke: "none",
-			strokeWidth: 2,
+			strokeWidth: 0,
 			fill: "#000000",
 			opacity: 1,
 			x: 0,

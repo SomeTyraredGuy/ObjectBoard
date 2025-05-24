@@ -5,10 +5,10 @@ import ColorPicker from "./ColorPicker/ColorPicker";
 import { ObjectPropertyChange } from "../../../../Types/ObjectPropertyChange";
 import { CanvasObject, CanvasObjectType, numOfObjectTypes } from "../../../../Types/CanvasObjects";
 import Slider from "./Slider";
-import { CanvasStateUtils } from "../../../../Types/CanvasStateUtils";
 import Actions from "./Actions";
 import { useTranslation } from "react-i18next";
 import { UseCanvasState } from "../../CanvasStateContext";
+import TextInput from "./TextInput";
 
 function getDefaultProperties(canvasState: CanvasState): Partial<CanvasObject> {
 	if (canvasState.mode === CanvasMode.Inserting) {
@@ -118,6 +118,14 @@ function ObjectsProperties({ resourcesProperties }: Props) {
 		},
 	];
 
+	const textInputs = [
+		"text" in defaultProperties && {
+			label: t("text"),
+			text: defaultProperties.text,
+			onChange: setProperty("text"),
+		},
+	];
+
 	return (
 		<div className={`flex flex-1 flex-col items-start gap-2 overflow-y-auto p-3`}>
 			{canvasState.mode === CanvasMode.Selected && <Actions deleteSelectedObjects={deleteSelectedObjects} />}
@@ -149,6 +157,19 @@ function ObjectsProperties({ resourcesProperties }: Props) {
 						multiply100={slider.multiply100}
 						units={slider.units}
 						onChange={slider.onChange}
+					/>
+				);
+			})}
+
+			{textInputs.map((textInput) => {
+				if (!textInput) return null;
+
+				return (
+					<TextInput
+						key={textInput.label}
+						label={textInput.label}
+						text={textInput.text}
+						onChange={textInput.onChange}
 					/>
 				);
 			})}

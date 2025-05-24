@@ -32,6 +32,7 @@ en:
           stroke_width: Stroke width
           opacity: Opacity
           corner_radius: Corner radius
+          text: Text
 
       members_menu:
         other:

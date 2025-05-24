@@ -18,4 +18,8 @@ export type ObjectPropertyChange =
 	| {
 			propertyName: "cornerRadius";
 			newValue: number;
+	  }
+	| {
+			propertyName: "text";
+			newValue: string;
 	  };

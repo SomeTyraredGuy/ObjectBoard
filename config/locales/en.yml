@@ -30,3 +30,5 @@ en:
         to_boards: Go to Boards
 
       cannot_be_undone: Are you sure? This action cannot be undone.
+
+      type_here: Type here...

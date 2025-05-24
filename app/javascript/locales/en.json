@@ -447,7 +447,8 @@
             "no_objects": "No object to be edited",
             "opacity": "Opacity",
             "stroke_color": "Stroke color",
-            "stroke_width": "Stroke width"
+            "stroke_width": "Stroke width",
+            "text": "Text"
           },
           "states": {
             "groups": "Groups",
@@ -504,7 +505,8 @@
         "pages": {
           "boards": "Boards",
           "to_boards": "Go to Boards"
-        }
+        },
+        "type_here": "Type here..."
       },
       "home": {
         "additional_description": "Our system provides a structured environment for collaboration, offering deep object customization, including advanced capabilities for managing user rights and change versions.",

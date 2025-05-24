@@ -33,6 +33,7 @@ uk:
           stroke_width: Ширина обведення
           opacity: Непрозорість
           corner_radius: Радіус закруглення
+          text: Текст
 
       members_menu:
         other:
