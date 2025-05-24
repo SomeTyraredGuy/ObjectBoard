@@ -3,14 +3,12 @@ import { Layer, Stage } from "react-konva";
 import { KonvaEventObject } from "konva/lib/Node";
 import Objects from "./Objects";
 import SelectionLayer from "./SelectionLayer/SelectionLayer";
-import { CanvasMode, CanvasState } from "../../../Types/Canvas";
+import { CanvasMode } from "../../../Types/Canvas";
 import { CanvasObject, Point } from "../../../Types/CanvasObjects";
-import { CanvasStateUtils } from "../../../Types/CanvasStateUtils";
+import { UseCanvasState } from "../CanvasStateContext";
 
 type Props = {
 	objectsBlocked: boolean;
-	canvasState: CanvasState;
-	canvasStateUtils: CanvasStateUtils;
 	canvasObjects: CanvasObject[];
 	canvasUseObjects: {
 		temporaryObject: CanvasObject | null;
@@ -29,14 +27,8 @@ type Props = {
 	};
 };
 
-function Canvas({
-	objectsBlocked,
-	canvasState,
-	canvasStateUtils,
-	canvasObjects,
-	canvasUseObjects,
-	canvasStageScaleAndPosition,
-}: Props) {
+function Canvas({ objectsBlocked, canvasObjects, canvasUseObjects, canvasStageScaleAndPosition }: Props) {
+	const { canvasState } = UseCanvasState();
 	const {
 		temporaryObject,
 		onMouseDown: onMouseDownUseObjects,
@@ -82,13 +74,11 @@ function Canvas({
 					objectsBlocked={objectsBlocked}
 					canvasObjects={canvasObjects}
 					temporaryObject={temporaryObject}
-					canvasStateUtils={canvasStateUtils}
-					canvasState={canvasState}
 				/>
 			</Layer>
 
 			{(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.Selected) && (
-				<SelectionLayer canvasState={canvasState} canvasStateUtils={canvasStateUtils} scale={stageScale} />
+				<SelectionLayer scale={stageScale} />
 			)}
 		</Stage>
 	);

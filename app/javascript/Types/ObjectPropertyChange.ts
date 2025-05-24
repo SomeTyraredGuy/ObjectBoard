@@ -1,21 +1,13 @@
 export type ObjectPropertyChange =
 	| {
-			propertyName: "fill";
+			propertyName: "fill" | "stroke" | "text" | "align" | "verticalAlign";
 			newValue: string;
 	  }
 	| {
-			propertyName: "stroke";
-			newValue: string;
-	  }
-	| {
-			propertyName: "strokeWidth";
+			propertyName: "strokeWidth" | "opacity" | "cornerRadius" | "fontSize";
 			newValue: number;
 	  }
 	| {
-			propertyName: "opacity";
-			newValue: number;
-	  }
-	| {
-			propertyName: "cornerRadius";
-			newValue: number;
+			propertyName: "locked";
+			newValue: boolean;
 	  };

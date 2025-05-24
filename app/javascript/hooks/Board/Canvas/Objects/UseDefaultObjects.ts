@@ -46,12 +46,17 @@ export default function UseDefaultObjects() {
 			type: CanvasObjectType.Text,
 			locked: false,
 			stroke: "none",
-			strokeWidth: 2,
+			strokeWidth: 0,
 			fill: "#000000",
 			opacity: 1,
 			x: 0,
 			y: 0,
 			text: "Text",
+			width: 100,
+			height: 100,
+			align: "center",
+			verticalAlign: "middle",
+			fontSize: 32,
 		};
 	}
 

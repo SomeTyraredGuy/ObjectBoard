@@ -32,6 +32,25 @@ en:
           stroke_width: Stroke width
           opacity: Opacity
           corner_radius: Corner radius
+          text: Text
+          text_align: Horizontally
+          text_align_options:
+            left: Left
+            center: Center
+            right: Right
+          text_vertical_align: Vertically
+          text_vertical_align_options:
+            top: Top
+            middle: Middle
+            bottom: Bottom
+          font_size: Font size
+          locked: Locked
+
+        actions:
+          lock: Lock
+          unlock: Unlock
+          up: Bring forward
+          down: Send backward
 
       members_menu:
         other:
@@ -69,7 +88,7 @@ en:
         title: Critical Error!
         when:
           loading_content: While loading board content
-          loading_user: While loading current user
+          loading_member: While loading current user
           saving_content: While saving board content
           loading_board: While loading board
         message: "Description: {{message}}"

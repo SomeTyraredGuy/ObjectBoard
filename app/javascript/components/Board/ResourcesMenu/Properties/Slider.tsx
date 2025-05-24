@@ -4,7 +4,7 @@ import { Slider as SliderComponent } from "@/shadcn/components/ui/slider";
 
 type Props = {
 	min: number;
-	max: number;
+	max?: number;
 	value: number;
 	multiply100?: boolean;
 	step?: number;

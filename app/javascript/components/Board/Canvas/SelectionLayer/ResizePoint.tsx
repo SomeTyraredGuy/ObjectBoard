@@ -1,11 +1,11 @@
 import React from "react";
 import { Point, XYWH } from "../../../../Types/CanvasObjects";
 import { Circle } from "react-konva";
-import { CanvasState, CanvasMode, Side } from "../../../../Types/Canvas";
+import { CanvasMode, CanvasState, Side } from "../../../../Types/Canvas";
 import { onMouseLeave } from "../../../../scripts/moveStyleCursorEvents";
 import { KonvaEventObject } from "konva/lib/Node";
-import { CanvasStateUtils } from "../../../../Types/CanvasStateUtils";
 import { getSideCursorStyle } from "../../../../scripts/getSideCursorStyle";
+import { CanvasStateUtils } from "@/Types/CanvasStateUtils";
 
 type Props = {
 	point: Point;

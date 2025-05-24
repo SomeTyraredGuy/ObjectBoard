@@ -5,9 +5,11 @@ import ColorPicker from "./ColorPicker/ColorPicker";
 import { ObjectPropertyChange } from "../../../../Types/ObjectPropertyChange";
 import { CanvasObject, CanvasObjectType, numOfObjectTypes } from "../../../../Types/CanvasObjects";
 import Slider from "./Slider";
-import { CanvasStateUtils } from "../../../../Types/CanvasStateUtils";
 import Actions from "./Actions";
 import { useTranslation } from "react-i18next";
+import { UseCanvasState } from "../../CanvasStateContext";
+import TextInput from "./TextInput";
+import Selector from "./Selector";
 
 function getDefaultProperties(canvasState: CanvasState): Partial<CanvasObject> {
 	if (canvasState.mode === CanvasMode.Inserting) {
@@ -36,16 +38,15 @@ function getDefaultProperties(canvasState: CanvasState): Partial<CanvasObject> {
 }
 
 type Props = {
-	canvasState: CanvasState;
-	canvasStateUtils: CanvasStateUtils;
 	resourcesProperties: {
 		changeProperty: (ObjectPropertyChange) => void;
 		deleteSelectedObjects: () => void;
 	};
 };
 
-function ObjectsProperties({ canvasState, canvasStateUtils, resourcesProperties }: Props) {
+function ObjectsProperties({ resourcesProperties }: Props) {
 	const { t } = useTranslation("translation", { keyPrefix: "board.resources_menu.properties" });
+	const { canvasState, canvasStateUtils } = UseCanvasState();
 
 	if (canvasState.mode !== CanvasMode.Selected && canvasState.mode !== CanvasMode.Inserting)
 		return (
@@ -116,41 +117,74 @@ function ObjectsProperties({ canvasState, canvasStateUtils, resourcesProperties 
 			units: "%",
 			onChange: setProperty("cornerRadius"),
 		},
+		"fontSize" in defaultProperties && {
+			label: t("font_size"),
+			value: defaultProperties.fontSize,
+			min: 1,
+			step: 1,
+			multiply100: false,
+			units: "px",
+			onChange: setProperty("fontSize"),
+		},
+	];
+
+	const textInputs = [
+		"text" in defaultProperties && {
+			label: t("text"),
+			text: defaultProperties.text,
+			onChange: setProperty("text"),
+		},
+	];
+
+	const selectors = [
+		"align" in defaultProperties && {
+			label: t("text_align"),
+			options: ["left", "center", "right"],
+			localizationPath: "board.resources_menu.properties.text_align_options",
+			defaultValue: defaultProperties.align,
+			onChange: setProperty("align"),
+		},
+		"verticalAlign" in defaultProperties && {
+			label: t("text_vertical_align"),
+			options: ["top", "middle", "bottom"],
+			localizationPath: "board.resources_menu.properties.text_vertical_align_options",
+			defaultValue: defaultProperties.verticalAlign,
+			onChange: setProperty("verticalAlign"),
+		},
 	];
 
 	return (
 		<div className={`flex flex-1 flex-col items-start gap-2 overflow-y-auto p-3`}>
-			{canvasState.mode === CanvasMode.Selected && <Actions deleteSelectedObjects={deleteSelectedObjects} />}
+			{canvasState.mode === CanvasMode.Selected && (
+				<Actions
+					deleteSelectedObjects={deleteSelectedObjects}
+					setLocked={setProperty("locked")}
+					lock={defaultProperties.locked}
+				/>
+			)}
 
 			{colorPickers.map((colorPicker) => {
 				if (!colorPicker) return null;
 
-				return (
-					<ColorPicker
-						key={colorPicker.label}
-						label={colorPicker.label}
-						value={colorPicker.value}
-						setColor={colorPicker.setColor}
-					/>
-				);
+				return <ColorPicker key={colorPicker.label} {...colorPicker} />;
 			})}
 
 			{sliders.map((slider) => {
 				if (!slider) return null;
 
-				return (
-					<Slider
-						key={slider.label}
-						min={slider.min}
-						max={slider.max}
-						step={slider.step}
-						label={slider.label}
-						value={slider.value}
-						multiply100={slider.multiply100}
-						units={slider.units}
-						onChange={slider.onChange}
-					/>
-				);
+				return <Slider key={slider.label} {...slider} />;
+			})}
+
+			{textInputs.map((textInput) => {
+				if (!textInput) return null;
+
+				return <TextInput key={textInput.label} {...textInput} />;
+			})}
+
+			{selectors.map((selector) => {
+				if (!selector) return null;
+
+				return <Selector key={selector.label} {...selector} />;
 			})}
 		</div>
 	);

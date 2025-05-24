@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_31_055619) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_24_124946) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -97,6 +97,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_31_055619) do
     t.string "text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "width"
+    t.integer "height"
+    t.integer "align"
+    t.integer "verticalAlign"
+    t.integer "fontSize"
     t.index ["canvas_object_id"], name: "index_texts_on_canvas_object_id", unique: true
   end
 

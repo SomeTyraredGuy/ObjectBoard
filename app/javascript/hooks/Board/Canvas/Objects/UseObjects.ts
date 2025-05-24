@@ -1,6 +1,6 @@
 import { RefObject, useState } from "react";
 import { CanvasObject, CanvasObjectType, Point, XYWH } from "../../../../Types/CanvasObjects";
-import { CanvasState, CanvasMode, Side } from "../../../../Types/Canvas";
+import { CanvasMode, Side } from "../../../../Types/Canvas";
 import {
 	getResizedByPercent,
 	resizeRectangle,
@@ -13,20 +13,19 @@ import { ObjectPropertyChange } from "../../../../Types/ObjectPropertyChange";
 import createHistoryChangeObjects from "../../../../scripts/CanvasObjects/historyChangeObjects";
 import { creationChangeRecord, deletionChangeRecord, modificationChangeRecord } from "../../../../scripts/historyUtils";
 import { moveLinePoint, moveObject } from "../../../../scripts/CanvasObjects/move";
-import { CanvasStateUtils } from "../../../../Types/CanvasStateUtils";
+import { UseCanvasState } from "@/components/Board/CanvasStateContext";
 
 type Props = {
-	canvasState: CanvasState;
-	canvasStateUtils: CanvasStateUtils;
 	handleHistory: {
 		changeObjects: RefObject<(HistoryRecord: HistoryRecord, useNewProp?: boolean) => void>;
 		historyHandleChanges: (record: HistoryRecord, waitForFinal?: boolean) => void;
 	};
 };
 
-export default function UseObjects({ canvasState, canvasStateUtils, handleHistory }: Props) {
+export default function UseObjects({ handleHistory }: Props) {
 	const [canvasObjects, setCanvasObjects] = useState<CanvasObject[]>([]);
 	const { changeObjects: historyChangeObjects, historyHandleChanges } = handleHistory;
+	const { canvasState, canvasStateUtils } = UseCanvasState();
 
 	historyChangeObjects.current = createHistoryChangeObjects(
 		canvasObjects,
@@ -80,7 +79,7 @@ export default function UseObjects({ canvasState, canvasStateUtils, handleHistor
 
 			const newObject = { ...obj };
 
-			newHistoryRecord.push(moveObject(newObject, moveBy));
+			if (!obj.locked) newHistoryRecord.push(moveObject(newObject, moveBy));
 			newObjects[obj.index] = newObject;
 			newSelected.push(newObject);
 		});
@@ -107,7 +106,7 @@ export default function UseObjects({ canvasState, canvasStateUtils, handleHistor
 
 		const newLine = { ...line };
 
-		historyHandleChanges([moveLinePoint(newLine, moveBy, canvasState.lineModification)], true);
+		if (!newLine.locked) historyHandleChanges([moveLinePoint(newLine, moveBy, canvasState.lineModification)], true);
 
 		const newObjects = [...canvasObjects];
 		newObjects[lineIndex] = newLine;
@@ -140,6 +139,8 @@ export default function UseObjects({ canvasState, canvasStateUtils, handleHistor
 			newObjects[obj.index] = newObject;
 			newSelected.push(newObject);
 
+			if (newObject.locked) return;
+
 			let resizeFunc: (
 				object: CanvasObject,
 				resizedByPercent: Point,
@@ -164,11 +165,10 @@ export default function UseObjects({ canvasState, canvasStateUtils, handleHistor
 					resizeFunc = resizeEllipse;
 					break;
 
-				// TODO
-				// case CanvasObjectType.Text:
-				//     if (initialSelectedObjects[i].type !== CanvasObjectType.Text) return;
-				//     resizeFunc = resizeText;
-				//     break
+				case CanvasObjectType.Text:
+					if (initialSelectedObjects[i].type !== CanvasObjectType.Text) return;
+					resizeFunc = resizeRectangle;
+					break;
 
 				default:
 					return;

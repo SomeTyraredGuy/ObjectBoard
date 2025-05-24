@@ -1,5 +1,5 @@
 import { Side } from "../../Types/Canvas";
-import { Ellipse, Line, /*Text,*/ Point, Rectangle, XYWH } from "../../Types/CanvasObjects";
+import { Ellipse, Line, Text, Point, Rectangle, XYWH } from "../../Types/CanvasObjects";
 import { ChangeRecord } from "../../Types/History";
 import { modificationChangeRecord } from "../historyUtils";
 import iterateSidesAndCorners from "./iterateSidesAndCorners";
@@ -56,12 +56,12 @@ function getResizedByPercent(side: Side, currentPoint: Point, initialXYWH: XYWH)
 }
 
 function resizeRectangle(
-	rectangle: Rectangle,
+	rectangle: Rectangle | Text,
 	resizedByPercent: Point,
 	currentPoint: Point,
 	initialSelectionNet: XYWH,
 	initialRectangle: Rectangle,
-	side: Side
+	side: Side,
 ): ChangeRecord {
 	rectangle.width = Math.abs(initialRectangle.width * resizedByPercent.x);
 	rectangle.height = Math.abs(initialRectangle.height * resizedByPercent.y);
@@ -128,7 +128,7 @@ function resizeEllipse(
 	currentPoint: Point,
 	initialSelectionNet: XYWH,
 	initialEllipse: Ellipse,
-	side: Side
+	side: Side,
 ) {
 	const newRadiusX = initialEllipse.radiusX * resizedByPercent.x;
 	const newRadiusY = initialEllipse.radiusY * resizedByPercent.y;
@@ -167,7 +167,7 @@ function resizeLine(
 	currentPoint: Point,
 	initialSelectionNet: XYWH,
 	initialLine: Line,
-	side: Side
+	side: Side,
 ) {
 	const points = [...line.points];
 
@@ -204,16 +204,4 @@ function resizeLine(
 	});
 }
 
-function resizeText() {
-	// 	text: Text,
-	// 	resizedByPercent: Point,
-	// 	currentPoint: Point,
-	// 	initialSelectionNet: XYWH,
-	// 	initialText: Text,
-	// 	side: Side
-	// ) {
-	// TODO: text resizing by dragging
-	// return modificationChangeRecord(initialText, {})
-}
-
-export { getResizedByPercent, resizeRectangle, resizeEllipse, resizeLine, resizeText };
+export { getResizedByPercent, resizeRectangle, resizeEllipse, resizeLine };

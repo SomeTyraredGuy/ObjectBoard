@@ -4,25 +4,23 @@ import ToolBar from "./ToolBar/ToolBar.js";
 import BoardMenu from "./BoardMenu/BoardMenu.js";
 import ResourcesMenu from "./ResourcesMenu/ResourcesMenu.js";
 import { useState } from "react";
-import { CanvasMode, CanvasState } from "../../Types/Canvas.js";
 import Canvas from "./Canvas/Canvas.js";
 import UseObjectsInteraction from "../../hooks/Board/Canvas/Objects/UseObjectsInteraction.js";
 import UseStageScaleAndPosition from "../../hooks/Board/Canvas/UseStageScaleAndPosition.js";
 import UseHistory from "../../hooks/Board/UseHistory.js";
 import UseBoardContentQuery from "../../hooks/Board/Canvas/UseBoardContentQuery.js";
 import Loader from "../General/Loader.js";
-import createCanvasStateUtils from "../../scripts/canvasStateUtils/createCanvasStateUtils.js";
 import UseCustomQuery from "@/hooks/UseCustomQuery";
 import CriticalError from "../General/CriticalError.js";
 import { useTranslation } from "react-i18next";
 import ROUTES from "@/routes.js";
+import { useNavigate } from "react-router";
 
 function Board() {
 	const {
 		data: board,
 		refetch: refetchBoard,
 		isLoading: isBoardLoading,
-		error: boardError,
 		isError: isBoardError,
 	} = UseCustomQuery({
 		queryKey: ["board"],
@@ -30,11 +28,14 @@ function Board() {
 		disableNotification: true,
 	});
 
+	const navigate = useNavigate();
+	useEffect(() => {
+		if (isBoardError) {
+			navigate(ROUTES.home());
+		}
+	}, [isBoardError]);
+
 	const { t } = useTranslation();
-	const [canvasState, setCanvasState] = useState<CanvasState>({
-		mode: CanvasMode.None,
-	});
-	const canvasStateUtils = createCanvasStateUtils(setCanvasState);
 
 	const {
 		data: currentMember,
@@ -70,8 +71,6 @@ function Board() {
 	const { canvasObjects, setCanvasObjects, canvasUseObjectsInteraction, resourcesProperties } = UseObjectsInteraction(
 		{
 			blocked: !currentMember?.role?.can_edit,
-			canvasState,
-			canvasStateUtils,
 			stageScale,
 			handleHistory: {
 				changeObjects,
@@ -85,7 +84,7 @@ function Board() {
 		isLoading: contentIsLoading,
 		error: contentQueryError,
 		isError: isContentQueryError,
-	} = UseBoardContentQuery({ canvasStateUtils, setCanvasObjects, isContentMutationError });
+	} = UseBoardContentQuery({ setCanvasObjects, isContentMutationError });
 
 	const [criticalError, setCriticalError] = useState<null | {
 		message: string;
@@ -107,13 +106,8 @@ function Board() {
 				message: contentMutationError?.message,
 				when: t("board.critical_error.when.saving_content"),
 			});
-		} else if (isBoardError) {
-			setCriticalError({
-				message: boardError?.message,
-				when: t("board.critical_error.when.loading_board"),
-			});
 		}
-	}, [isCurrentMemberError, isContentQueryError, isContentMutationError, isBoardError]);
+	}, [isCurrentMemberError, isContentQueryError, isContentMutationError]);
 
 	if (contentIsLoading || isMemberLoading || !currentMember || isBoardLoading) {
 		return <Loader />;
@@ -123,8 +117,6 @@ function Board() {
 		<div className="h-screen w-screen overflow-hidden">
 			<Canvas
 				objectsBlocked={!currentMember?.role?.can_edit}
-				canvasState={canvasState}
-				canvasStateUtils={canvasStateUtils}
 				canvasObjects={canvasObjects}
 				canvasUseObjects={canvasUseObjectsInteraction}
 				canvasStageScaleAndPosition={useStageScaleAndPosition}
@@ -140,19 +132,8 @@ function Board() {
 
 			{currentMember?.role?.can_edit && (
 				<>
-					<ToolBar
-						canvasState={canvasState}
-						canvasStateUtils={canvasStateUtils}
-						undo={undo}
-						redo={redo}
-						canUndo={canUndo()}
-						canRedo={canRedo()}
-					/>
-					<ResourcesMenu
-						canvasState={canvasState}
-						canvasStateUtils={canvasStateUtils}
-						resourcesProperties={resourcesProperties}
-					/>
+					<ToolBar undo={undo} redo={redo} canUndo={canUndo()} canRedo={canRedo()} />
+					<ResourcesMenu resourcesProperties={resourcesProperties} />
 				</>
 			)}
 

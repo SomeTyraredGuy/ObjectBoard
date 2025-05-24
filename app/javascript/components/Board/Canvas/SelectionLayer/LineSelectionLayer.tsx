@@ -2,8 +2,8 @@ import React from "react";
 import { Line, Point } from "../../../../Types/CanvasObjects";
 import { Layer } from "react-konva";
 import LinePoint from "./LinePoint";
-import { CanvasState } from "../../../../Types/Canvas";
-import { CanvasStateUtils } from "../../../../Types/CanvasStateUtils";
+import { CanvasStateUtils } from "@/Types/CanvasStateUtils";
+import { CanvasState } from "@/Types/Canvas";
 
 type Props = {
 	line: Line;

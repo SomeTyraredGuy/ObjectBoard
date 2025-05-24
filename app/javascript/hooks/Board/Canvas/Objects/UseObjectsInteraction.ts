@@ -1,18 +1,16 @@
 import { useRef } from "react";
-import { CanvasObjectType, Point } from "../../../../Types/CanvasObjects";
+import { Point } from "../../../../Types/CanvasObjects";
 import { KonvaEventObject } from "konva/lib/Node";
 import { getCursorOnCanvas, isTooSmallDrag } from "../../../../scripts/canvasUtils";
 import getOverlappingObjects from "../../../../scripts/CanvasObjects/getOverlappingObjects";
-import { CanvasMode, CanvasState } from "../../../../Types/Canvas";
+import { CanvasMode } from "../../../../Types/Canvas";
 import UseObjects from "./UseObjects";
 import UseTemporaryObject from "./UseTemporaryObject";
-import { CanvasStateUtils } from "../../../../Types/CanvasStateUtils";
 import { HistoryRecord } from "../../../../Types/History";
+import { UseCanvasState } from "@/components/Board/CanvasStateContext";
 
 type Props = {
 	blocked: boolean;
-	canvasState: CanvasState;
-	canvasStateUtils: CanvasStateUtils;
 	stageScale: number;
 	handleHistory: {
 		removeAdditionalHistoryDelay: () => void;
@@ -21,13 +19,7 @@ type Props = {
 	};
 };
 
-export default function UseObjectsInteraction({
-	blocked,
-	canvasState,
-	canvasStateUtils,
-	stageScale,
-	handleHistory,
-}: Props) {
+export default function UseObjectsInteraction({ blocked, stageScale, handleHistory }: Props) {
 	const {
 		canvasObjects,
 		setCanvasObjects,
@@ -36,11 +28,11 @@ export default function UseObjectsInteraction({
 		moveSelectedLinePoint,
 		resizeSelectedObjects,
 		resourcesProperties,
-	} = UseObjects({ canvasState, canvasStateUtils, handleHistory });
-	const { temporaryObject, createTemporaryObject, updateTemporaryObject, deleteTemporaryObject } = UseTemporaryObject({
-		canvasState,
-	});
+	} = UseObjects({ handleHistory });
+	const { temporaryObject, createTemporaryObject, updateTemporaryObject, deleteTemporaryObject } =
+		UseTemporaryObject();
 	const { removeAdditionalHistoryDelay } = handleHistory;
+	const { canvasState, canvasStateUtils } = UseCanvasState();
 
 	const startingPoint = useRef<Point>({ x: 0, y: 0 });
 	const mouseDown = useRef(false);
@@ -65,7 +57,7 @@ export default function UseObjectsInteraction({
 				break;
 
 			case CanvasMode.Inserting:
-				createTemporaryObject(cursorPoint);
+				createTemporaryObject();
 				break;
 
 			case CanvasMode.Selected:
@@ -128,8 +120,7 @@ export default function UseObjectsInteraction({
 				const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale);
 				if (!currentPoint || !startingPoint.current || !temporaryObject) break;
 
-				if (temporaryObject.type !== CanvasObjectType.Text && isTooSmallDrag(startingPoint.current, currentPoint))
-					break;
+				if (isTooSmallDrag(startingPoint.current, currentPoint)) break;
 
 				addNewObject(temporaryObject);
 
@@ -138,7 +129,8 @@ export default function UseObjectsInteraction({
 			}
 
 			case CanvasMode.SelectionNet: {
-				const overlappingObjects = getOverlappingObjects(canvasObjects, canvasState.origin, canvasState.current);
+				let overlappingObjects = getOverlappingObjects(canvasObjects, canvasState.origin, canvasState.current);
+				overlappingObjects = overlappingObjects.filter((obj) => !obj.locked);
 
 				if (overlappingObjects.length === 0) {
 					canvasStateUtils.None.set();

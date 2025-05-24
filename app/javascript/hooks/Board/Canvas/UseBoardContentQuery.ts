@@ -1,16 +1,16 @@
 import UseCustomQuery from "@/hooks/UseCustomQuery";
 import { CanvasObject } from "../../../Types/CanvasObjects";
 import { useEffect, useRef } from "react";
-import { CanvasStateUtils } from "../../../Types/CanvasStateUtils";
 import ROUTES from "@/routes";
+import { UseCanvasState } from "@/components/Board/CanvasStateContext";
 
 type Props = {
-	canvasStateUtils: CanvasStateUtils;
 	setCanvasObjects: React.Dispatch<React.SetStateAction<CanvasObject[]>>;
 	isContentMutationError: boolean;
 };
 
-export default function UseBoardContentQuery({ canvasStateUtils, setCanvasObjects, isContentMutationError }: Props) {
+export default function UseBoardContentQuery({ setCanvasObjects, isContentMutationError }: Props) {
+	const { canvasStateUtils } = UseCanvasState();
 	const {
 		data: boardContent,
 		isLoading,
