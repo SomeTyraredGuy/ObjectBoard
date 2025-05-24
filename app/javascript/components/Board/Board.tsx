@@ -14,19 +14,26 @@ import UseCustomQuery from "@/hooks/UseCustomQuery";
 import CriticalError from "../General/CriticalError.js";
 import { useTranslation } from "react-i18next";
 import ROUTES from "@/routes.js";
+import { useNavigate } from "react-router";
 
 function Board() {
 	const {
 		data: board,
 		refetch: refetchBoard,
 		isLoading: isBoardLoading,
-		error: boardError,
 		isError: isBoardError,
 	} = UseCustomQuery({
 		queryKey: ["board"],
 		path: ROUTES.getOneBoardApi(),
 		disableNotification: true,
 	});
+
+	const navigate = useNavigate();
+	useEffect(() => {
+		if (isBoardError) {
+			navigate(ROUTES.home());
+		}
+	}, [isBoardError]);
 
 	const { t } = useTranslation();
 
@@ -99,13 +106,8 @@ function Board() {
 				message: contentMutationError?.message,
 				when: t("board.critical_error.when.saving_content"),
 			});
-		} else if (isBoardError) {
-			setCriticalError({
-				message: boardError?.message,
-				when: t("board.critical_error.when.loading_board"),
-			});
 		}
-	}, [isCurrentMemberError, isContentQueryError, isContentMutationError, isBoardError]);
+	}, [isCurrentMemberError, isContentQueryError, isContentMutationError]);
 
 	if (contentIsLoading || isMemberLoading || !currentMember || isBoardLoading) {
 		return <Loader />;

@@ -19,7 +19,7 @@ export default function useNotification({ isError, isSuccess, error, successMess
 		}
 		if (isError) {
 			toast.error(t("error"), {
-				description: error?.message,
+				description: error?.message || t("unexpected_error"),
 			});
 		}
 	}, [isSuccess, isError]);

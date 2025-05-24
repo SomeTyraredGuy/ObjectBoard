@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import useNotification from "./useNotification";
+import { useTranslation } from "react-i18next";
 
 type Props = {
 	queryKey: string[];
@@ -9,6 +10,7 @@ type Props = {
 };
 
 export default function UseCustomQuery({ queryKey, path, disableNotification = false }: Props) {
+	const { t } = useTranslation("translation", { keyPrefix: "common.notification" });
 	const { data, isError, error, refetch, isLoading } = useQuery({
 		queryKey: queryKey,
 		queryFn: async () => {
@@ -17,7 +19,7 @@ export default function UseCustomQuery({ queryKey, path, disableNotification = f
 
 			if (!JSON.ok) {
 				if (response.error) throw new Error(response.error);
-				throw new Error();
+				throw new Error(t("unexpected_error"));
 			}
 
 			return response;
