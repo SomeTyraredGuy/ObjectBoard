@@ -2,7 +2,7 @@ class MembersController < ApplicationController
   include BoardRelated
 
   def current
-    render json: @member
+    render json: @member, full: true
   end
 
   def others
@@ -12,7 +12,7 @@ class MembersController < ApplicationController
       other_users.push(member)
     end
 
-    render json: other_users, each_serializer: MemberSerializer
+    render json: other_users, each_serializer: MemberSerializer, full: @member.role.can_change_roles
   end
 
   def update_role
