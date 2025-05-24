@@ -14,6 +14,7 @@ export function getXYWHfromArray(objects: CanvasObject[]): XYWH | null {
 
 		switch (object.type) {
 			case CanvasObjectType.Rectangle:
+			case CanvasObjectType.Text:
 				minX = Math.min(minX, object.x);
 				minY = Math.min(minY, object.y);
 				maxX = Math.max(maxX, object.x + object.width);
@@ -25,14 +26,6 @@ export function getXYWHfromArray(objects: CanvasObject[]): XYWH | null {
 				minY = Math.min(minY, object.y - object.radiusY);
 				maxX = Math.max(maxX, object.x + object.radiusX);
 				maxY = Math.max(maxY, object.y + object.radiusY);
-				break;
-
-			case CanvasObjectType.Text:
-				minX = Math.min(minX, object.x);
-				minY = Math.min(minY, object.y);
-				// TODO: додати правильну обробку розміру тексту
-				maxX = Math.max(maxX, object.x + object.text.length * 10);
-				maxY = Math.max(maxY, object.y + 10);
 				break;
 
 			case CanvasObjectType.Line:

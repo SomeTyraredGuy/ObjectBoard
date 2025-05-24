@@ -163,11 +163,10 @@ export default function UseObjects({ handleHistory }: Props) {
 					resizeFunc = resizeEllipse;
 					break;
 
-				// TODO
-				// case CanvasObjectType.Text:
-				//     if (initialSelectedObjects[i].type !== CanvasObjectType.Text) return;
-				//     resizeFunc = resizeText;
-				//     break
+				case CanvasObjectType.Text:
+					if (initialSelectedObjects[i].type !== CanvasObjectType.Text) return;
+					resizeFunc = resizeRectangle;
+					break;
 
 				default:
 					return;
