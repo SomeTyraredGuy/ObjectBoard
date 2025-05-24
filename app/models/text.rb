@@ -14,6 +14,7 @@ class Text < ApplicationRecord
       fill
       width height
       align verticalAlign
+      fontSize
     ]
   end
 end

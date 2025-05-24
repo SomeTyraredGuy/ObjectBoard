@@ -47,6 +47,7 @@ export interface Text extends CommonCanvasObject, Point, Fill, Size {
 	text: string;
 	align?: "left" | "center" | "right";
 	verticalAlign?: "top" | "middle" | "bottom";
+	fontSize: number;
 }
 
 export interface Line extends CommonCanvasObject {

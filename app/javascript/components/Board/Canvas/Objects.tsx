@@ -101,6 +101,7 @@ function Objects({ objectsBlocked, canvasObjects, temporaryObject }: Props) {
 						align={object.align}
 						verticalAlign={object.verticalAlign}
 						ellipsis
+						fontSize={object.fontSize}
 					/>
 				);
 

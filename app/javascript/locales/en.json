@@ -444,6 +444,7 @@
           "properties": {
             "corner_radius": "Corner radius",
             "fill_color": "Fill color",
+            "font_size": "Font size",
             "no_objects": "No object to be edited",
             "opacity": "Opacity",
             "stroke_color": "Stroke color",

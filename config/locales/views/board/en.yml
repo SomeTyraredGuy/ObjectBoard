@@ -43,6 +43,7 @@ en:
             top: Top
             middle: Middle
             bottom: Bottom
+          font_size: Font size
 
       members_menu:
         other:

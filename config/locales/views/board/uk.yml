@@ -44,6 +44,7 @@ uk:
             top: Зверху
             middle: По центру
             bottom: Знизу
+          font_size: Розмір шрифту
 
       members_menu:
         other:

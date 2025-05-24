@@ -4,6 +4,6 @@ export type ObjectPropertyChange =
 			newValue: string;
 	  }
 	| {
-			propertyName: "strokeWidth" | "opacity" | "cornerRadius";
+			propertyName: "strokeWidth" | "opacity" | "cornerRadius" | "fontSize";
 			newValue: number;
 	  };

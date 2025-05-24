@@ -117,6 +117,15 @@ function ObjectsProperties({ resourcesProperties }: Props) {
 			units: "%",
 			onChange: setProperty("cornerRadius"),
 		},
+		"fontSize" in defaultProperties && {
+			label: t("font_size"),
+			value: defaultProperties.fontSize,
+			min: 1,
+			step: 1,
+			multiply100: false,
+			units: "px",
+			onChange: setProperty("fontSize"),
+		},
 	];
 
 	const textInputs = [
