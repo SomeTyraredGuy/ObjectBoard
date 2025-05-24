@@ -4,15 +4,7 @@ import getDirection from "../../../../scripts/CanvasObjects/getDirection";
 import { UseCanvasState } from "@/components/Board/CanvasStateContext";
 import { CanvasMode } from "@/Types/Canvas";
 
-function createNewObject(currentPoint: Point, startingProperties: CanvasObject): CanvasObject {
-	if (startingProperties.type === CanvasObjectType.Text)
-		return {
-			...startingProperties,
-			x: currentPoint.x,
-			y: currentPoint.y,
-			text: "Text",
-		};
-
+function createNewObject(startingProperties: CanvasObject): CanvasObject {
 	return {
 		locked: false,
 		...startingProperties,
@@ -23,21 +15,20 @@ export default function UseTemporaryObject() {
 	const { canvasState } = UseCanvasState();
 	const [temporaryObject, setTemporaryObject] = useState<CanvasObject | null>(null);
 
-	function createTemporaryObject(currentPoint: Point) {
+	function createTemporaryObject() {
 		if (canvasState.mode !== CanvasMode.Inserting) return;
 
-		setTemporaryObject(createNewObject(currentPoint, canvasState.startingProperties));
+		setTemporaryObject(createNewObject(canvasState.startingProperties));
 	}
 
 	function updateTemporaryObject(startingPoint: Point, currentPoint: Point) {
 		if (!temporaryObject) return;
 		const { xRight, yBottom } = getDirection(startingPoint, currentPoint);
 
+		const width = xRight ? currentPoint.x - startingPoint.x : startingPoint.x - currentPoint.x;
+		const height = yBottom ? startingPoint.y - currentPoint.y : currentPoint.y - startingPoint.y;
 		switch (temporaryObject.type) {
 			case CanvasObjectType.Rectangle: {
-				const width = xRight ? currentPoint.x - startingPoint.x : startingPoint.x - currentPoint.x;
-				const height = yBottom ? startingPoint.y - currentPoint.y : currentPoint.y - startingPoint.y;
-
 				setTemporaryObject({
 					...temporaryObject,
 					x: xRight ? startingPoint.x : currentPoint.x,
@@ -69,8 +60,10 @@ export default function UseTemporaryObject() {
 			case CanvasObjectType.Text:
 				setTemporaryObject({
 					...temporaryObject,
-					x: currentPoint.x,
-					y: currentPoint.y,
+					x: xRight ? startingPoint.x : currentPoint.x,
+					y: yBottom ? currentPoint.y : startingPoint.y,
+					width: width,
+					height: height,
 				});
 				break;
 

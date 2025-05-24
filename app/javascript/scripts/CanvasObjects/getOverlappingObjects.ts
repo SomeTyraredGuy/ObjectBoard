@@ -2,7 +2,12 @@ import { CanvasObject, CanvasObjectType, Point } from "../../Types/CanvasObjects
 import { isTooSmallDrag } from "../canvasUtils";
 
 function onSegment(p: Point, q: Point, r: Point) {
-	if (q.x <= Math.max(p.x, r.x) && q.x >= Math.min(p.x, r.x) && q.y <= Math.max(p.y, r.y) && q.y >= Math.min(p.y, r.y))
+	if (
+		q.x <= Math.max(p.x, r.x) &&
+		q.x >= Math.min(p.x, r.x) &&
+		q.y <= Math.max(p.y, r.y) &&
+		q.y >= Math.min(p.y, r.y)
+	)
 		return true;
 
 	return false;
@@ -58,6 +63,7 @@ export default function getOverlappingObjects(objects: CanvasObject[], point1: P
 	objects.forEach((object) => {
 		switch (object.type) {
 			case CanvasObjectType.Rectangle:
+			case CanvasObjectType.Text:
 				leftX2 = object.x;
 				rightX2 = object.x + object.width;
 				topY2 = object.y;
@@ -69,13 +75,6 @@ export default function getOverlappingObjects(objects: CanvasObject[], point1: P
 				rightX2 = object.x + object.radiusX;
 				topY2 = object.y - object.radiusY;
 				bottomY2 = object.y + object.radiusY;
-				break;
-
-			case CanvasObjectType.Text:
-				leftX2 = object.x;
-				rightX2 = object.x + object.text.length * 10;
-				topY2 = object.y;
-				bottomY2 = object.y + 10;
 				break;
 
 			case CanvasObjectType.Line:
@@ -90,7 +89,12 @@ export default function getOverlappingObjects(objects: CanvasObject[], point1: P
 							object.points[i + 1] < bottomY1) ||
 						(pointB &&
 							(linesIntersect(pointA, pointB, { x: leftX1, y: topY1 }, { x: rightX1, y: topY1 }) || // top
-								linesIntersect(pointA, pointB, { x: leftX1, y: bottomY1 }, { x: rightX1, y: bottomY1 }) || // bottom
+								linesIntersect(
+									pointA,
+									pointB,
+									{ x: leftX1, y: bottomY1 },
+									{ x: rightX1, y: bottomY1 },
+								) || // bottom
 								linesIntersect(pointA, pointB, { x: leftX1, y: topY1 }, { x: leftX1, y: bottomY1 }) || // left
 								linesIntersect(pointA, pointB, { x: rightX1, y: bottomY1 }, { x: rightX1, y: topY1 }))) // right
 					) {

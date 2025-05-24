@@ -56,7 +56,7 @@ export default function UseDefaultObjects() {
 			height: 100,
 			align: "center",
 			verticalAlign: "middle",
-			fontSize: 16,
+			fontSize: 32,
 		};
 	}
 

@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { CanvasObjectType, Point } from "../../../../Types/CanvasObjects";
+import { Point } from "../../../../Types/CanvasObjects";
 import { KonvaEventObject } from "konva/lib/Node";
 import { getCursorOnCanvas, isTooSmallDrag } from "../../../../scripts/canvasUtils";
 import getOverlappingObjects from "../../../../scripts/CanvasObjects/getOverlappingObjects";
@@ -57,7 +57,7 @@ export default function UseObjectsInteraction({ blocked, stageScale, handleHisto
 				break;
 
 			case CanvasMode.Inserting:
-				createTemporaryObject(cursorPoint);
+				createTemporaryObject();
 				break;
 
 			case CanvasMode.Selected:
@@ -120,11 +120,7 @@ export default function UseObjectsInteraction({ blocked, stageScale, handleHisto
 				const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale);
 				if (!currentPoint || !startingPoint.current || !temporaryObject) break;
 
-				if (
-					temporaryObject.type !== CanvasObjectType.Text &&
-					isTooSmallDrag(startingPoint.current, currentPoint)
-				)
-					break;
+				if (isTooSmallDrag(startingPoint.current, currentPoint)) break;
 
 				addNewObject(temporaryObject);
 
