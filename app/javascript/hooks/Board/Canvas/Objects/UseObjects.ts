@@ -1,6 +1,6 @@
 import { RefObject, useState } from "react";
 import { CanvasObject, CanvasObjectType, Point, XYWH } from "../../../../Types/CanvasObjects";
-import { CanvasState, CanvasMode, Side } from "../../../../Types/Canvas";
+import { CanvasMode, Side } from "../../../../Types/Canvas";
 import {
 	getResizedByPercent,
 	resizeRectangle,
@@ -13,20 +13,19 @@ import { ObjectPropertyChange } from "../../../../Types/ObjectPropertyChange";
 import createHistoryChangeObjects from "../../../../scripts/CanvasObjects/historyChangeObjects";
 import { creationChangeRecord, deletionChangeRecord, modificationChangeRecord } from "../../../../scripts/historyUtils";
 import { moveLinePoint, moveObject } from "../../../../scripts/CanvasObjects/move";
-import { CanvasStateUtils } from "../../../../Types/CanvasStateUtils";
+import { UseCanvasState } from "@/components/Board/CanvasStateContext";
 
 type Props = {
-	canvasState: CanvasState;
-	canvasStateUtils: CanvasStateUtils;
 	handleHistory: {
 		changeObjects: RefObject<(HistoryRecord: HistoryRecord, useNewProp?: boolean) => void>;
 		historyHandleChanges: (record: HistoryRecord, waitForFinal?: boolean) => void;
 	};
 };
 
-export default function UseObjects({ canvasState, canvasStateUtils, handleHistory }: Props) {
+export default function UseObjects({ handleHistory }: Props) {
 	const [canvasObjects, setCanvasObjects] = useState<CanvasObject[]>([]);
 	const { changeObjects: historyChangeObjects, historyHandleChanges } = handleHistory;
+	const { canvasState, canvasStateUtils } = UseCanvasState();
 
 	historyChangeObjects.current = createHistoryChangeObjects(
 		canvasObjects,

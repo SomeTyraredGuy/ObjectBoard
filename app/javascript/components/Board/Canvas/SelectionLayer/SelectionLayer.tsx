@@ -1,12 +1,12 @@
 import React, { useRef } from "react";
 import { Layer, Rect } from "react-konva";
-import { CanvasMode, CanvasState, Side } from "../../../../Types/Canvas";
+import { CanvasMode, Side } from "../../../../Types/Canvas";
 import { CanvasObjectType, XYWH } from "../../../../Types/CanvasObjects";
 import LineSelectionLayer from "./LineSelectionLayer";
 import ResizePoint from "./ResizePoint";
 import { onMouseEnter, onMouseLeave } from "../../../../scripts/moveStyleCursorEvents";
-import { CanvasStateUtils } from "../../../../Types/CanvasStateUtils";
 import { getXYWH } from "../../../../scripts/CanvasObjects/getXYWH";
+import { UseCanvasState } from "../../CanvasStateContext";
 
 const RESIZE_POINTS = [
 	{
@@ -84,12 +84,11 @@ const RESIZE_POINTS = [
 ];
 
 type Props = {
-	canvasState: CanvasState;
-	canvasStateUtils: CanvasStateUtils;
 	scale: number;
 };
 
-function SelectionLayer({ canvasState, canvasStateUtils, scale }: Props) {
+function SelectionLayer({ scale }: Props) {
+	const { canvasState, canvasStateUtils } = UseCanvasState();
 	if (
 		canvasState.mode === CanvasMode.Selected &&
 		canvasState.objects.length === 1 &&

@@ -1,25 +1,24 @@
 import React from "react";
 import { SelectSVG, UndoSVG, RedoSVG, TextSVG, RectangleSVG, CircleSVG, ArrowSVG } from "../../svg/ToolsSVG";
 import IconButton from "../../General/IconButton";
-import { CanvasMode, CanvasState } from "../../../Types/Canvas";
+import { CanvasMode } from "../../../Types/Canvas";
 import { CanvasObjectType } from "../../../Types/CanvasObjects";
 import UseDefaultObjects from "../../../hooks/Board/Canvas/Objects/UseDefaultObjects";
-import { CanvasStateUtils } from "../../../Types/CanvasStateUtils";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "@/components/General/LanguageSwitcher";
+import { UseCanvasState } from "../CanvasStateContext";
 
 type Props = {
-	canvasState: CanvasState;
-	canvasStateUtils: CanvasStateUtils;
 	undo: () => void;
 	redo: () => void;
 	canUndo: boolean;
 	canRedo: boolean;
 };
 
-function ToolBar({ canvasState, canvasStateUtils, undo, redo, canUndo, canRedo }: Props) {
+function ToolBar({ undo, redo, canUndo, canRedo }: Props) {
 	const { defaultRectangle, defaultEllipse, defaultText, defaultLine } = UseDefaultObjects();
 	const { t } = useTranslation("translation", { keyPrefix: "board.toolbar" });
+	const { canvasState, canvasStateUtils } = UseCanvasState();
 
 	const switchButtons = [
 		{

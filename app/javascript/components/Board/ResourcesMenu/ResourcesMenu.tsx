@@ -3,8 +3,6 @@ import IconButton from "../../General/IconButton";
 import { FolderSVG, PaletteSVG } from "../../svg/ResourcesSVG";
 import ObjectsProperties from "./Properties/ObjectsProperties";
 import ObjectsGroups from "./ObjectsGroups";
-import { CanvasState } from "../../../Types/Canvas";
-import { CanvasStateUtils } from "../../../Types/CanvasStateUtils";
 import { useTranslation } from "react-i18next";
 
 enum State {
@@ -13,12 +11,10 @@ enum State {
 }
 
 type Props = {
-	canvasState: CanvasState;
-	canvasStateUtils: CanvasStateUtils;
 	resourcesProperties;
 };
 
-function ResourcesMenu({ canvasState, canvasStateUtils, resourcesProperties }: Props) {
+function ResourcesMenu({ resourcesProperties }: Props) {
 	const [state, setState] = useState(State.Properties);
 	const { t } = useTranslation("translation", { keyPrefix: "board.resources_menu.states" });
 
@@ -52,13 +48,7 @@ function ResourcesMenu({ canvasState, canvasStateUtils, resourcesProperties }: P
 					/>
 				))}
 			</div>
-			{state === State.Properties && (
-				<ObjectsProperties
-					canvasState={canvasState}
-					canvasStateUtils={canvasStateUtils}
-					resourcesProperties={resourcesProperties}
-				/>
-			)}
+			{state === State.Properties && <ObjectsProperties resourcesProperties={resourcesProperties} />}
 
 			{state === State.Groups && <ObjectsGroups />}
 		</div>

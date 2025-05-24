@@ -8,6 +8,7 @@ import Slider from "./Slider";
 import { CanvasStateUtils } from "../../../../Types/CanvasStateUtils";
 import Actions from "./Actions";
 import { useTranslation } from "react-i18next";
+import { UseCanvasState } from "../../CanvasStateContext";
 
 function getDefaultProperties(canvasState: CanvasState): Partial<CanvasObject> {
 	if (canvasState.mode === CanvasMode.Inserting) {
@@ -36,16 +37,15 @@ function getDefaultProperties(canvasState: CanvasState): Partial<CanvasObject> {
 }
 
 type Props = {
-	canvasState: CanvasState;
-	canvasStateUtils: CanvasStateUtils;
 	resourcesProperties: {
 		changeProperty: (ObjectPropertyChange) => void;
 		deleteSelectedObjects: () => void;
 	};
 };
 
-function ObjectsProperties({ canvasState, canvasStateUtils, resourcesProperties }: Props) {
+function ObjectsProperties({ resourcesProperties }: Props) {
 	const { t } = useTranslation("translation", { keyPrefix: "board.resources_menu.properties" });
+	const { canvasState, canvasStateUtils } = UseCanvasState();
 
 	if (canvasState.mode !== CanvasMode.Selected && canvasState.mode !== CanvasMode.Inserting)
 		return (

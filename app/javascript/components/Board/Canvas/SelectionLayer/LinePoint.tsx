@@ -4,17 +4,17 @@ import { Circle } from "react-konva";
 import { onMouseEnter, onMouseLeave } from "../../../../scripts/moveStyleCursorEvents";
 import { CanvasMode, CanvasState } from "../../../../Types/Canvas";
 import { KonvaEventObject } from "konva/lib/Node";
-import { CanvasStateUtils } from "../../../../Types/CanvasStateUtils";
+import { CanvasStateUtils } from "@/Types/CanvasStateUtils";
 
 type Props = {
-	canvasState: CanvasState;
-	canvasStateUtils: CanvasStateUtils;
 	point: Point;
 	pointIndex: number;
 	scale: number;
+	canvasState: CanvasState;
+	canvasStateUtils: CanvasStateUtils;
 };
 
-function LinePoint({ canvasState, canvasStateUtils, point, pointIndex, scale }: Props) {
+function LinePoint({ point, pointIndex, scale, canvasState, canvasStateUtils }: Props) {
 	function onMouseDown(e: KonvaEventObject<MouseEvent>) {
 		e.evt.preventDefault();
 		if (canvasState.mode !== CanvasMode.Selected) return;

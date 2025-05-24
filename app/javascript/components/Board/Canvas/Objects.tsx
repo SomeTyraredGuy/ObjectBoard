@@ -1,19 +1,19 @@
 import React from "react";
 import { CanvasObject, CanvasObjectType } from "../../../Types/CanvasObjects";
 import { Ellipse, Rect, Text, Line } from "react-konva";
-import { CanvasMode, CanvasState } from "../../../Types/Canvas";
+import { CanvasMode } from "../../../Types/Canvas";
 import { KonvaEventObject } from "konva/lib/Node";
 import { CanvasStateUtils } from "../../../Types/CanvasStateUtils";
+import { UseCanvasState } from "../CanvasStateContext";
 
 type Props = {
 	objectsBlocked: boolean;
 	canvasObjects: CanvasObject[];
 	temporaryObject: CanvasObject | null;
-	canvasStateUtils: CanvasStateUtils;
-	canvasState: CanvasState;
 };
 
-function Objects({ objectsBlocked, canvasObjects, temporaryObject, canvasStateUtils, canvasState }: Props) {
+function Objects({ objectsBlocked, canvasObjects, temporaryObject }: Props) {
+	const { canvasState, canvasStateUtils } = UseCanvasState();
 	function onMouseEnter(e: KonvaEventObject<MouseEvent>) {
 		if (objectsBlocked) return;
 
@@ -34,7 +34,7 @@ function Objects({ objectsBlocked, canvasObjects, temporaryObject, canvasStateUt
 		e: KonvaEventObject<MouseEvent>,
 		canvasStateUtils: CanvasStateUtils,
 		canvasState,
-		object: CanvasObject
+		object: CanvasObject,
 	) {
 		if (objectsBlocked) return;
 		if (canvasState.mode !== CanvasMode.Selected && canvasState.mode !== CanvasMode.None) return;

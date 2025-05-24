@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { CanvasObject, CanvasObjectType, Point } from "../../../../Types/CanvasObjects";
 import getDirection from "../../../../scripts/CanvasObjects/getDirection";
+import { UseCanvasState } from "@/components/Board/CanvasStateContext";
+import { CanvasMode } from "@/Types/Canvas";
 
 function createNewObject(currentPoint: Point, startingProperties: CanvasObject): CanvasObject {
 	if (startingProperties.type === CanvasObjectType.Text)
@@ -17,10 +19,13 @@ function createNewObject(currentPoint: Point, startingProperties: CanvasObject):
 	};
 }
 
-export default function UseTemporaryObject({ canvasState }) {
+export default function UseTemporaryObject() {
+	const { canvasState } = UseCanvasState();
 	const [temporaryObject, setTemporaryObject] = useState<CanvasObject | null>(null);
 
 	function createTemporaryObject(currentPoint: Point) {
+		if (canvasState.mode !== CanvasMode.Inserting) return;
+
 		setTemporaryObject(createNewObject(currentPoint, canvasState.startingProperties));
 	}
 
