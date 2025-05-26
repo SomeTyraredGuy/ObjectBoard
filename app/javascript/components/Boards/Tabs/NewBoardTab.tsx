@@ -71,7 +71,6 @@ function NewBoardTab({ refetchBoards, onNavigateToTab }: Props) {
 									placeholder={t("new_board.description_placeholder")}
 									maxLength={255}
 									rows={4}
-									required
 									className="w-full resize-none"
 								/>
 							</div>
