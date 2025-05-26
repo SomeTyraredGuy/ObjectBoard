@@ -114,11 +114,11 @@ Role.create(id: 7, name: :Invited)
 
 password = 'qweqwe'
 names = (0..9).to_a
-emails = names.map { |name| "#{name}@#{name}" }
+emails = names.map { |name| "example#{name}@example" }
 i = 0
 while i < emails.length do
   user = User.new
-  user.name = names[i]
+  user.name = "example#{names[i]}"
   user.email = emails[i]
   user.password = password
   user.password_confirmation = password
