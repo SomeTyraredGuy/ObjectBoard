@@ -27,7 +27,7 @@ uk:
 
         properties:
           label: Властивості
-          no_objects: Немає об'єктів для редагування
+          no_objects: Немає вибраних об'єктів для редагування
           fill_color: Колір заливки
           stroke_color: Колір обведення
           stroke_width: Ширина обведення

@@ -1,8 +1,8 @@
 en:
   translation:
     home:
-      general_description: "Your visual, interactive, and regulated platform for collaboration. Create, customize, and manage access to objects with unparalleled flexibility."
-      additional_description: "Our system provides a structured environment for collaboration, offering deep object customization, including advanced capabilities for managing user rights and change versions."
+      general_description: "Your visual, interactive, and regulated platform for collaboration. Create, customize, and manage access with unparalleled flexibility."
+      additional_description: "Our system provides a structured environment for collaboration, offering deep object customization, including advanced capabilities for managing user rights."
 
       button_sign_up: "Sign Up Now"
 

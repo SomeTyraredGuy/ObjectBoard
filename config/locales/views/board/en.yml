@@ -26,7 +26,7 @@ en:
           groups: Groups
 
         properties:
-          no_objects: No object to be edited
+          no_objects: No selected object to be edited
           fill_color: Fill color
           stroke_color: Stroke color
           stroke_width: Stroke width
