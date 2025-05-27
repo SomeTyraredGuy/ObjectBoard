@@ -4,7 +4,17 @@ export type ObjectPropertyChange =
 			newValue: string;
 	  }
 	| {
-			propertyName: "strokeWidth" | "opacity" | "cornerRadius" | "fontSize";
+			propertyName:
+				| "strokeWidth"
+				| "opacity"
+				| "cornerRadius"
+				| "fontSize"
+				| "x"
+				| "y"
+				| "width"
+				| "height"
+				| "radiusX"
+				| "radiusY";
 			newValue: number;
 	  }
 	| {

@@ -322,9 +322,12 @@
             "corner_radius": "Corner radius",
             "fill_color": "Fill color",
             "font_size": "Font size",
+            "height": "Height",
             "locked": "Locked",
             "no_objects": "No selected object to be edited",
             "opacity": "Opacity",
+            "radius_x": "Radius X",
+            "radius_y": "Radius Y",
             "stroke_color": "Stroke color",
             "stroke_width": "Stroke width",
             "text": "Text",
@@ -339,7 +342,10 @@
               "bottom": "Bottom",
               "middle": "Middle",
               "top": "Top"
-            }
+            },
+            "width": "Width",
+            "x_position": "X position",
+            "y_position": "Y position"
           },
           "states": {
             "groups": "Groups",

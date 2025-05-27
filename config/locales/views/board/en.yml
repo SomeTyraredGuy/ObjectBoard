@@ -45,6 +45,12 @@ en:
             bottom: Bottom
           font_size: Font size
           locked: Locked
+          width: Width
+          height: Height
+          x_position: X position
+          y_position: Y position
+          radius_x: Radius X
+          radius_y: Radius Y
 
         actions:
           lock: Lock

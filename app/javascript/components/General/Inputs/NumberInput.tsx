@@ -8,9 +8,23 @@ type Props = {
 	units?: string;
 	multiply100?: boolean;
 	onChange: (value: number) => void;
+	className?: string;
+	inputClassName?: string;
+	rounded?: boolean;
 };
 
-function NumberInput({ min, max, step = 1, value, units, multiply100 = false, onChange }: Props) {
+function NumberInput({
+	min,
+	max,
+	step = 1,
+	value,
+	units,
+	multiply100 = false,
+	onChange,
+	className,
+	inputClassName,
+	rounded = false,
+}: Props) {
 	const handleChange = (e) => {
 		const input = e.target as HTMLInputElement;
 
@@ -19,11 +33,12 @@ function NumberInput({ min, max, step = 1, value, units, multiply100 = false, on
 		if (multiply100) value = value / 100;
 		if (value < min) value = min;
 		if (value > max) value = max;
+		if (rounded) value = Math.round(value);
 		onChange(value);
 	};
 
 	return (
-		<div className="border-foreground/20 border-1 flex items-center gap-1 rounded-2xl p-1">
+		<div className={`border-foreground/20 border-1 flex items-center gap-1 rounded-2xl p-1 ${className || ""}`}>
 			<input
 				type="number"
 				min={multiply100 ? Math.round(min * 100) : min}
@@ -31,7 +46,7 @@ function NumberInput({ min, max, step = 1, value, units, multiply100 = false, on
 				step={multiply100 ? Math.round(step * 100) : step}
 				value={multiply100 ? Math.round(value * 100) : value}
 				onChange={handleChange}
-				className="w-10 rounded text-center font-medium"
+				className={`w-10 rounded text-center font-medium ${inputClassName || ""}`}
 			/>
 			{units && <p className="h-fit pr-1 text-base font-medium">{units}</p>}
 		</div>

@@ -46,6 +46,12 @@ uk:
             bottom: Знизу
           font_size: Розмір шрифту
           locked: Заблоковано
+          width: Ширина
+          height: Висота
+          x_position: Позиція X
+          y_position: Позиція Y
+          radius_x: Радіус X
+          radius_y: Радіус Y
 
         actions:
           lock: Заблокувати
