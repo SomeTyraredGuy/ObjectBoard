@@ -67,7 +67,7 @@ class BoardContentController < ApplicationController
   def delete_content(id)
     canvas_object = CanvasObject.find_canvas_object(id)
 
-    authorize_belongs? id
+    authorize_belongs id
 
     return if canvas_object.destroy
 
@@ -87,14 +87,14 @@ class BoardContentController < ApplicationController
   def update_content(obj)
     canvas_object = CanvasObject.find_canvas_object(obj["id"])
 
-    authorize_belongs? obj["id"]
+    authorize_belongs obj["id"]
 
     canvas_object.update_canvas_object(obj["newProperties"])
 
     canvas_object.updated_child_object(obj["type"], obj["newProperties"])
   end
 
-  def authorize_belongs?(canvas_object_id)
+  def authorize_belongs(canvas_object_id)
     context = {
       canvas_object_id: canvas_object_id
     }
