@@ -7,15 +7,17 @@ import UseDefaultObjects from "../../../hooks/Board/Canvas/Objects/UseDefaultObj
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "@/components/General/LanguageSwitcher";
 import { UseCanvasState } from "../CanvasStateContext";
+import { DownloadIcon } from "lucide-react";
 
 type Props = {
 	undo: () => void;
 	redo: () => void;
 	canUndo: boolean;
 	canRedo: boolean;
+	handleExport: () => void;
 };
 
-function ToolBar({ undo, redo, canUndo, canRedo }: Props) {
+function ToolBar({ undo, redo, canUndo, canRedo, handleExport }: Props) {
 	const { defaultRectangle, defaultEllipse, defaultText, defaultLine } = UseDefaultObjects();
 	const { t } = useTranslation("translation", { keyPrefix: "board.toolbar" });
 	const { canvasState, canvasStateUtils } = UseCanvasState();
@@ -83,6 +85,12 @@ function ToolBar({ undo, redo, canUndo, canRedo }: Props) {
 			onClick: redo,
 			label: t("redo"),
 			isDisabled: !canRedo,
+		},
+		{
+			icon: DownloadIcon,
+			onClick: handleExport,
+			label: t("export"),
+			isDisabled: false,
 		},
 	];
 

@@ -15,6 +15,7 @@ import CriticalError from "../General/CriticalError.js";
 import { useTranslation } from "react-i18next";
 import ROUTES from "@/routes.js";
 import { useNavigate } from "react-router";
+import UseExport from "@/hooks/Board/Canvas/UseExport.js";
 
 function Board() {
 	const {
@@ -50,7 +51,11 @@ function Board() {
 	});
 
 	const useStageScaleAndPosition = UseStageScaleAndPosition();
-	const { stageScale } = useStageScaleAndPosition;
+	const { stageScale, stagePosition } = useStageScaleAndPosition;
+	const { handleExport, stageRef, objectsLayerRef } = UseExport({
+		stageScale,
+		stagePosition,
+	});
 
 	const changeObjects = useRef(() => {});
 
@@ -120,6 +125,8 @@ function Board() {
 				canvasObjects={canvasObjects}
 				canvasUseObjects={canvasUseObjectsInteraction}
 				canvasStageScaleAndPosition={useStageScaleAndPosition}
+				stageRef={stageRef}
+				objectsLayerRef={objectsLayerRef}
 			/>
 
 			<BoardMenu
@@ -132,7 +139,13 @@ function Board() {
 
 			{currentMember?.role?.can_edit && (
 				<>
-					<ToolBar undo={undo} redo={redo} canUndo={canUndo()} canRedo={canRedo()} />
+					<ToolBar
+						undo={undo}
+						redo={redo}
+						canUndo={canUndo()}
+						canRedo={canRedo()}
+						handleExport={handleExport}
+					/>
 					<ResourcesMenu resourcesProperties={resourcesProperties} />
 				</>
 			)}

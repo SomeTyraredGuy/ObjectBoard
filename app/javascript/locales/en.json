@@ -367,6 +367,7 @@
         "successfully_left": "You have successfully left the board",
         "toolbar": {
           "ellipse": "Ellipse",
+          "export": "Export to image",
           "line": "Line",
           "rectangle": "Rectangle",
           "redo": "Redo",

@@ -19,6 +19,7 @@ uk:
 
         undo: Скасувати
         redo: Повторити
+        export: Експортувати як зображення
 
       resources_menu:
         states:

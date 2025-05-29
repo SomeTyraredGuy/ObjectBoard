@@ -19,6 +19,7 @@ en:
 
         undo: Undo
         redo: Redo
+        export: Export to image
 
       resources_menu:
         states:
