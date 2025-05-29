@@ -23,13 +23,13 @@ function RoleSwitcherList({ newRole, setNewRole, adminChangesIsDisabled }: Props
 			setValue: (value: boolean) => setNewRole({ ...newRole, can_edit: value }),
 			disabled: true,
 		},
-		{
-			label: t("can_ignore_rules.label"),
-			description: t("can_ignore_rules.description"),
-			checked: newRole.can_ignore_rules,
-			setValue: (value: boolean) => setNewRole({ ...newRole, can_ignore_rules: value }),
-			disabled: true,
-		},
+		// {
+		// 	label: t("can_ignore_rules.label"),
+		// 	description: t("can_ignore_rules.description"),
+		// 	checked: newRole.can_ignore_rules,
+		// 	setValue: (value: boolean) => setNewRole({ ...newRole, can_ignore_rules: value }),
+		// 	disabled: true,
+		// },
 		{
 			label: t("can_change_roles.label"),
 			description: t("can_change_roles.description"),
