@@ -137,18 +137,16 @@ function Board() {
 				modifiable={currentMember?.role?.name === "Owner"}
 			/>
 
-			{currentMember?.role?.can_edit && (
-				<>
-					<ToolBar
-						undo={undo}
-						redo={redo}
-						canUndo={canUndo()}
-						canRedo={canRedo()}
-						handleExport={handleExport}
-					/>
-					<ResourcesMenu resourcesProperties={resourcesProperties} />
-				</>
-			)}
+			<ToolBar
+				undo={undo}
+				redo={redo}
+				canUndo={canUndo()}
+				canRedo={canRedo()}
+				handleExport={handleExport}
+				canEdit={currentMember?.role?.can_edit}
+			/>
+
+			{currentMember?.role?.can_edit && <ResourcesMenu resourcesProperties={resourcesProperties} />}
 
 			<MemberMenu currentMember={currentMember} refetchCurrentMember={refetchCurrentMember} />
 
