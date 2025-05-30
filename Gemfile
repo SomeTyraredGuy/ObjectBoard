@@ -90,4 +90,4 @@ gem "active_model_serializers", "~> 0.10.15"
 
 gem "devise-i18n", "~> 1.13"
 
-gem "faker", "~> 3.5"
+gem "faker", "~> 3.5", require: false
