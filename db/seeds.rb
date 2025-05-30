@@ -26,7 +26,7 @@ def create_member
   Member.create(
     user_id: User.all.sample.id,
     board_id: Board.all.sample.id,
-    role_id: Role.all.sample.id
+    role_id: Role.where.not(name: :Owner).sample.id
   )
 end
 
@@ -78,7 +78,7 @@ def create_line
   canvas_object = create_canvas_object
   Line.new(
     canvas_object: canvas_object,
-    points: Array.new(4) { rand(0..1000) } # 4 random points for a line
+    points: Array.new(4) { rand(0..1000) }
   )
   canvas_object.save!
 end
@@ -130,6 +130,6 @@ end
 
 20.times {create_owner}
 
-100.times {create_member}
+200.times {create_member}
 
 250.times {create_random_canvas_object}
