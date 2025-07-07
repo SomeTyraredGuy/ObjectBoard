@@ -1,3 +1,5 @@
+require 'faker'
+
 def create_user(password)
   User.create(
     name: Faker::Name.name,
