@@ -19,6 +19,7 @@ en:
 
         undo: Undo
         redo: Redo
+        export: Export to image
 
       resources_menu:
         states:
@@ -26,7 +27,7 @@ en:
           groups: Groups
 
         properties:
-          no_objects: No object to be edited
+          no_objects: No selected object to be edited
           fill_color: Fill color
           stroke_color: Stroke color
           stroke_width: Stroke width
@@ -45,6 +46,12 @@ en:
             bottom: Bottom
           font_size: Font size
           locked: Locked
+          width: Width
+          height: Height
+          x_position: X position
+          y_position: Y position
+          radius_x: Radius X
+          radius_y: Radius Y
 
         actions:
           lock: Lock
@@ -55,6 +62,7 @@ en:
       members_menu:
         other:
           label: Other members
+          kick_user: Kick user
 
         add:
           label: Add new member
@@ -103,6 +111,7 @@ en:
       successfully_created: You have successfully created the board
       successfully_declined_invite: You have successfully declined the invite
       successfully_accepted_invite: You have successfully accepted the invite
+      successfully_kicked: You have successfully kicked the user from the board
 
       my_boards:
         label: My boards

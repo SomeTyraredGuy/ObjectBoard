@@ -30,6 +30,7 @@ Rails.application.routes.draw do
           post "add_to_board" => "members#add_to_board", as: :member_add_to_board
           delete "leave_board" => "members#leave_board", as: :member_leave_board
           post "accept_invite" => "members#accept_invite", as: :member_accept_invite
+          delete "kick/:member_id" => "members#kick", as: :member_kick
         end
 
         scope :content do

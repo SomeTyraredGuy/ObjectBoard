@@ -23,6 +23,16 @@ class MemberPolicy < ApplicationPolicy
     true
   end
 
+  def kick?
+    return false if @context[:current_member].nil?
+
+    current_user_role = @context[:current_member].role
+
+    return false unless current_user_role.can_change_roles
+
+    true
+  end
+
   protected
 
   def admin_assign?

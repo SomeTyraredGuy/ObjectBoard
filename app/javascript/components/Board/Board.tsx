@@ -15,6 +15,7 @@ import CriticalError from "../General/CriticalError.js";
 import { useTranslation } from "react-i18next";
 import ROUTES from "@/routes.js";
 import { useNavigate } from "react-router";
+import UseExport from "@/hooks/Board/Canvas/UseExport.js";
 
 function Board() {
 	const {
@@ -50,7 +51,11 @@ function Board() {
 	});
 
 	const useStageScaleAndPosition = UseStageScaleAndPosition();
-	const { stageScale } = useStageScaleAndPosition;
+	const { stageScale, stagePosition } = useStageScaleAndPosition;
+	const { handleExport, stageRef, objectsLayerRef } = UseExport({
+		stageScale,
+		stagePosition,
+	});
 
 	const changeObjects = useRef(() => {});
 
@@ -120,6 +125,8 @@ function Board() {
 				canvasObjects={canvasObjects}
 				canvasUseObjects={canvasUseObjectsInteraction}
 				canvasStageScaleAndPosition={useStageScaleAndPosition}
+				stageRef={stageRef}
+				objectsLayerRef={objectsLayerRef}
 			/>
 
 			<BoardMenu
@@ -130,12 +137,16 @@ function Board() {
 				modifiable={currentMember?.role?.name === "Owner"}
 			/>
 
-			{currentMember?.role?.can_edit && (
-				<>
-					<ToolBar undo={undo} redo={redo} canUndo={canUndo()} canRedo={canRedo()} />
-					<ResourcesMenu resourcesProperties={resourcesProperties} />
-				</>
-			)}
+			<ToolBar
+				undo={undo}
+				redo={redo}
+				canUndo={canUndo()}
+				canRedo={canRedo()}
+				handleExport={handleExport}
+				canEdit={currentMember?.role?.can_edit}
+			/>
+
+			{currentMember?.role?.can_edit && <ResourcesMenu resourcesProperties={resourcesProperties} />}
 
 			<MemberMenu currentMember={currentMember} refetchCurrentMember={refetchCurrentMember} />
 

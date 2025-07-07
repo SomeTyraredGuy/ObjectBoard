@@ -2,7 +2,7 @@ class MembersController < ApplicationController
   include BoardRelated
 
   def current
-    render json: @member
+    render json: @member, full: true
   end
 
   def others
@@ -12,7 +12,7 @@ class MembersController < ApplicationController
       other_users.push(member)
     end
 
-    render json: other_users, each_serializer: MemberSerializer
+    render json: other_users, each_serializer: MemberSerializer, full: @member.role.can_change_roles
   end
 
   def update_role
@@ -61,6 +61,19 @@ class MembersController < ApplicationController
     minimal_role = Role.find_by(name: :Viewer)
 
     @member.handle_update_error unless @member.update(role: minimal_role)
+  end
+
+  def kick
+    member_to_kick = Member.find_member(params.expect(:member_id))
+
+    if member_to_kick.role.name == :Owner
+      raise MemberErrors::OwnerIsImmutable.new(metadata: { user: current_user,
+                                                           board: member_to_kick.board })
+    end
+
+    authorize_with_current_member member_to_kick
+
+    member_to_kick.destroy
   end
 
   private

@@ -20,6 +20,7 @@ function getRoutes(router = false) {
 		updateMemberRoleApi: (member_id: number) => `${getFullURL()}/member/update_role/${member_id}`,
 		leaveBoardApi: (boardId: number) => `${getBaseURL()}/boards/${boardId}/member/leave_board`,
 		acceptInviteApi: (boardId: number) => `${getBaseURL()}/boards/${boardId}/member/accept_invite`,
+		kickMemberApi: (memberId: number) => `${getFullURL()}/member/kick/${memberId}`,
 
 		saveBoardContentApi: () => `${getFullURL()}/content/save`,
 		getBoardContentApi: () => `${getFullURL()}/content/get`,

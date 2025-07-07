@@ -14,7 +14,7 @@ class MemberSerializer < ActiveModel::Serializer
   end
 
   def role
-    if its_current_user? || can_change_roles?
+    if instance_options[:full]
       RoleSerializer.new(object.role)
     else
       RoleRestrictedSerializer.new(object.role)

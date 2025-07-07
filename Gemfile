@@ -56,12 +56,14 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "railroady"
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "simplecov", "~> 0.22.0"
 end
 
 gem "jsbundling-rails", "~> 1.3"
@@ -87,3 +89,5 @@ gem "i18n-js", "~> 4.2"
 gem "active_model_serializers", "~> 0.10.15"
 
 gem "devise-i18n", "~> 1.13"
+
+gem "faker", "~> 3.5", require: false

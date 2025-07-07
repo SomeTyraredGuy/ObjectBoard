@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
     render json: { error: I18n.t("errors.general.not_found") }, status: :not_found
   end
 
-  protected
+  private
 
   def handle_base_error(error)
     error.log_error
@@ -23,8 +23,12 @@ class ApplicationController < ActionController::Base
     render json: { error: error.user_message }, status: error.status
   end
 
+  def log_error(error)
+    Rails.logger.error("#{self.class}: #{error.message}\n#{error.backtrace.join("\n")}")
+  end
+
   def handle_not_authorized(error)
-    Rails.logger.error("#{self.class}: #{error.message}")
+    log_error error
 
     user_message = I18n.t("errors.general.unauthorized")
 
@@ -32,7 +36,7 @@ class ApplicationController < ActionController::Base
   end
 
   def handle_standard_error(error)
-    Rails.logger.error("#{self.class}: #{error.message}\n#{error.backtrace.join("\n")}")
+    log_error error
 
     user_message = I18n.t("errors.general.unexpected")
 

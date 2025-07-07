@@ -42,6 +42,4 @@ export enum CanvasMode {
 	Selected = "Selected",
 	SelectionNet = "SelectionNet",
 	Inserting = "Inserting",
-	Pressing = "Pressing",
-	Resizing = "Resizing",
 }

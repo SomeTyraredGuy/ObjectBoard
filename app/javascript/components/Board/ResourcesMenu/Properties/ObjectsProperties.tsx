@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { UseCanvasState } from "../../CanvasStateContext";
 import TextInput from "./TextInput";
 import Selector from "./Selector";
+import NumberField from "./NumberField";
 
 function getDefaultProperties(canvasState: CanvasState): Partial<CanvasObject> {
 	if (canvasState.mode === CanvasMode.Inserting) {
@@ -153,6 +154,67 @@ function ObjectsProperties({ resourcesProperties }: Props) {
 		},
 	];
 
+	const numberFields = [
+		"width" in defaultProperties && {
+			min: 0,
+			value: defaultProperties.width,
+			step: 1,
+			multiply100: false,
+			units: "px",
+			label: t("width"),
+			onChange: setProperty("width"),
+			rounded: true,
+		},
+		"height" in defaultProperties && {
+			min: 0,
+			value: defaultProperties.height,
+			step: 1,
+			multiply100: false,
+			units: "px",
+			label: t("height"),
+			onChange: setProperty("height"),
+			rounded: true,
+		},
+		"x" in defaultProperties && {
+			value: defaultProperties.x,
+			step: 1,
+			multiply100: false,
+			units: "px",
+			label: t("x_position"),
+			onChange: setProperty("x"),
+			rounded: true,
+		},
+		"y" in defaultProperties && {
+			value: defaultProperties.y,
+			step: 1,
+			multiply100: false,
+			units: "px",
+			label: t("y_position"),
+			onChange: setProperty("y"),
+			rounded: true,
+		},
+		"radiusX" in defaultProperties && {
+			min: 0,
+			value: defaultProperties.radiusX,
+			step: 1,
+			multiply100: false,
+			units: "px",
+			label: t("radius_x"),
+			onChange: setProperty("radiusX"),
+			rounded: true,
+		},
+		"radiusY" in defaultProperties && {
+			min: 0,
+			value: defaultProperties.radiusY,
+			step: 1,
+			multiply100: false,
+			units: "px",
+			label: t("radius_y"),
+			onChange: setProperty("radiusY"),
+			rounded: true,
+		},
+	];
+
 	return (
 		<div className={`flex flex-1 flex-col items-start gap-2 overflow-y-auto p-3`}>
 			{canvasState.mode === CanvasMode.Selected && (
@@ -185,6 +247,12 @@ function ObjectsProperties({ resourcesProperties }: Props) {
 				if (!selector) return null;
 
 				return <Selector key={selector.label} {...selector} />;
+			})}
+
+			{numberFields.map((numberField) => {
+				if (!numberField) return null;
+
+				return <NumberField key={numberField.label} {...numberField} />;
 			})}
 		</div>
 	);

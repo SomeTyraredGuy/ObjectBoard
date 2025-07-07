@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	Dialog,
 	DialogContent,
@@ -14,6 +14,7 @@ import SelectRole from "./SelectRole";
 import RoleSwitcherList from "./RoleSwitcherList";
 import { useTranslation } from "react-i18next";
 import ROUTES from "@/routes";
+import ConfirmationDialog from "@/components/General/ConfirmationDialog";
 
 const roleDefaults = [
 	{ name: "Admin", can_edit: true, can_change_roles: true, can_assign_admin: false, can_ignore_rules: true },
@@ -37,6 +38,17 @@ function MemberSettings({ currentMember, member, refetchFn, closeFn }: Props) {
 		method: "PATCH",
 		successMessage: t("board.members_menu.role.settings.success_message", { nickname: member.name }),
 	});
+	const { mutate: kick } = UseCustomMutation({
+		path: ROUTES.kickMemberApi(member.member_id),
+		method: "DELETE",
+		onSuccess: refetchFn,
+		successMessage: t("board.successfully_kicked"),
+	});
+	const [showConfirmation, setShowConfirmation] = useState(false);
+	const handleKick = () => {
+		kick({});
+		setShowConfirmation(false);
+	};
 
 	function setNewRoleByName(newName) {
 		setNewRole(roleDefaults.find((role) => role.name === newName));
@@ -80,6 +92,18 @@ function MemberSettings({ currentMember, member, refetchFn, closeFn }: Props) {
 					<Button className="w-26" onClick={() => save({ newRole })} disabled={changesIsDisabled()}>
 						{t("common.actions.save")}
 					</Button>
+					{member.role.name !== "Owner" && member !== currentMember && (
+						<Button className="w-26" variant="destructive" onClick={() => setShowConfirmation(true)}>
+							{t("common.actions.delete")}
+						</Button>
+					)}
+					<ConfirmationDialog
+						isOpen={showConfirmation}
+						onOpenChange={() => setShowConfirmation(false)}
+						action={handleKick}
+						isPending={false}
+						button_label={t("board.members_menu.other.kick_user")}
+					/>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

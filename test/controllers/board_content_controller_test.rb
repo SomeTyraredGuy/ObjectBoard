@@ -1,7 +1,6 @@
 require "test_helper"
 
 class BoardContentControllerTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
   setup do
     @board = boards(:one)
     @user = users(:Owner)

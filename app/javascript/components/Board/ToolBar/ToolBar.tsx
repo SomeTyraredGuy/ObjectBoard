@@ -7,15 +7,18 @@ import UseDefaultObjects from "../../../hooks/Board/Canvas/Objects/UseDefaultObj
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "@/components/General/LanguageSwitcher";
 import { UseCanvasState } from "../CanvasStateContext";
+import { DownloadIcon } from "lucide-react";
 
 type Props = {
 	undo: () => void;
 	redo: () => void;
 	canUndo: boolean;
 	canRedo: boolean;
+	handleExport: () => void;
+	canEdit?: boolean;
 };
 
-function ToolBar({ undo, redo, canUndo, canRedo }: Props) {
+function ToolBar({ undo, redo, canUndo, canRedo, handleExport, canEdit }: Props) {
 	const { defaultRectangle, defaultEllipse, defaultText, defaultLine } = UseDefaultObjects();
 	const { t } = useTranslation("translation", { keyPrefix: "board.toolbar" });
 	const { canvasState, canvasStateUtils } = UseCanvasState();
@@ -86,41 +89,53 @@ function ToolBar({ undo, redo, canUndo, canRedo }: Props) {
 		},
 	];
 
+	const className = "my-1 h-10 w-10";
 	const sectionClassName =
 		"bg-background border-standard my-2.5 flex w-14 flex-col items-center self-center rounded-r-2xl px-1 py-2";
 
 	return (
 		<div className="fixed left-0 top-1/2 -translate-y-1/2">
-			<div className={sectionClassName}>
-				{switchButtons.map((button, i) => (
-					<IconButton
-						key={i}
-						icon={button.icon}
-						onClick={button.onClick}
-						label={button.label}
-						isActive={button.isActive}
-						side="right"
-						className="my-1 h-10 w-10"
-					/>
-				))}
-			</div>
+			{canEdit && (
+				<>
+					<div className={sectionClassName}>
+						{switchButtons.map((button, i) => (
+							<IconButton
+								key={i}
+								icon={button.icon}
+								onClick={button.onClick}
+								label={button.label}
+								isActive={button.isActive}
+								side="right"
+								className={className}
+							/>
+						))}
+					</div>
+
+					<div className={sectionClassName}>
+						{actionButtons.map((button, i) => (
+							<IconButton
+								key={i}
+								icon={button.icon}
+								onClick={button.onClick}
+								label={button.label}
+								isDisabled={button.isDisabled}
+								side="right"
+								className={className}
+							/>
+						))}
+					</div>
+				</>
+			)}
 
 			<div className={sectionClassName}>
-				{actionButtons.map((button, i) => (
-					<IconButton
-						key={i}
-						icon={button.icon}
-						onClick={button.onClick}
-						label={button.label}
-						isDisabled={button.isDisabled}
-						side="right"
-						className="my-1 h-10 w-10"
-					/>
-				))}
-			</div>
-
-			<div className={sectionClassName}>
-				<LanguageSwitcher side="right" className="my-1 h-10 w-10" />
+				<IconButton
+					icon={DownloadIcon}
+					onClick={handleExport}
+					label={t("export")}
+					side="right"
+					className={className}
+				/>
+				<LanguageSwitcher side="right" className={className} />
 			</div>
 		</div>
 	);
