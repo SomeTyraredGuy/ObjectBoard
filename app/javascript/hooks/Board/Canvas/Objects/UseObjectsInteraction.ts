@@ -11,7 +11,6 @@ import { UseCanvasState } from "@/components/Board/CanvasStateContext";
 
 type Props = {
 	blocked: boolean;
-	stageScale: number;
 	handleHistory: {
 		removeAdditionalHistoryDelay: () => void;
 		changeObjects: React.RefObject<() => void>;
@@ -19,7 +18,7 @@ type Props = {
 	};
 };
 
-export default function UseObjectsInteraction({ blocked, stageScale, handleHistory }: Props) {
+export default function UseObjectsInteraction({ blocked, handleHistory }: Props) {
 	const {
 		canvasObjects,
 		setCanvasObjects,
@@ -45,7 +44,7 @@ export default function UseObjectsInteraction({ blocked, stageScale, handleHisto
 		if (e.evt.button !== 0 || blocked) return;
 		e.evt.preventDefault();
 
-		const cursorPoint = getCursorOnCanvas(e.target.getStage(), stageScale);
+		const cursorPoint = getCursorOnCanvas(e.target.getStage());
 		if (!cursorPoint) return;
 		startingPoint.current = cursorPoint;
 
@@ -74,7 +73,7 @@ export default function UseObjectsInteraction({ blocked, stageScale, handleHisto
 		if (!mouseDown.current || blocked) return;
 		e.evt.preventDefault();
 
-		const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale);
+		const currentPoint = getCursorOnCanvas(e.target.getStage());
 		if (!currentPoint) return;
 		switch (canvasState.mode) {
 			case CanvasMode.SelectionNet:
@@ -117,7 +116,7 @@ export default function UseObjectsInteraction({ blocked, stageScale, handleHisto
 
 		switch (canvasState.mode) {
 			case CanvasMode.Inserting: {
-				const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale);
+				const currentPoint = getCursorOnCanvas(e.target.getStage());
 				if (!currentPoint || !startingPoint.current || !temporaryObject) break;
 
 				if (isTooSmallDrag(startingPoint.current, currentPoint)) break;
@@ -148,7 +147,7 @@ export default function UseObjectsInteraction({ blocked, stageScale, handleHisto
 				}
 
 				if (canvasState.resizing) {
-					const currentPoint = getCursorOnCanvas(e.target.getStage(), stageScale);
+					const currentPoint = getCursorOnCanvas(e.target.getStage());
 					if (!currentPoint) break;
 
 					resizeSelectedObjects(currentPoint, true);

@@ -6,7 +6,6 @@ import ResourcesMenu from "./ResourcesMenu/ResourcesMenu.js";
 import { useState } from "react";
 import Canvas from "./Canvas/Canvas.js";
 import UseObjectsInteraction from "../../hooks/Board/Canvas/Objects/UseObjectsInteraction.js";
-import UseStageScaleAndPosition from "../../hooks/Board/Canvas/UseStageScaleAndPosition.js";
 import UseHistory from "../../hooks/Board/UseHistory.js";
 import UseBoardContentQuery from "../../hooks/Board/Canvas/UseBoardContentQuery.js";
 import Loader from "../General/Loader.js";
@@ -16,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import ROUTES from "@/routes.js";
 import { useNavigate } from "react-router";
 import UseExport from "@/hooks/Board/Canvas/UseExport.js";
+import { Stage } from "konva/lib/Stage.js";
 
 function Board() {
 	const {
@@ -50,12 +50,8 @@ function Board() {
 		disableNotification: true,
 	});
 
-	const useStageScaleAndPosition = UseStageScaleAndPosition();
-	const { stageScale, stagePosition } = useStageScaleAndPosition;
-	const { handleExport, stageRef, objectsLayerRef } = UseExport({
-		stageScale,
-		stagePosition,
-	});
+	const stageRef = useRef<Stage>(null);
+	const { handleExport, objectsLayerRef } = UseExport({ stageRef });
 
 	const changeObjects = useRef(() => {});
 
@@ -76,7 +72,6 @@ function Board() {
 	const { canvasObjects, setCanvasObjects, canvasUseObjectsInteraction, resourcesProperties } = UseObjectsInteraction(
 		{
 			blocked: !currentMember?.role?.can_edit,
-			stageScale,
 			handleHistory: {
 				changeObjects,
 				historyHandleChanges,
@@ -124,7 +119,6 @@ function Board() {
 				objectsBlocked={!currentMember?.role?.can_edit}
 				canvasObjects={canvasObjects}
 				canvasUseObjects={canvasUseObjectsInteraction}
-				canvasStageScaleAndPosition={useStageScaleAndPosition}
 				stageRef={stageRef}
 				objectsLayerRef={objectsLayerRef}
 			/>

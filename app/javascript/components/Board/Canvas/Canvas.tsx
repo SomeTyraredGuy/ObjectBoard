@@ -4,9 +4,10 @@ import { KonvaEventObject } from "konva/lib/Node";
 import Objects from "./Objects";
 import SelectionLayer from "./SelectionLayer/SelectionLayer";
 import { CanvasMode } from "../../../Types/Canvas";
-import { CanvasObject, Point } from "../../../Types/CanvasObjects";
+import { CanvasObject } from "../../../Types/CanvasObjects";
 import { UseCanvasState } from "../CanvasStateContext";
 import Konva from "konva";
+import UseStageScaleAndPosition from "@/hooks/Board/Canvas/UseStageScaleAndPosition";
 
 type Props = {
 	objectsBlocked: boolean;
@@ -17,27 +18,11 @@ type Props = {
 		onMouseMove: (e: KonvaEventObject<MouseEvent>) => void;
 		onMouseUp: (e: KonvaEventObject<MouseEvent>) => void;
 	};
-	canvasStageScaleAndPosition: {
-		onWheel: (e: KonvaEventObject<MouseEvent>) => void;
-		onMouseMove: (e: KonvaEventObject<MouseEvent>) => void;
-		onMouseDown: (e: KonvaEventObject<MouseEvent>) => void;
-		onMouseUp: (e: KonvaEventObject<MouseEvent>) => void;
-		stagePosition: Point;
-		stageScale: number;
-		isDragging: boolean;
-	};
 	stageRef: React.RefObject<Konva.Stage>;
 	objectsLayerRef: React.RefObject<Konva.Layer>;
 };
 
-function Canvas({
-	objectsBlocked,
-	canvasObjects,
-	canvasUseObjects,
-	canvasStageScaleAndPosition,
-	stageRef,
-	objectsLayerRef,
-}: Props) {
+function Canvas({ objectsBlocked, canvasObjects, canvasUseObjects, stageRef, objectsLayerRef }: Props) {
 	const { canvasState } = UseCanvasState();
 	const {
 		temporaryObject,
@@ -48,25 +33,19 @@ function Canvas({
 
 	const {
 		onWheel,
-		onMouseMove: onMouseMoveUseScale,
 		onMouseDown: onMouseDownUseScale,
-		onMouseUp: onMouseUpUseScale,
-		stagePosition,
-		stageScale,
-		isDragging,
-	} = canvasStageScaleAndPosition;
+		onDragEnd: onDragEndUseScale,
+		scale,
+	} = UseStageScaleAndPosition({ stageRef });
 
 	return (
 		<>
 			<Stage
 				className="bg-white"
-				style={{ cursor: isDragging ? "grab" : "default" }}
 				width={window.innerWidth}
 				height={window.innerHeight}
-				scale={{ x: stageScale, y: stageScale }}
 				onWheel={onWheel}
 				onMouseMove={(e) => {
-					onMouseMoveUseScale(e);
 					onMouseMoveUseObjects(e);
 				}}
 				onMouseDown={(e) => {
@@ -74,11 +53,10 @@ function Canvas({
 					onMouseDownUseObjects(e);
 				}}
 				onMouseUp={(e) => {
-					onMouseUpUseScale(e);
 					onMouseUpUseObjects(e);
 				}}
+				onDragEnd={onDragEndUseScale}
 				onContextMenu={(e: KonvaEventObject<MouseEvent>) => e.evt.preventDefault()}
-				{...stagePosition}
 				ref={stageRef}
 			>
 				<Layer ref={objectsLayerRef}>
@@ -90,7 +68,7 @@ function Canvas({
 				</Layer>
 
 				{(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.Selected) && (
-					<SelectionLayer scale={stageScale} />
+					<SelectionLayer scale={scale} />
 				)}
 			</Stage>
 		</>

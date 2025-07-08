@@ -14,14 +14,14 @@ function isTooSmallDrag(startingPoint: Point, currentPoint: Point): boolean {
 	return true;
 }
 
-function getCursorOnCanvas(stage: Stage | null, scale: number): Point | null {
+function getCursorOnCanvas(stage: Stage | null): Point | null {
 	if (!stage) return null;
 	const pointerPosition = stage?.getPointerPosition();
 	if (!pointerPosition) return null;
 
 	return {
-		x: (pointerPosition.x - stage.x()) / scale,
-		y: (pointerPosition.y - stage.y()) / scale,
+		x: (pointerPosition.x - stage.x()) / stage.scaleX(),
+		y: (pointerPosition.y - stage.y()) / stage.scaleY(),
 	};
 }
 

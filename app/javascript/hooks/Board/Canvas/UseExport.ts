@@ -11,16 +11,14 @@ function downloadURI(uri, name) {
 }
 
 type Props = {
-	stageScale: number;
-	stagePosition: { x: number; y: number };
+	stageRef: React.RefObject<Konva.Stage>;
 };
 
-export default function UseExport({ stageScale, stagePosition }: Props) {
-	const stage = useRef<Konva.Stage>(null);
+export default function UseExport({ stageRef }: Props) {
 	const objectsLayer = useRef<Konva.Layer>(null);
 
 	const handleExport = () => {
-		if (!stage.current || !objectsLayer.current) {
+		if (!stageRef.current || !objectsLayer.current) {
 			console.error("Original stage or objectsLayer ref is not available.");
 			return;
 		}
@@ -31,8 +29,8 @@ export default function UseExport({ stageScale, stagePosition }: Props) {
 			console.warn("Content rectangle has zero width or height, or is invalid. Cannot export.");
 			return;
 		}
-		const height = contentRect.height / stageScale;
-		const width = contentRect.width / stageScale;
+		const height = contentRect.height / stageRef.current.scaleX();
+		const width = contentRect.width / stageRef.current.scaleX();
 
 		const offScreenStage = new Konva.Stage({
 			container: document.createElement("div"),
@@ -45,8 +43,8 @@ export default function UseExport({ stageScale, stagePosition }: Props) {
 		const clonedLayer = objectsLayer.current.clone();
 
 		clonedLayer.position({
-			x: (-contentRect.x + stagePosition.x) / stageScale,
-			y: (-contentRect.y + stagePosition.y) / stageScale,
+			x: (-contentRect.x + stageRef.current.getPosition().x) / stageRef.current.scaleX(),
+			y: (-contentRect.y + stageRef.current.getPosition().y) / stageRef.current.scaleX(),
 		});
 
 		offScreenStage.add(clonedLayer);
@@ -76,7 +74,6 @@ export default function UseExport({ stageScale, stagePosition }: Props) {
 	};
 
 	return {
-		stageRef: stage,
 		objectsLayerRef: objectsLayer,
 		handleExport,
 	};

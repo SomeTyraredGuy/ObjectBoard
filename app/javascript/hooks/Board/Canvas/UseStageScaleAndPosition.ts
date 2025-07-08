@@ -1,22 +1,22 @@
+import Konva from "konva";
 import { KonvaEventObject } from "konva/lib/Node";
 import { useState } from "react";
-
 const SCALE_BOUNDS = { min: 0.1, max: 20 };
 const SCALE_BY = 1.1;
 
 const getLimitedScale = (scale: number, min: number, max: number) => Math.max(min, Math.min(scale, max));
 
-export default function UseStageScaleAndPosition(): {
-	onWheel;
-	onMouseMove;
-	onMouseDown;
-	onMouseUp;
-	stagePosition;
-	stageScale;
-	isDragging;
+type Props = {
+	stageRef: React.RefObject<Konva.Stage>;
+};
+
+export default function UseStageScaleAndPosition({ stageRef }: Props): {
+	onWheel: (e: KonvaEventObject<WheelEvent>) => void;
+	onMouseDown: (e: KonvaEventObject<MouseEvent>) => void;
+	onDragEnd: (e: KonvaEventObject<MouseEvent>) => void;
+	scale: number;
 } {
-	const [stagePosition, setStagePosition] = useState({ x: 0, y: 0 });
-	const [stageScale, setStageScale] = useState(1);
+	const [scale, setStageScale] = useState(1);
 
 	const onWheel = (e: KonvaEventObject<WheelEvent>) => {
 		e.evt.preventDefault();
@@ -37,39 +37,26 @@ export default function UseStageScaleAndPosition(): {
 
 		const finalScale = getLimitedScale(newScale, SCALE_BOUNDS.min, SCALE_BOUNDS.max);
 
-		setStageScale(finalScale);
-		setStagePosition({
+		stage.scale({ x: finalScale, y: finalScale });
+		stage.position({
 			x: pointerPosition.x - mousePointTo.x * finalScale,
 			y: pointerPosition.y - mousePointTo.y * finalScale,
 		});
+		setStageScale(finalScale);
 	};
 
-	const [isDragging, setIsDragging] = useState(false);
-
 	const onMouseDown = (e: KonvaEventObject<MouseEvent>) => {
-		if (e.evt.button !== 2) {
+		if (e.evt.button !== 2 || !stageRef.current) {
 			return;
 		}
 
-		setIsDragging(true);
+		stageRef.current.startDrag();
+		stageRef.current.container().style.cursor = "grabbing";
 	};
 
-	const onMouseUp = () => {
-		setIsDragging(false);
+	const onDragEnd = () => {
+		stageRef.current.container().style.cursor = "default";
 	};
 
-	const onMouseMove = (e: KonvaEventObject<MouseEvent>) => {
-		if (!isDragging) return;
-
-		e.evt.preventDefault();
-		const stage = e.target.getStage();
-		if (!stage) return;
-
-		setStagePosition({
-			x: stage.x() + e.evt.movementX,
-			y: stage.y() + e.evt.movementY,
-		});
-	};
-
-	return { onWheel, onMouseMove, onMouseDown, onMouseUp, stagePosition, stageScale, isDragging };
+	return { onWheel, onMouseDown, onDragEnd, scale };
 }
