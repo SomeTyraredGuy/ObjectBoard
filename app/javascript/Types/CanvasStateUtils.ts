@@ -15,7 +15,6 @@ export type CanvasStateUtils = {
 	};
 	SelectionNet: {
 		set: (startingPoint: Point) => void;
-		update: (currentPoint: Point) => void;
 	};
 	Inserting: {
 		set: (startingProperties: CanvasObject) => void;

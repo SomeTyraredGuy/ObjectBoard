@@ -1,5 +1,5 @@
 import { CanvasState, CanvasMode } from "../../Types/Canvas";
-import { CanvasObject, CanvasObjectType, XYWH } from "../../Types/CanvasObjects";
+import { CanvasObject, CanvasObjectType, Point, XYWH } from "../../Types/CanvasObjects";
 
 export function getXYWHfromArray(objects: CanvasObject[]): XYWH | null {
 	if (objects.length === 0) return null;
@@ -55,7 +55,7 @@ export function getXYWHfromArray(objects: CanvasObject[]): XYWH | null {
 	};
 }
 
-export function getXYWH(canvasState: CanvasState): XYWH | null {
+export function getXYWH(canvasState: CanvasState, current?: Point): XYWH | null {
 	switch (canvasState.mode) {
 		case CanvasMode.Selected:
 			if (canvasState.objects.length === 0) return null;
@@ -63,11 +63,12 @@ export function getXYWH(canvasState: CanvasState): XYWH | null {
 			return getXYWHfromArray(canvasState.objects);
 
 		case CanvasMode.SelectionNet:
+			if (!current || !canvasState.origin) return null;
 			return {
 				x: canvasState.origin.x,
 				y: canvasState.origin.y,
-				width: canvasState.current.x - canvasState.origin.x,
-				height: canvasState.current.y - canvasState.origin.y,
+				width: current.x - canvasState.origin.x,
+				height: current.y - canvasState.origin.y,
 			};
 
 		default:

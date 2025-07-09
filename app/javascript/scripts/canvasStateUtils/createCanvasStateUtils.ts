@@ -11,7 +11,7 @@ import {
 	setSelectedMode,
 	updateSelectedMode,
 } from "./selectedMode";
-import { setSelectionNetMode, updateSelectionNetMode } from "./selectionNetMode";
+import { setSelectionNetMode } from "./selectionNetMode";
 
 export default function createCanvasStateUtils(
 	setCanvasState: React.Dispatch<React.SetStateAction<CanvasState>>,
@@ -31,7 +31,6 @@ export default function createCanvasStateUtils(
 		},
 		SelectionNet: {
 			set: (startingPoint: Point) => setSelectionNetMode(setCanvasState, startingPoint),
-			update: (currentPoint: Point) => updateSelectionNetMode(setCanvasState, currentPoint),
 		},
 		Inserting: {
 			set: (startingProperties: CanvasObject) => setInsertingMode(setCanvasState, startingProperties),

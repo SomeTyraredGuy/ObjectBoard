@@ -30,7 +30,6 @@ export type CanvasState =
 	| {
 			mode: CanvasMode.SelectionNet;
 			origin: Point;
-			current: Point;
 	  }
 	| {
 			mode: CanvasMode.Inserting;

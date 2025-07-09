@@ -77,7 +77,6 @@ export default function UseObjectsInteraction({ blocked, handleHistory }: Props)
 		if (!currentPoint) return;
 		switch (canvasState.mode) {
 			case CanvasMode.SelectionNet:
-				canvasStateUtils.SelectionNet.update(currentPoint);
 				break;
 
 			case CanvasMode.Inserting:
@@ -114,10 +113,12 @@ export default function UseObjectsInteraction({ blocked, handleHistory }: Props)
 		if (e.evt.button !== 0 || blocked) return;
 		e.evt.preventDefault();
 
+		const currentPoint = getCursorOnCanvas(e.target.getStage());
+		if (!currentPoint) return;
+
 		switch (canvasState.mode) {
 			case CanvasMode.Inserting: {
-				const currentPoint = getCursorOnCanvas(e.target.getStage());
-				if (!currentPoint || !startingPoint.current || !temporaryObject) break;
+				if (!startingPoint.current || !temporaryObject) break;
 
 				if (isTooSmallDrag(startingPoint.current, currentPoint)) break;
 
@@ -128,7 +129,7 @@ export default function UseObjectsInteraction({ blocked, handleHistory }: Props)
 			}
 
 			case CanvasMode.SelectionNet: {
-				let overlappingObjects = getOverlappingObjects(canvasObjects, canvasState.origin, canvasState.current);
+				let overlappingObjects = getOverlappingObjects(canvasObjects, canvasState.origin, currentPoint);
 				overlappingObjects = overlappingObjects.filter((obj) => !obj.locked);
 
 				if (overlappingObjects.length === 0) {
@@ -147,9 +148,6 @@ export default function UseObjectsInteraction({ blocked, handleHistory }: Props)
 				}
 
 				if (canvasState.resizing) {
-					const currentPoint = getCursorOnCanvas(e.target.getStage());
-					if (!currentPoint) break;
-
 					resizeSelectedObjects(currentPoint, true);
 					break;
 				}

@@ -2,12 +2,10 @@ import React from "react";
 import { Layer, Stage } from "react-konva";
 import { KonvaEventObject } from "konva/lib/Node";
 import Objects from "./Objects";
-import SelectionLayer from "./SelectionLayer/SelectionLayer";
-import { CanvasMode } from "../../../Types/Canvas";
 import { CanvasObject } from "../../../Types/CanvasObjects";
-import { UseCanvasState } from "../CanvasStateContext";
 import Konva from "konva";
 import UseStageScaleAndPosition from "@/hooks/Board/Canvas/UseStageScaleAndPosition";
+import VolatileLayer from "./VolatileLayer/VolatileLayer";
 
 type Props = {
 	objectsBlocked: boolean;
@@ -23,7 +21,6 @@ type Props = {
 };
 
 function Canvas({ objectsBlocked, canvasObjects, canvasUseObjects, stageRef, objectsLayerRef }: Props) {
-	const { canvasState } = UseCanvasState();
 	const {
 		temporaryObject,
 		onMouseDown: onMouseDownUseObjects,
@@ -45,12 +42,12 @@ function Canvas({ objectsBlocked, canvasObjects, canvasUseObjects, stageRef, obj
 				width={window.innerWidth}
 				height={window.innerHeight}
 				onWheel={onWheel}
-				onMouseMove={(e) => {
-					onMouseMoveUseObjects(e);
-				}}
 				onMouseDown={(e) => {
 					onMouseDownUseScale(e);
 					onMouseDownUseObjects(e);
+				}}
+				onMouseMove={(e) => {
+					onMouseMoveUseObjects(e);
 				}}
 				onMouseUp={(e) => {
 					onMouseUpUseObjects(e);
@@ -67,9 +64,7 @@ function Canvas({ objectsBlocked, canvasObjects, canvasUseObjects, stageRef, obj
 					/>
 				</Layer>
 
-				{(canvasState.mode === CanvasMode.SelectionNet || canvasState.mode === CanvasMode.Selected) && (
-					<SelectionLayer scale={scale} />
-				)}
+				<VolatileLayer stageRef={stageRef} scale={scale} />
 			</Stage>
 		</>
 	);
