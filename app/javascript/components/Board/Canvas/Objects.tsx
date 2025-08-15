@@ -1,18 +1,18 @@
-import React from "react";
-import { CanvasObject, CanvasObjectType } from "../../../Types/CanvasObjects";
-import { Ellipse, Rect, Text, Line } from "react-konva";
+import React, { useRef } from "react";
+import { CanvasObject } from "../../../Types/CanvasObjects";
 import { CanvasMode } from "../../../Types/Canvas";
 import { KonvaEventObject } from "konva/lib/Node";
 import { CanvasStateUtils } from "../../../Types/CanvasStateUtils";
 import { UseCanvasState } from "../CanvasStateContext";
+import Konva from "konva";
+import ObjectNode from "@/components/Board/Canvas/ObjectNode";
 
 type Props = {
 	objectsBlocked: boolean;
 	canvasObjects: CanvasObject[];
-	temporaryObject: CanvasObject | null;
 };
 
-function Objects({ objectsBlocked, canvasObjects, temporaryObject }: Props) {
+function Objects({ objectsBlocked, canvasObjects }: Props) {
 	const { canvasState, canvasStateUtils } = UseCanvasState();
 	function onMouseEnter(e: KonvaEventObject<MouseEvent>) {
 		if (objectsBlocked) return;
@@ -49,71 +49,21 @@ function Objects({ objectsBlocked, canvasObjects, temporaryObject }: Props) {
 		canvasStateUtils.Selected.set([object]);
 	}
 
-	function renderObject(object: CanvasObject, i?: number) {
-		const commonProps = {
-			key: object.id ? object.id : i,
-			stroke: object.stroke ? object.stroke : "none",
-			strokeWidth: object.strokeWidth,
-			opacity: object.opacity,
-
-			onMouseEnter: onMouseEnter,
-			onMouseLeave: onMouseLeave,
-
-			onMouseDown: (e) => onMouseDown(e, canvasStateUtils, canvasState, object),
-		};
-
-		switch (object.type) {
-			case CanvasObjectType.Rectangle:
-				return (
-					<Rect
-						{...commonProps}
-						x={object.x}
-						y={object.y}
-						width={object.width}
-						height={object.height}
-						fill={object.fill}
-						cornerRadius={object.width * object.cornerRadius}
-					/>
-				);
-
-			case CanvasObjectType.Ellipse:
-				return (
-					<Ellipse
-						{...commonProps}
-						x={object.x}
-						y={object.y}
-						radiusX={object.radiusX}
-						radiusY={object.radiusY}
-						fill={object.fill}
-					/>
-				);
-
-			case CanvasObjectType.Text:
-				return (
-					<Text
-						{...commonProps}
-						x={object.x}
-						y={object.y}
-						text={object.text}
-						fill={object.fill}
-						width={object.width}
-						height={object.height}
-						align={object.align}
-						verticalAlign={object.verticalAlign}
-						ellipsis
-						fontSize={object.fontSize}
-					/>
-				);
-
-			case CanvasObjectType.Line:
-				return <Line {...commonProps} points={object.points} />;
-		}
-	}
-
 	return (
 		<>
 			{canvasObjects.map((object, i) => {
-				return renderObject(object, i);
+				const handleMouseDown = (e: KonvaEventObject<MouseEvent>) =>
+					onMouseDown(e, canvasStateUtils, canvasState, object);
+
+				return (
+					<ObjectNode
+						key={i}
+						object={object}
+						onMouseEnter={onMouseEnter}
+						onMouseLeave={onMouseLeave}
+						onMouseDown={handleMouseDown}
+					/>
+				);
 			})}
 
 			{temporaryObject && renderObject(temporaryObject, -1)}

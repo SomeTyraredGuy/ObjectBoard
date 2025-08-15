@@ -1,6 +1,5 @@
 import React from "react";
 import { Line, Point } from "../../../../Types/CanvasObjects";
-import { Layer } from "react-konva";
 import LinePoint from "./LinePoint";
 import { CanvasStateUtils } from "@/Types/CanvasStateUtils";
 import { CanvasState } from "@/Types/Canvas";
@@ -22,7 +21,7 @@ function LineSelectionLayer({ line, scale, canvasState, canvasStateUtils }: Prop
 	}
 
 	return (
-		<Layer>
+		<>
 			{points.map((point, i) => {
 				return (
 					<LinePoint
@@ -35,7 +34,7 @@ function LineSelectionLayer({ line, scale, canvasState, canvasStateUtils }: Prop
 					/>
 				);
 			})}
-		</Layer>
+		</>
 	);
 }
 

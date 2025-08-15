@@ -57,14 +57,10 @@ function Canvas({ objectsBlocked, canvasObjects, canvasUseObjects, stageRef, obj
 				ref={stageRef}
 			>
 				<Layer ref={objectsLayerRef}>
-					<Objects
-						objectsBlocked={objectsBlocked}
-						canvasObjects={canvasObjects}
-						temporaryObject={temporaryObject}
-					/>
+					<Objects objectsBlocked={objectsBlocked} canvasObjects={canvasObjects} />
 				</Layer>
 
-				<VolatileLayer stageRef={stageRef} scale={scale} />
+				<VolatileLayer stageRef={stageRef} scale={scale} temporaryObject={temporaryObject} />
 			</Stage>
 		</>
 	);

@@ -1,42 +1,36 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CanvasObject, CanvasObjectType, Point } from "../../../../Types/CanvasObjects";
 import getDirection from "../../../../scripts/CanvasObjects/getDirection";
 import { UseCanvasState } from "@/components/Board/CanvasStateContext";
 import { CanvasMode } from "@/Types/Canvas";
-
-function createNewObject(startingProperties: CanvasObject): CanvasObject {
-	return {
-		locked: false,
-		...startingProperties,
-	};
-}
+import Konva from "konva";
 
 export default function UseTemporaryObject() {
 	const { canvasState } = UseCanvasState();
 	const [temporaryObject, setTemporaryObject] = useState<CanvasObject | null>(null);
+	const temporaryObjectRef = useRef<Konva.Ellipse | Konva.Rect | Konva.Text | Konva.Line | null>(null);
 
-	function createTemporaryObject() {
-		if (canvasState.mode !== CanvasMode.Inserting) return;
-
-		setTemporaryObject(createNewObject(canvasState.startingProperties));
+	function createNewObject(startingProperties: CanvasObject): CanvasObject {
+		return {
+			locked: false,
+			ref: temporaryObjectRef,
+			...startingProperties,
+		};
 	}
 
-	function updateTemporaryObject(startingPoint: Point, currentPoint: Point) {
-		if (!temporaryObject) return;
+	function getNewProps(startingPoint: Point, currentPoint: Point) {
 		const { xRight, yBottom } = getDirection(startingPoint, currentPoint);
-
 		const width = xRight ? currentPoint.x - startingPoint.x : startingPoint.x - currentPoint.x;
 		const height = yBottom ? startingPoint.y - currentPoint.y : currentPoint.y - startingPoint.y;
+
 		switch (temporaryObject.type) {
 			case CanvasObjectType.Rectangle: {
-				setTemporaryObject({
-					...temporaryObject,
+				return {
 					x: xRight ? startingPoint.x : currentPoint.x,
 					y: yBottom ? currentPoint.y : startingPoint.y,
 					width: width,
 					height: height,
-				});
-				break;
+				};
 			}
 
 			case CanvasObjectType.Ellipse: {
@@ -47,36 +41,52 @@ export default function UseTemporaryObject() {
 				const radiusX = xRight ? currentPoint.x - center.x : center.x - currentPoint.x;
 				const radiusY = yBottom ? center.y - currentPoint.y : currentPoint.y - center.y;
 
-				setTemporaryObject({
-					...temporaryObject,
+				return {
 					x: center.x,
 					y: center.y,
 					radiusX: radiusX,
 					radiusY: radiusY,
-				});
-				break;
+				};
 			}
 
 			case CanvasObjectType.Text:
-				setTemporaryObject({
-					...temporaryObject,
+				return {
 					x: xRight ? startingPoint.x : currentPoint.x,
 					y: yBottom ? currentPoint.y : startingPoint.y,
 					width: width,
 					height: height,
-				});
-				break;
+				};
 
 			case CanvasObjectType.Line: {
 				const lineTo: Point = { x: startingPoint.x, y: startingPoint.y };
 
-				setTemporaryObject({
-					...temporaryObject,
+				return {
 					points: [currentPoint.x, currentPoint.y, lineTo.x, lineTo.y],
-				});
-				break;
+				};
 			}
 		}
+	}
+
+	function getFinalTemporaryObject(startingPoint: Point, currentPoint: Point) {
+		return {
+			...temporaryObject,
+			...getNewProps(startingPoint, currentPoint),
+			ref: null,
+		};
+	}
+
+	function createTemporaryObject() {
+		if (canvasState.mode !== CanvasMode.Inserting) return;
+
+		setTemporaryObject(createNewObject(canvasState.startingProperties));
+	}
+
+	function updateTemporaryObject(startingPoint: Point, currentPoint: Point) {
+		if (!temporaryObject) return;
+
+		temporaryObjectRef.current.setAttrs({
+			...getNewProps(startingPoint, currentPoint),
+		});
 	}
 
 	function deleteTemporaryObject() {
@@ -88,5 +98,6 @@ export default function UseTemporaryObject() {
 		createTemporaryObject,
 		updateTemporaryObject,
 		deleteTemporaryObject,
+		getFinalTemporaryObject,
 	};
 }

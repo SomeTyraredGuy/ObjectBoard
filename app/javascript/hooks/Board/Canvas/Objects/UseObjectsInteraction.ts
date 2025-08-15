@@ -28,8 +28,13 @@ export default function UseObjectsInteraction({ blocked, handleHistory }: Props)
 		resizeSelectedObjects,
 		resourcesProperties,
 	} = UseObjects({ handleHistory });
-	const { temporaryObject, createTemporaryObject, updateTemporaryObject, deleteTemporaryObject } =
-		UseTemporaryObject();
+	const {
+		temporaryObject,
+		createTemporaryObject,
+		updateTemporaryObject,
+		deleteTemporaryObject,
+		getFinalTemporaryObject,
+	} = UseTemporaryObject();
 	const { removeAdditionalHistoryDelay } = handleHistory;
 	const { canvasState, canvasStateUtils } = UseCanvasState();
 
@@ -122,9 +127,10 @@ export default function UseObjectsInteraction({ blocked, handleHistory }: Props)
 
 				if (isTooSmallDrag(startingPoint.current, currentPoint)) break;
 
-				addNewObject(temporaryObject);
+				const finalTempObj = getFinalTemporaryObject(startingPoint.current, currentPoint);
+				addNewObject(finalTempObj);
 
-				canvasStateUtils.Selected.set([temporaryObject]);
+				canvasStateUtils.Selected.set([finalTempObj]);
 				break;
 			}
 

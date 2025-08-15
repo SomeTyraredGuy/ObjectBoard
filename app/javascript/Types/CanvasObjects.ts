@@ -1,3 +1,5 @@
+import Konva from "konva";
+
 export enum CanvasObjectType {
 	Rectangle = "Rectangle",
 	Ellipse = "Ellipse",
@@ -25,6 +27,7 @@ export interface CommonCanvasObject {
 	stroke: string;
 	strokeWidth: number;
 	opacity: number;
+	ref?: React.RefObject<Konva.Ellipse | Konva.Rect | Konva.Text | Konva.Line | null>;
 }
 
 export interface Fill {
