@@ -14,6 +14,8 @@ import createHistoryChangeObjects from "../../../../scripts/CanvasObjects/histor
 import { creationChangeRecord, deletionChangeRecord, modificationChangeRecord } from "../../../../scripts/historyUtils";
 import { moveLinePoint, moveObject } from "../../../../scripts/CanvasObjects/move";
 import { UseCanvasState } from "@/components/Board/CanvasStateContext";
+import Konva from "konva";
+import React from "react";
 
 type Props = {
 	handleHistory: {
@@ -23,7 +25,10 @@ type Props = {
 };
 
 export default function UseObjects({ handleHistory }: Props) {
-	const [canvasObjects, setCanvasObjects] = useState<CanvasObject[]>([]);
+	const [canvasObjects, _setCanvasObjects] = useState<CanvasObject[]>([]);
+	const setCanvasObjects = (objects: CanvasObject[]) => {
+		_setCanvasObjects(objects.map((obj) => ({ ...obj, ref: React.createRef<Konva.Shape>() })));
+	};
 	const { changeObjects: historyChangeObjects, historyHandleChanges } = handleHistory;
 	const { canvasState, canvasStateUtils } = UseCanvasState();
 
