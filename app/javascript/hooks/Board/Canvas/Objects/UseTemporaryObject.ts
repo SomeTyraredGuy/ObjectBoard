@@ -8,7 +8,7 @@ import Konva from "konva";
 export default function UseTemporaryObject() {
 	const { canvasState } = UseCanvasState();
 	const [temporaryObject, setTemporaryObject] = useState<CanvasObject | null>(null);
-	const temporaryObjectRef = useRef<Konva.Ellipse | Konva.Rect | Konva.Text | Konva.Line | null>(null);
+	const temporaryObjectRef = useRef<Konva.Shape | null>(null);
 
 	function createNewObject(startingProperties: CanvasObject): CanvasObject {
 		return {
@@ -84,7 +84,7 @@ export default function UseTemporaryObject() {
 	function updateTemporaryObject(startingPoint: Point, currentPoint: Point) {
 		if (!temporaryObject) return;
 
-		temporaryObjectRef.current.setAttrs({
+		temporaryObjectRef.current?.setAttrs({
 			...getNewProps(startingPoint, currentPoint),
 		});
 	}

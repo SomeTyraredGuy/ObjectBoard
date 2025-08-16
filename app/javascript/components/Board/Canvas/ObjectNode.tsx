@@ -17,7 +17,6 @@ export default function ObjectNode({ object, i, onMouseEnter, onMouseLeave, onMo
 		stroke: object.stroke ? object.stroke : "none",
 		strokeWidth: object.strokeWidth,
 		opacity: object.opacity,
-		ref: object.ref,
 
 		onMouseEnter: onMouseEnter || (() => {}),
 		onMouseLeave: onMouseLeave || (() => {}),
@@ -35,6 +34,7 @@ export default function ObjectNode({ object, i, onMouseEnter, onMouseLeave, onMo
 					height={object.height}
 					fill={object.fill}
 					cornerRadius={object.width * object.cornerRadius}
+					ref={object.ref as React.Ref<Konva.Rect>}
 				/>
 			);
 
@@ -47,6 +47,7 @@ export default function ObjectNode({ object, i, onMouseEnter, onMouseLeave, onMo
 					radiusX={object.radiusX}
 					radiusY={object.radiusY}
 					fill={object.fill}
+					ref={object.ref as React.Ref<Konva.Ellipse>}
 				/>
 			);
 
@@ -64,10 +65,11 @@ export default function ObjectNode({ object, i, onMouseEnter, onMouseLeave, onMo
 					verticalAlign={object.verticalAlign}
 					ellipsis
 					fontSize={object.fontSize}
+					ref={object.ref as React.Ref<Konva.Text>}
 				/>
 			);
 
 		case CanvasObjectType.Line:
-			return <Line {...commonProps} points={object.points} />;
+			return <Line {...commonProps} points={object.points} ref={object.ref as React.Ref<Konva.Line>} />;
 	}
 }

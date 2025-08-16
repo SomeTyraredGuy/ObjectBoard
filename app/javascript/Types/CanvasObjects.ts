@@ -27,7 +27,7 @@ export interface CommonCanvasObject {
 	stroke: string;
 	strokeWidth: number;
 	opacity: number;
-	ref?: React.RefObject<Konva.Ellipse | Konva.Rect | Konva.Text | Konva.Line | null>;
+	ref?: React.RefObject<Konva.Shape | null>;
 }
 
 export interface Fill {
