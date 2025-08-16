@@ -6,7 +6,7 @@ import { UseCanvasState } from "../../CanvasStateContext";
 import { Layer } from "react-konva";
 import Selected from "./Selected";
 import { CanvasObject } from "@/Types/CanvasObjects";
-import Object from "../ObjectNode";
+import ObjectNode from "../ObjectNode";
 
 type Props = {
 	stageRef: React.RefObject<Konva.Stage>;
@@ -30,7 +30,7 @@ function VolatileLayer({ stageRef, scale, temporaryObject }: Props) {
 		case CanvasMode.Inserting:
 			if (!temporaryObject) break;
 
-			content = <Object object={temporaryObject} />;
+			content = <ObjectNode object={temporaryObject} />;
 			break;
 
 		default:

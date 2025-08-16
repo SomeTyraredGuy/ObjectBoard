@@ -12,9 +12,8 @@ export default function UseTemporaryObject() {
 
 	function createNewObject(startingProperties: CanvasObject): CanvasObject {
 		return {
-			locked: false,
-			ref: temporaryObjectRef,
 			...startingProperties,
+			ref: temporaryObjectRef,
 		};
 	}
 
