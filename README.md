@@ -1,24 +1,16 @@
-# README
+# ObjectBoard
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+ObjectBoard is a collaborative whiteboard application designed to simplify the organization of complex tabletop games. Built with Ruby on Rails and React, it provides a flexible canvas for managing game elements with robust user permissions management.
 
-Things you may want to cover:
+## Features
 
-* Ruby version
+- **Interactive Whiteboard**: Draw and manipulate shapes (rectangles, ellipses, lines, text) on a shared canvas
+- **User Permissions**: Permission-based access control for board management and collaboration
+- **Board Management**: Create, organize, and share multiple boards
 
-* System dependencies
+## Tech Stack
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- **Backend**: Ruby on Rails
+- **Frontend**: React with TypeScript
+- **Styling**: Tailwind CSS
+- **Database**: PostgreSQL
